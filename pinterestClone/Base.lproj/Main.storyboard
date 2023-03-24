@@ -38,14 +38,14 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DD.month.YYYY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQo-LS-gMs">
-                                                    <rect key="frame" x="24" y="136" width="345" height="20"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="дд.месяц.гггг" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQo-LS-gMs">
+                                                    <rect key="frame" x="24" y="140.66666666666666" width="345" height="15.333333333333343"/>
+                                                    <fontDescription key="fontDescription" name="SFPro-Regular" family="SF Pro" pointSize="13"/>
                                                     <color key="textColor" name="YP White (iOS)"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="htv-lr-XWR">
-                                                    <rect key="frame" x="318.33333333333331" y="4" width="58.666666666666686" height="40"/>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="htv-lr-XWR">
+                                                    <rect key="frame" x="318.33333333333331" y="4" width="21" height="18"/>
                                                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="WhiteLike" title=" " imagePadding="0.0"/>
@@ -53,14 +53,15 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="bottom" secondItem="YQo-LS-gMs" secondAttribute="bottom" constant="8" id="4fb-nW-OsF"/>
-                                                <constraint firstItem="V9V-yn-koy" firstAttribute="top" secondItem="htv-lr-XWR" secondAttribute="top" id="H0Z-oO-Mga"/>
+                                                <constraint firstItem="htv-lr-XWR" firstAttribute="top" secondItem="V9V-yn-koy" secondAttribute="top" constant="12" id="H0Z-oO-Mga"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="trailing" secondItem="YQo-LS-gMs" secondAttribute="trailing" constant="8" id="M0T-s6-Wd0"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="top" secondItem="NT2-GF-NQN" secondAttribute="top" constant="4" id="MSX-Au-slA"/>
                                                 <constraint firstAttribute="bottom" secondItem="V9V-yn-koy" secondAttribute="bottom" constant="4" id="PbV-OV-YUE"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="leading" secondItem="NT2-GF-NQN" secondAttribute="leading" constant="16" id="dgO-P5-Y6C"/>
                                                 <constraint firstItem="YQo-LS-gMs" firstAttribute="leading" secondItem="V9V-yn-koy" secondAttribute="leading" constant="8" id="ez9-8e-HeW"/>
-                                                <constraint firstItem="htv-lr-XWR" firstAttribute="trailing" secondItem="V9V-yn-koy" secondAttribute="trailing" id="iLl-VE-2YB"/>
+                                                <constraint firstItem="htv-lr-XWR" firstAttribute="trailing" secondItem="V9V-yn-koy" secondAttribute="trailing" constant="10" id="iLl-VE-2YB"/>
                                                 <constraint firstAttribute="trailing" secondItem="V9V-yn-koy" secondAttribute="trailing" constant="16" id="jrt-4I-shL"/>
+                                                <constraint firstItem="htv-lr-XWR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NT2-GF-NQN" secondAttribute="leading" constant="20" symbolic="YES" id="tyO-jV-voh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Background (iOS)"/>
