@@ -44,8 +44,9 @@
                                                     <color key="textColor" name="YP White (iOS)"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="htv-lr-XWR">
-                                                    <rect key="frame" x="318.33333333333331" y="4" width="21" height="18"/>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="htv-lr-XWR">
+                                                    <rect key="frame" x="335" y="4" width="42" height="42"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="WhiteLike" title=" " imagePadding="0.0"/>
@@ -53,15 +54,12 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="bottom" secondItem="YQo-LS-gMs" secondAttribute="bottom" constant="8" id="4fb-nW-OsF"/>
-                                                <constraint firstItem="htv-lr-XWR" firstAttribute="top" secondItem="V9V-yn-koy" secondAttribute="top" constant="12" id="H0Z-oO-Mga"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="trailing" secondItem="YQo-LS-gMs" secondAttribute="trailing" constant="8" id="M0T-s6-Wd0"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="top" secondItem="NT2-GF-NQN" secondAttribute="top" constant="4" id="MSX-Au-slA"/>
                                                 <constraint firstAttribute="bottom" secondItem="V9V-yn-koy" secondAttribute="bottom" constant="4" id="PbV-OV-YUE"/>
                                                 <constraint firstItem="V9V-yn-koy" firstAttribute="leading" secondItem="NT2-GF-NQN" secondAttribute="leading" constant="16" id="dgO-P5-Y6C"/>
                                                 <constraint firstItem="YQo-LS-gMs" firstAttribute="leading" secondItem="V9V-yn-koy" secondAttribute="leading" constant="8" id="ez9-8e-HeW"/>
-                                                <constraint firstItem="htv-lr-XWR" firstAttribute="trailing" secondItem="V9V-yn-koy" secondAttribute="trailing" constant="10" id="iLl-VE-2YB"/>
                                                 <constraint firstAttribute="trailing" secondItem="V9V-yn-koy" secondAttribute="trailing" constant="16" id="jrt-4I-shL"/>
-                                                <constraint firstItem="htv-lr-XWR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NT2-GF-NQN" secondAttribute="leading" constant="20" symbolic="YES" id="tyO-jV-voh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Background (iOS)"/>
@@ -98,7 +96,7 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="WhiteLike" width="30" height="26"/>
+        <image name="WhiteLike" width="42" height="42"/>
         <namedColor name="YP Background (iOS)">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
