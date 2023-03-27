@@ -35,7 +35,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="73" height="76"/>
+        <image name="LaunchScreen" width="72.666664123535156" height="75.333335876464844"/>
         <namedColor name="YP Black (iOS)">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -104,7 +104,7 @@ extension ImageListViewController {
         cell.cellImage.image = image
         
         let isLiked = indexPath.row % 2 == 0
-        let likedImage = isLiked ? UIImage(named: "RedLike") : UIImage(named: "whiteLike")
+        let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked")
         cell.likeButton.setImage(likedImage, for: .normal)
         
         //TODO: реализуем эффект нажатия на ячейку без серого выделения (✅DONE)
