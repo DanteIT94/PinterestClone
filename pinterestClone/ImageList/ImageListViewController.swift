@@ -9,9 +9,16 @@ import UIKit
 
 class ImageListViewController: UIViewController {
 
-    //MARK: Properties
+    //MARK: - Types
+
+    //MARK: - Constants
+    
+    //MARK: Public Properties
+    
+    //MARK: IBOutlet
     @IBOutlet private var tableView: UITableView!
     
+    //MARK: Private Properties
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -20,6 +27,9 @@ class ImageListViewController: UIViewController {
         return formatter
     } ()
     
+    //MARK: -Initializers
+    
+    //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 //        tableView.delegate = self
@@ -27,11 +37,19 @@ class ImageListViewController: UIViewController {
 //        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
 //        tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
         tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0 )
-        
     }
+    
+    //MARK: - Public methods
+    
+    //MARK: - IBAction
+    
+    //MARK: - Private Methods
 
 }
 
+
+//MARK: - Extensions
+//MARK: - UITableViewDelegate
 extension ImageListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качетсве аргумента)
@@ -54,9 +72,10 @@ extension ImageListViewController: UITableViewDelegate {
     }
 }
 
+//MARK: - UITableViewDataSource
 extension ImageListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //данный метод опред. кол, ячеек в секции таблицы
+        //данный метод опред. кол. ячеек в секции таблицы
         //Так как секция у нас одна - проигнорируем значение параметра section
         return 20
     }
@@ -76,7 +95,6 @@ extension ImageListViewController: UITableViewDataSource {
     }
 }
 
-
 extension ImageListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageName = "\(indexPath.row)"
@@ -86,16 +104,13 @@ extension ImageListViewController {
         cell.cellImage.image = image
         
         let isLiked = indexPath.row % 2 == 0
-        let likedImage = isLiked ? UIImage(named: "RedLike") : UIImage(named: "WhiteLike")
+        let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked")
         cell.likeButton.setImage(likedImage, for: .normal)
         
-        //TODO- Вернуться и доработать градиентный слой
-        ///Задаем градиентный слой ячейкам
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.YPGradient0?.cgColor, UIColor.YPGradient20?.cgColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.frame = CGRect(x: 0, y: cell.bounds.height - 30, width: cell.bounds.width, height: 30)
-        ///Добавляем градиентный слой на задний план
-        cell.layer.insertSublayer(gradientLayer, at: 0)
+        //TODO: реализуем эффект нажатия на ячейку без серого выделения (✅DONE)
+        let selectedView = UIView()
+        ///Устанавливаем цвет фона
+        selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+        cell.selectedBackgroundView = selectedView
     }
 }

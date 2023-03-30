@@ -17,15 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="LHw-Xr-5Jr">
-                                <rect key="frame" x="159" y="401" width="75" height="75"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="LHw-Xr-5Jr">
+                                <rect key="frame" x="160" y="400.66666666666669" width="73" height="76"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black (iOS)"/>
                         <constraints>
-                            <constraint firstItem="LHw-Xr-5Jr" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9x2-28-4RW"/>
-                            <constraint firstItem="LHw-Xr-5Jr" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Fgo-Jd-vUb"/>
+                            <constraint firstItem="LHw-Xr-5Jr" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="OGF-kh-Ecm"/>
+                            <constraint firstItem="LHw-Xr-5Jr" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="bkn-os-y0Y"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -35,9 +35,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="73" height="76"/>
+        <image name="LaunchScreen" width="72.666664123535156" height="75.333335876464844"/>
         <namedColor name="YP Black (iOS)">
-            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
