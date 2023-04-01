@@ -38,7 +38,11 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sdE-8c-JJO" userLabel="Like Button">
-                                                    <rect key="frame" x="369" y="4" width="29" height="26"/>
+                                                    <rect key="frame" x="356" y="4" width="42" height="42"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="42" id="5Uu-Vb-1jh"/>
+                                                        <constraint firstAttribute="width" constant="42" id="cHh-go-Dgz"/>
+                                                    </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="isLiked"/>
                                                 </button>
@@ -104,47 +108,71 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fHW-X8-fU7">
-                                <rect key="frame" x="-20" y="-20" width="454" height="936"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHW-X8-fU7">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZBo-oy-VFV">
-                                        <rect key="frame" x="0.0" y="0.0" width="454" height="936"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZBo-oy-VFV">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Kt-F3-rUt">
-                                        <rect key="frame" x="32" y="55" width="24" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="5LJ-4b-FEs"/>
-                                            <constraint firstAttribute="height" constant="24" id="7jk-iu-b4X"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="backButton" title=" ">
-                                            <fontDescription key="titleFontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="didTapBackButton:" destination="KFW-Y8-gau" eventType="touchUpInside" id="IvT-FQ-3N7"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="3Kt-F3-rUt" firstAttribute="top" secondItem="GVY-w9-vh9" secondAttribute="top" constant="55" id="4dP-Zy-V2Z"/>
-                                    <constraint firstItem="GVY-w9-vh9" firstAttribute="bottom" secondItem="ZBo-oy-VFV" secondAttribute="bottom" id="b8V-mE-VFa"/>
-                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="top" secondItem="GVY-w9-vh9" secondAttribute="top" id="bVc-9p-Tr1"/>
-                                    <constraint firstItem="GVY-w9-vh9" firstAttribute="trailing" secondItem="ZBo-oy-VFV" secondAttribute="trailing" id="f2u-5C-pqd"/>
-                                    <constraint firstItem="3Kt-F3-rUt" firstAttribute="leading" secondItem="GVY-w9-vh9" secondAttribute="leading" constant="32" id="g96-9P-anL"/>
-                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="leading" secondItem="GVY-w9-vh9" secondAttribute="leading" id="jaa-h6-I87"/>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="leading" secondItem="fHW-X8-fU7" secondAttribute="leading" id="3cm-hd-WUl"/>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="bottom" secondItem="fHW-X8-fU7" secondAttribute="bottom" id="Cy2-hU-ovq"/>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="top" secondItem="fHW-X8-fU7" secondAttribute="top" id="KEC-dq-P3k"/>
+                                    <constraint firstItem="ZBo-oy-VFV" firstAttribute="trailing" secondItem="fHW-X8-fU7" secondAttribute="trailing" id="jgy-pO-SKj"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="9YC-p0-VjN"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="GVY-w9-vh9"/>
+                                <connections>
+                                    <outlet property="delegate" destination="KFW-Y8-gau" id="xx4-Di-2U7"/>
+                                </connections>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8F-XI-4ed" userLabel="shareButton">
+                                <rect key="frame" x="273" y="795" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="9jw-1o-9on"/>
+                                    <constraint firstAttribute="height" constant="50" id="bHw-dv-jJl"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="shareButton" title=" "/>
+                                <connections>
+                                    <action selector="didtapShareButton:" destination="KFW-Y8-gau" eventType="touchUpInside" id="10f-uf-ZlP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Kt-F3-rUt">
+                                <rect key="frame" x="36" y="55" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="HOI-nI-DeL"/>
+                                    <constraint firstAttribute="height" constant="24" id="ftz-bd-Mfz"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="backButton" title=" ">
+                                    <fontDescription key="titleFontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="KFW-Y8-gau" eventType="touchUpInside" id="IvT-FQ-3N7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="7RM-LG-zu7"/>
                         <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="top" secondItem="7RM-LG-zu7" secondAttribute="top" constant="55" id="26Q-Hz-Nkx"/>
+                            <constraint firstItem="7RM-LG-zu7" firstAttribute="bottom" secondItem="h8F-XI-4ed" secondAttribute="bottom" constant="51" id="H9Q-dg-vji"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="trailing" secondItem="7RM-LG-zu7" secondAttribute="trailing" id="HRb-xt-QYn"/>
+                            <constraint firstItem="7RM-LG-zu7" firstAttribute="trailing" secondItem="h8F-XI-4ed" secondAttribute="trailing" constant="91" id="KaC-nP-FFN"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="top" secondItem="h2i-mx-6pB" secondAttribute="top" id="QB2-9w-IUA"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="bottom" secondItem="h2i-mx-6pB" secondAttribute="bottom" id="Sjx-Je-tbw"/>
+                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="36" id="UtK-OT-B4T"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" id="kpI-tR-sFT"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rop-UD-BDX"/>
                     <connections>
                         <outlet property="backButton" destination="3Kt-F3-rUt" id="wVP-kS-oZj"/>
                         <outlet property="imageView" destination="ZBo-oy-VFV" id="Jpp-q9-ayq"/>
+                        <outlet property="scrollView" destination="fHW-X8-fU7" id="Ev4-I7-Zxk"/>
+                        <outlet property="shareButton" destination="h8F-XI-4ed" id="W1m-Iy-JuC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Evd-6d-XyG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -257,6 +285,7 @@
         <image name="backButton" width="24" height="24"/>
         <image name="isLiked" width="29" height="26"/>
         <image name="logout_button" width="24" height="24"/>
+        <image name="shareButton" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
     </resources>
