@@ -73,7 +73,7 @@ extension ImagesListViewController: UITableViewDelegate {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
-        //TODO- ПОВТОРИТЬ (сделал через авторское решение)
+        //TODO- ПОВТОРИТЬ (сделал через авторское решение)⚠️⚠️
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
