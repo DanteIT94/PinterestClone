@@ -140,7 +140,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Kt-F3-rUt">
-                                <rect key="frame" x="36" y="55" width="24" height="24"/>
+                                <rect key="frame" x="9" y="9" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="HOI-nI-DeL"/>
                                     <constraint firstAttribute="height" constant="24" id="ftz-bd-Mfz"/>
@@ -157,13 +157,13 @@
                         <viewLayoutGuide key="safeArea" id="7RM-LG-zu7"/>
                         <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="top" secondItem="7RM-LG-zu7" secondAttribute="top" constant="55" id="26Q-Hz-Nkx"/>
+                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="top" secondItem="7RM-LG-zu7" secondAttribute="top" constant="9" id="26Q-Hz-Nkx"/>
                             <constraint firstAttribute="bottom" secondItem="h8F-XI-4ed" secondAttribute="bottom" constant="51" id="H9Q-dg-vji"/>
                             <constraint firstItem="h8F-XI-4ed" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="182" id="HPO-hm-pNP"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="trailing" secondItem="7RM-LG-zu7" secondAttribute="trailing" id="HRb-xt-QYn"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="top" secondItem="h2i-mx-6pB" secondAttribute="top" id="QB2-9w-IUA"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="bottom" secondItem="h2i-mx-6pB" secondAttribute="bottom" id="Sjx-Je-tbw"/>
-                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="36" id="UtK-OT-B4T"/>
+                            <constraint firstItem="3Kt-F3-rUt" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="9" id="UtK-OT-B4T"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" id="kpI-tR-sFT"/>
                             <constraint firstItem="7RM-LG-zu7" firstAttribute="trailing" secondItem="h8F-XI-4ed" secondAttribute="trailing" constant="182" id="yDm-sO-BdY"/>
                         </constraints>
@@ -205,7 +205,6 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="seM-OR-9Hu">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="VBv-AU-ml3"/>
