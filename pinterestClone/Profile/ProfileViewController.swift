@@ -12,6 +12,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         ///Cоздаем функции для отображения лэйблов, Картин, кнопок
+        view.backgroundColor = .YPBlack
         createAvatarImage(safeArea: view.safeAreaLayoutGuide)
         createNameLabel(safeArea: view.safeAreaLayoutGuide)
         createLoginLabel(safeArea: view.safeAreaLayoutGuide)
@@ -22,16 +23,15 @@ final class ProfileViewController: UIViewController {
     
     //MARK: - private Methods
     private func createAvatarImage(safeArea: UILayoutGuide) {
-        avatarImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+        avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "my_avatar")
         avatarImage.contentMode = .scaleAspectFill
         avatarImage.clipsToBounds = true
 
-        avatarImage.layer.cornerRadius = 34
+        avatarImage.layer.cornerRadius = 35
         avatarImage.layer.masksToBounds = true
-        // Добавим в границу рамку толщиной в 2 и цветом белым
-        avatarImage.layer.borderWidth = 2
-        avatarImage.layer.borderColor = UIColor.white.cgColor
+//        avatarImage.layer.borderWidth = 2
+//        avatarImage.layer.borderColor = UIColor.white.cgColor
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImage)
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -46,7 +46,7 @@ final class ProfileViewController: UIViewController {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         nameLabel.text = "Denis Chakyr"
-        nameLabel.font = UIFont.systemFont(ofSize: 23)
+        nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = UIColor.YPWhite
         nameLabel.leadingAnchor.constraint(equalTo: avatarImage.leadingAnchor).isActive = true
         nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8).isActive = true
@@ -57,7 +57,7 @@ final class ProfileViewController: UIViewController {
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginLabel)
         loginLabel.text = "@ChakyrIT"
-        loginLabel.font = UIFont(name: "SFPro-Regular", size: 13)
+        loginLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         loginLabel.textColor = UIColor.YPGrey
         loginLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
         loginLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8).isActive = true
@@ -68,7 +68,7 @@ final class ProfileViewController: UIViewController {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         descriptionLabel.text = "Войти в Айти!"
-        descriptionLabel.font = UIFont(name: "SFPro-Regular", size: 13)
+        descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         descriptionLabel.textColor = UIColor.YPWhite
         descriptionLabel.leadingAnchor.constraint(equalTo: loginLabel.leadingAnchor).isActive = true
         descriptionLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8).isActive = true

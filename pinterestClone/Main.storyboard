@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -160,11 +161,11 @@
                             <constraint firstItem="3Kt-F3-rUt" firstAttribute="top" secondItem="7RM-LG-zu7" secondAttribute="top" constant="9" id="26Q-Hz-Nkx"/>
                             <constraint firstAttribute="bottom" secondItem="h8F-XI-4ed" secondAttribute="bottom" constant="51" id="H9Q-dg-vji"/>
                             <constraint firstItem="h8F-XI-4ed" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="182" id="HPO-hm-pNP"/>
-                            <constraint firstItem="fHW-X8-fU7" firstAttribute="trailing" secondItem="7RM-LG-zu7" secondAttribute="trailing" id="HRb-xt-QYn"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="trailing" secondItem="h2i-mx-6pB" secondAttribute="trailing" id="HRb-xt-QYn"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="top" secondItem="h2i-mx-6pB" secondAttribute="top" id="QB2-9w-IUA"/>
                             <constraint firstItem="fHW-X8-fU7" firstAttribute="bottom" secondItem="h2i-mx-6pB" secondAttribute="bottom" id="Sjx-Je-tbw"/>
                             <constraint firstItem="3Kt-F3-rUt" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" constant="9" id="UtK-OT-B4T"/>
-                            <constraint firstItem="fHW-X8-fU7" firstAttribute="leading" secondItem="7RM-LG-zu7" secondAttribute="leading" id="kpI-tR-sFT"/>
+                            <constraint firstItem="fHW-X8-fU7" firstAttribute="leading" secondItem="h2i-mx-6pB" secondAttribute="leading" id="kpI-tR-sFT"/>
                             <constraint firstItem="7RM-LG-zu7" firstAttribute="trailing" secondItem="h8F-XI-4ed" secondAttribute="trailing" constant="182" id="yDm-sO-BdY"/>
                         </constraints>
                     </view>
@@ -188,7 +189,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="rY1-CR-9TG"/>
-                        <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" name="YP Black (iOS)"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tab_profile_active" id="qPb-gG-ms9"/>
                     <navigationItem key="navigationItem" id="fo9-4V-h3O"/>
@@ -205,6 +206,8 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="seM-OR-9Hu">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="YP Black (iOS)"/>
+                        <color key="selectedImageTintColor" name="YP Gray (iOS)"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="VBv-AU-ml3"/>
@@ -223,5 +226,11 @@
         <image name="shareButton" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
+        <namedColor name="YP Black (iOS)">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray (iOS)">
+            <color red="0.68199998140335083" green="0.68599998950958252" blue="0.70599997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
