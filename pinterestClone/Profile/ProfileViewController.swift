@@ -11,8 +11,8 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ///Cоздаем функции для отображения лэйблов, Картин, кнопок
         view.backgroundColor = .YPBlack
+        ///Cоздаем функции для отображения лэйблов, Картин, кнопок
         createAvatarImage(safeArea: view.safeAreaLayoutGuide)
         createNameLabel(safeArea: view.safeAreaLayoutGuide)
         createLoginLabel(safeArea: view.safeAreaLayoutGuide)
@@ -40,12 +40,12 @@ final class ProfileViewController: UIViewController {
         avatarImage.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 16).isActive = true
         
     }
-    ///⚠️⚠️⚠️ОГРОМНЫЕ ПРОБЛЕМЫ СО ШРИФТАМИ - ОНИ НЕ МОГУТ ВЫСТАВИТЬСЯ НОРМАЛЬНО(((
     private func createNameLabel(safeArea: UILayoutGuide) {
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         nameLabel.text = "Denis Chakyr"
+        ///Шрифты (требуется корректирование)
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = UIColor.YPWhite
         nameLabel.leadingAnchor.constraint(equalTo: avatarImage.leadingAnchor).isActive = true
