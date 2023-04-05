@@ -43,7 +43,6 @@ final class SingleImageViewController: UIViewController {
     
     
     //MARK: - Private Methods
-    ///⚠️⚠️ВЗЯТЬ ИЗ ФИНАЛЬНОГО АЛГОРИТМА СПРИНТА 9 - ТРЕБУЕТСЯ ПОЯСНЕНИЕ НАСТАВНИКОВ⚠️⚠️
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
@@ -52,7 +51,7 @@ final class SingleImageViewController: UIViewController {
         let imageSize = image.size
         let hScale = visibleRectSize.width / imageSize.width
         let vScale = visibleRectSize.height / imageSize.height
-        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale))) //ОЧЕНЬ НЕПОНЯТНО!
+        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale)))
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
         let newContentSize = scrollView.contentSize
@@ -68,7 +67,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
         imageView
     }
     
-    //TODO: - Центрирование IMAGE после Зумирования⚠️⚠️⚠️
+    //TODO: - Центрирование IMAGE после Зумирования⚠️
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         centerImageInScrollView()
     }

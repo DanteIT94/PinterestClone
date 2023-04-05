@@ -33,8 +33,8 @@ final class ImagesListViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.tabBar.barTintColor = .YPBlack
-        tabBarController?.tabBar.isTranslucent = false
+//        tabBarController?.tabBar.barTintColor = .YPBlack
+//        tabBarController?.tabBar.isTranslucent = false
 //        tableView.delegate = self
 //        tableView.dataSource = self
 //        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
