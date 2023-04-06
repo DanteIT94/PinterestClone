@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
 
     //MARK: - Types
 
@@ -19,6 +19,7 @@ class ImageListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     //MARK: Private Properties
+    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -32,6 +33,8 @@ class ImageListViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+//        tabBarController?.tabBar.barTintColor = .YPBlack
+//        tabBarController?.tabBar.isTranslucent = false
 //        tableView.delegate = self
 //        tableView.dataSource = self
 //        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
@@ -40,7 +43,16 @@ class ImageListViewController: UIViewController {
     }
     
     //MARK: - Public methods
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == ShowSingleImageSegueIdentifier {
+            let viewController = segue.destination as! SingleImageViewController
+            let indexPath = sender as! IndexPath
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
     //MARK: - IBAction
     
     //MARK: - Private Methods
@@ -50,19 +62,20 @@ class ImageListViewController: UIViewController {
 
 //MARK: - Extensions
 //MARK: - UITableViewDelegate
-extension ImageListViewController: UITableViewDelegate {
+extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качетсве аргумента)
         if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
             cell.isSelected = false
         }
+        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
-        //TODO- ПОВТОРИТЬ (сделал через авторское решение)
+        //TODO- ПОВТОРИТЬ (сделал через авторское решение)⚠️
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
@@ -73,7 +86,7 @@ extension ImageListViewController: UITableViewDelegate {
 }
 
 //MARK: - UITableViewDataSource
-extension ImageListViewController: UITableViewDataSource {
+extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //данный метод опред. кол. ячеек в секции таблицы
         //Так как секция у нас одна - проигнорируем значение параметра section
@@ -95,7 +108,7 @@ extension ImageListViewController: UITableViewDataSource {
     }
 }
 
-extension ImageListViewController {
+extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageName = "\(indexPath.row)"
         
