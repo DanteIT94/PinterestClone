@@ -1,0 +1,138 @@
+//
+//  OAuth2Services.swift
+//  pinterestClone
+//
+//  Created by Денис on 22.04.2023.
+//
+
+import UIKit
+
+//MARK: - Класс-Сервис -> Слой Доступа к сервису (Service Access Layer)
+final class OAuth2Services {
+    
+    static let shared = OAuth2Services()//Создание экземпляра класса OAuth2Services в виде синглтона (Singleton), что означает, что всегда будет существовать только один экземпляр этого класса в приложении.
+    
+    private let urlSession = URLSession.shared //Создание экземпляра класса URLSession для выполнения HTTP-запросов. Этот экземпляр создается один раз при создании объекта OAuth2Services.
+    
+    private (set)  var authToken: String? {//свойство authToken для хранения токена аутентификации
+        get {
+            return OAuth2TokenStorage().token
+        }
+        set {
+            OAuth2TokenStorage().token = newValue
+        }
+    }
+    
+    ///Объявление метода fetchAuthToken для выполнения запроса на получение токена аутентификации.
+    func fetchAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
+        let request = authTokenRequest(code: code)
+        let task = object(for: request) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.authToken = authToken
+                completion(.success(authToken))//в случае успеха, токен аутентификации извлекается из ответа на запрос и сохраняется в OAuth2TokenStorage и в свойстве authToken
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+}
+
+//MARK: - Расширение для класса OAuth2Services
+extension OAuth2Services {
+    ///Функция, которая создает задачу URLSessionTask для выполнения запроса и получения данных. Она использует переданный URLRequest и обработчик завершения для создания URLSessionDataTask, который выполняет запрос и возвращает ответ. Если запрос был выполнен успешно, данные из ответа декодируются в экземпляр структуры OAuthTokenResponseBody, и успешный результат передается в обработчик завершения. Если произошла ошибка, она передается в обработчик завершения.
+    private func object( for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
+            let decoder = JSONDecoder()
+            return urlSession.data(for: request) { (result: Result<Data, Error>) in
+                let response = result.flatMap {data -> Result<OAuthTokenResponseBody, Error> in //Мы определяем константу response, используя flatMap для извлечения данных из результата выполнения запроса. Мы затем используем декодер JSON для декодирования ответа сервера в экземпляр структуры OAuthTokenResponseBody. Мы завершаем задачу, вызывая обработчик завершения completion, передавая результат выполнения запроса в виде объекта Result.
+                    Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+                }
+                completion(response)
+            }
+        }
+    
+    ///Определяем функцию authTokenRequest(code:), которая возвращает URLRequest. Вызываем метод makeHTTPRequest на классе URLRequest, передавая значения пути, метода, и базового URL, а также некоторых параметров, которые требуются для запроса токена аутентификации.
+    private func authTokenRequest(code: String) -> URLRequest {
+        URLRequest.makeHTTPRequest(
+        path: "/oauth/token"
+        + "?client_id=\(AccessKey)"
+        + "&&client_secret=\(SecretKey)"
+        + "&&redirect_uri=\(RedirectURI)"
+        + "&&code=\(code)"
+        + "&&grant_type=authorization_code",
+        httpMethod: "POST")
+    }
+    
+    ///Определяем структуру OAuthTokenResponseBody, которая будет использоваться для декодирования ответа сервера.
+   private struct OAuthTokenResponseBody: Decodable {
+        let accessToken: String
+        let tokenType: String
+        let scope: String
+        let createdAt: Int
+        
+       ///Определяем свойства структуры, которые соответствуют полям ответа сервера.
+        enum CodingKeys: String, CodingKey {
+            case accessToken = "access_token"
+            case tokenType = "token_type"
+            case scope
+            case createdAt = "created_at"
+        }
+    }
+    
+}
+
+//MARK: - HTTP Request
+extension URLRequest {
+    static func makeHTTPRequest( path: String,
+                                 httpMethod: String,
+                                 baseURL: URL = DefaultBaseURL) -> URLRequest {
+        var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
+        request.httpMethod = httpMethod
+        return request
+    }
+}
+
+//MARK: - Network Connection
+///Работаем с сетевым запросом
+///Перечисление NetworkError, которое может быть использовано для указания ошибок, связанных с сетевыми запросами. В частности, NetworkError может быть связано с ошибками HTTP-запросов (например, неправильный код состояния HTTP), ошибками в URL-запросе или ошибками в URL-сессии.
+enum NetworkError: Error {
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
+    case urlSessionError
+}
+
+extension URLSession {
+    func data(for request: URLRequest,
+              completion: @escaping (Result<Data, Error>) -> Void) -> URLSessionTask  {
+        ///Эта часть кода определяет замыкание fulfillCompletion, которое будет вызываться внутри метода dataTask после завершения запроса. В замыкании определен асинхронный вызов completion на главной очереди, передавая результат в качестве аргумента.
+        let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
+        ///Здесь определяется задача task с использованием метода dataTask(with:completionHandler:). При завершении запроса вызывается замыкание completionHandler, которое принимает параметры data, response и error.
+        ///Если data, response и statusCode определены и код состояния находится в диапазоне 200-299, то вызывается замыкание fulfillCompletion с результатом в виде .success(data).
+        let task = dataTask(with: request, completionHandler: {data, response, error in
+            if let data = data,
+               let response = response,
+               let statusCode = (response as? HTTPURLResponse)?.statusCode
+            {
+                if 200..<300 ~= statusCode {
+                    fulfillCompletion(.success(data))
+                } else {
+                    fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
+                }
+            } else if let error = error {
+                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
+            } else {
+                fulfillCompletion(.failure(NetworkError.urlSessionError))
+            }
+        })
+        task.resume()
+        return task
+    }
+}
