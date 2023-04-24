@@ -9,15 +9,15 @@ import UIKit
 
 final class OAuth2TokenStorage {
     
-   private let tokenKey = "OAuth2TokenStorage.token"
     private let userDefaults = UserDefaults.standard
     
-    var token: String? {
+    var token: String?
+    {
         get {
-            return userDefaults.string(forKey: tokenKey)
+            return userDefaults.string(forKey: "token")
         }
         set {
-            return userDefaults.set(newValue, forKey: tokenKey)
+            return userDefaults.set(newValue, forKey: "token")
         }
     }
 }

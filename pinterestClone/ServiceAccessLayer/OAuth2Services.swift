@@ -14,17 +14,18 @@ final class OAuth2Services {
     
     private let urlSession = URLSession.shared //Создание экземпляра класса URLSession для выполнения HTTP-запросов. Этот экземпляр создается один раз при создании объекта OAuth2Services.
     
+    private let tokenStorage = OAuth2TokenStorage()
     private (set)  var authToken: String? {//свойство authToken для хранения токена аутентификации
         get {
-            return OAuth2TokenStorage().token
+            return tokenStorage.token
         }
         set {
-            OAuth2TokenStorage().token = newValue
+            tokenStorage.token = newValue
         }
     }
     
     ///Объявление метода fetchAuthToken для выполнения запроса на получение токена аутентификации.
-    func fetchAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
+    func fetchOAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
         let request = authTokenRequest(code: code)
         let task = object(for: request) { [weak self] result in
             guard let self = self else {return}

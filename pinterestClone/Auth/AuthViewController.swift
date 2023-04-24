@@ -7,22 +7,29 @@
 
 import UIKit
 
-class AuthViewController: UIViewController, WebViewViewControllerDelegate {
-    
+protocol AuthViewControllerDelegate: AnyObject {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
+}
+
+final class AuthViewController: UIViewController {
+    //MARK: -Properties
     let segueIdentifier = "ShowWebView"
     let oAuth2Services = OAuth2Services.shared
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-    }
+    weak var delegate: AuthViewControllerDelegate?
     
-    // MARK: - Navigation
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        // Do any additional setup after loading the view.
+//    }
+    
+    // MARK: -Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == segueIdentifier {
             ///Через авторское guard-решение
-            guard let webViewVC = segue.destination as? WebViewViewController  else {
+            guard
+                let webViewVC = segue.destination as? WebViewViewController
+            else {
                 fatalError("Failed to prepare for \(segueIdentifier)")
             }
             webViewVC.delegate = self
@@ -30,22 +37,14 @@ class AuthViewController: UIViewController, WebViewViewControllerDelegate {
             super.prepare(for: segue, sender: sender)
         }
     }
-    
-    // METHODS:
+}
+
+extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        oAuth2Services.fetchAuthToken(code) { result in
-            switch result {
-            case .success(let authToken):
-                OAuth2TokenStorage().token = authToken
-            case .failure(let error):
-                print("Failed to fetch auth token: \(error)")
-                
-            }
-        }
-        
+        delegate?.authViewController(self, didAuthenticateWithCode: code)
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		927CB17029F350C1009765F3 /* OAuth2Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927CB16F29F350C0009765F3 /* OAuth2Services.swift */; };
 		927CB17329F436CB009765F3 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927CB17229F436CB009765F3 /* OAuth2TokenStorage.swift */; };
+		927CB17529F49049009765F3 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927CB17429F49049009765F3 /* SplashViewController.swift */; };
 		928E65BA29EB40E4000DA229 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65B929EB40E4000DA229 /* Constants.swift */; };
 		928E65BD29EF2BAB000DA229 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65BC29EF2BAB000DA229 /* AuthViewController.swift */; };
 		928E65BF29EF5922000DA229 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65BE29EF5922000DA229 /* WebViewViewController.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		927CB16F29F350C0009765F3 /* OAuth2Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Services.swift; sourceTree = "<group>"; };
 		927CB17229F436CB009765F3 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
+		927CB17429F49049009765F3 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		928E65B929EB40E4000DA229 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		928E65BC29EF2BAB000DA229 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		928E65BE29EF5922000DA229 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		927CB17629F5AD20009765F3 /* ServiceAccessLayer */ = {
+			isa = PBXGroup;
+			children = (
+				927CB16F29F350C0009765F3 /* OAuth2Services.swift */,
+				927CB17229F436CB009765F3 /* OAuth2TokenStorage.swift */,
+			);
+			path = ServiceAccessLayer;
+			sourceTree = "<group>";
+		};
 		928E65B829EB40CF000DA229 /* UnsplashFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,8 +79,6 @@
 			children = (
 				928E65BC29EF2BAB000DA229 /* AuthViewController.swift */,
 				928E65BE29EF5922000DA229 /* WebViewViewController.swift */,
-				927CB16F29F350C0009765F3 /* OAuth2Services.swift */,
-				927CB17229F436CB009765F3 /* OAuth2TokenStorage.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -109,6 +118,7 @@
 		92D5A7D929C360D9000F7A1C /* pinterestClone */ = {
 			isa = PBXGroup;
 			children = (
+				927CB17629F5AD20009765F3 /* ServiceAccessLayer */,
 				928E65BB29EF2B82000DA229 /* Auth */,
 				928E65B829EB40CF000DA229 /* UnsplashFiles */,
 				9290C93B29D7296D00ADF3C3 /* SingleImage */,
@@ -116,6 +126,7 @@
 				92D5A81129C620F0000F7A1C /* ImageList */,
 				92D5A80E29C5C38F000F7A1C /* Helpers */,
 				92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */,
+				927CB17429F49049009765F3 /* SplashViewController.swift */,
 				92D5A7DC29C360D9000F7A1C /* SceneDelegate.swift */,
 				9290C93229D7270D00ADF3C3 /* Main.storyboard */,
 				92D5A7E329C360DA000F7A1C /* Assets.xcassets */,
@@ -219,6 +230,7 @@
 				92D5A81329C62112000F7A1C /* ImagesListCell.swift in Sources */,
 				9290C93A29D7296200ADF3C3 /* SingleImageViewController.swift in Sources */,
 				92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */,
+				927CB17529F49049009765F3 /* SplashViewController.swift in Sources */,
 				92D5A7DD29C360D9000F7A1C /* SceneDelegate.swift in Sources */,
 				92D5A81029C5C3B4000F7A1C /* UIColor+Extension.swift in Sources */,
 				928E65BD29EF2BAB000DA229 /* AuthViewController.swift in Sources */,

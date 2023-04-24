@@ -9,10 +9,8 @@ import UIKit
 import WebKit
 
 protocol WebViewViewControllerDelegate: AnyObject {
-    
     ///WebViewViewController получил код
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
-    
     ///Пользователь нажал кнопку назад и отменил авторизацию
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
@@ -21,16 +19,15 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     //MARK: Properties
-    
     weak var delegate: WebViewViewControllerDelegate?
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
     
     //MARK: viewDidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
+        
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize")!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: AccessKey),
@@ -42,11 +39,11 @@ final class WebViewViewController: UIViewController {
         
         let request = URLRequest(url: url)
         webView.load(request)
-
-
+        
+        updateProgress()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ///Задание Наблюдателя
         webView.addObserver(self,
@@ -55,7 +52,7 @@ final class WebViewViewController: UIViewController {
                             context: nil)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         webView.removeObserver(self,
                                forKeyPath: #keyPath(WKWebView.estimatedProgress),
@@ -63,8 +60,7 @@ final class WebViewViewController: UIViewController {
         updateProgress()
     }
     
-    //MARK: Methods
-    
+    //MARK: -Methods
     ///оверрайдим Обработчик обновлений
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
@@ -80,10 +76,8 @@ final class WebViewViewController: UIViewController {
     }
     
     @IBAction func didTapBackButton(_ sender: Any?) {
-        dismiss(animated: true, completion: nil)
+        delegate?.webViewViewControllerDidCancel(self)
     }
-
-    
 }
 
 extension WebViewViewController: WKNavigationDelegate {
@@ -108,7 +102,8 @@ extension WebViewViewController: WKNavigationDelegate {
             urlComponents.path == "/oauth/authorize/native",
             let items = urlComponents.queryItems,
             let codeItem = items.first(where: {$0.name == "code"})
-        { return codeItem.value
+        {
+            return codeItem.value
         } else {
             return nil
         }
