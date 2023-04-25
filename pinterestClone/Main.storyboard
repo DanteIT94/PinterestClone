@@ -265,7 +265,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hgh-2v-GNG">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="87" width="414" height="733"/>
                                 <color key="backgroundColor" name="YP White (iOS)"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -294,9 +294,9 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Oe4-7a-HsQ" secondAttribute="trailing" id="15z-Oq-ruv"/>
                             <constraint firstItem="Oe4-7a-HsQ" firstAttribute="leading" secondItem="JHW-Nl-rrv" secondAttribute="leading" id="28Q-iB-W1r"/>
-                            <constraint firstItem="Hgh-2v-GNG" firstAttribute="bottom" secondItem="JHW-Nl-rrv" secondAttribute="bottom" id="3TZ-X7-E4D"/>
+                            <constraint firstItem="Hgh-2v-GNG" firstAttribute="bottom" secondItem="JHW-Nl-rrv" secondAttribute="bottom" constant="-76" id="3TZ-X7-E4D"/>
                             <constraint firstItem="Hgh-2v-GNG" firstAttribute="trailing" secondItem="JHW-Nl-rrv" secondAttribute="trailing" id="52j-gP-h4W"/>
-                            <constraint firstItem="Hgh-2v-GNG" firstAttribute="top" secondItem="JHW-Nl-rrv" secondAttribute="top" id="CqH-yn-mSW"/>
+                            <constraint firstItem="Hgh-2v-GNG" firstAttribute="top" secondItem="JHW-Nl-rrv" secondAttribute="top" constant="87" id="CqH-yn-mSW"/>
                             <constraint firstItem="vyC-BA-l89" firstAttribute="top" secondItem="77J-su-54f" secondAttribute="top" constant="9" id="QuE-jI-30q"/>
                             <constraint firstItem="Oe4-7a-HsQ" firstAttribute="top" secondItem="vyC-BA-l89" secondAttribute="bottom" id="Rzc-HW-V4w"/>
                             <constraint firstItem="vyC-BA-l89" firstAttribute="leading" secondItem="77J-su-54f" secondAttribute="leading" constant="9" id="rY7-50-rvs"/>
@@ -320,7 +320,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="CrR-xl-1Sc"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="YP Background (iOS)"/>
                     </view>
                     <connections>
                         <segue destination="ftq-YU-gmR" kind="presentation" identifier="ShowAuth" modalPresentationStyle="fullScreen" id="G3H-Kh-cTg"/>

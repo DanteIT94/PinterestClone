@@ -18,10 +18,10 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Do any additional setup after loading the view.
-//    }
+    override func viewDidLoad() {
+            super.viewDidLoad()
+            print("Auth Screen Controller loaded")
+        }
     
     // MARK: -Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -29,6 +29,15 @@ class SplashViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
 
+    override func viewDidLoad() {
+            super.viewDidLoad()
+            if let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first {
+            let preferencesPath = libraryPath + "/Preferences"
+            print(preferencesPath)
+        }
+            print("Splash Screen Controller loaded")
+        }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }

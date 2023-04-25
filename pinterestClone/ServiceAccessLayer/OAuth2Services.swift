@@ -48,7 +48,7 @@ extension OAuth2Services {
     private func object( for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
             let decoder = JSONDecoder()
             return urlSession.data(for: request) { (result: Result<Data, Error>) in
-                let response = result.flatMap {data -> Result<OAuthTokenResponseBody, Error> in //Мы определяем константу response, используя flatMap для извлечения данных из результата выполнения запроса. Мы затем используем декодер JSON для декодирования ответа сервера в экземпляр структуры OAuthTokenResponseBody. Мы завершаем задачу, вызывая обработчик завершения completion, передавая результат выполнения запроса в виде объекта Result.
+                let response = result.flatMap {data -> Result<OAuthTokenResponseBody, Error> in //Определяем константу response, используя flatMap для извлечения данных из результата выполнения запроса. Мы затем используем декодер JSON для декодирования ответа сервера в экземпляр структуры OAuthTokenResponseBody. Мы завершаем задачу, вызывая обработчик завершения completion, передавая результат выполнения запроса в виде объекта Result.
                     Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
                 }
                 completion(response)
@@ -64,7 +64,9 @@ extension OAuth2Services {
         + "&&redirect_uri=\(RedirectURI)"
         + "&&code=\(code)"
         + "&&grant_type=authorization_code",
-        httpMethod: "POST")
+        httpMethod: "POST"
+//        baseURL: URL(string: "https://unsplash.com")!
+        )
     }
     
     ///Определяем структуру OAuthTokenResponseBody, которая будет использоваться для декодирования ответа сервера.
@@ -89,7 +91,7 @@ extension OAuth2Services {
 extension URLRequest {
     static func makeHTTPRequest( path: String,
                                  httpMethod: String,
-                                 baseURL: URL = DefaultBaseURL) -> URLRequest {
+                                 baseURL: URL = URL(string: "https://unsplash.com")!) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod
         return request

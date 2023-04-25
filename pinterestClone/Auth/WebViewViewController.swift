@@ -25,7 +25,9 @@ final class WebViewViewController: UIViewController {
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()     
+//        print("WebView Screen Controller loaded")
+        
         webView.navigationDelegate = self
         
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize")!
