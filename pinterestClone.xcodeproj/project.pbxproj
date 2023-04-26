@@ -66,6 +66,14 @@
 			path = ServiceAccessLayer;
 			sourceTree = "<group>";
 		};
+		927CB17729F7F38A009765F3 /* SplashView */ = {
+			isa = PBXGroup;
+			children = (
+				927CB17429F49049009765F3 /* SplashViewController.swift */,
+			);
+			path = SplashView;
+			sourceTree = "<group>";
+		};
 		928E65B829EB40CF000DA229 /* UnsplashFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,15 +126,15 @@
 		92D5A7D929C360D9000F7A1C /* pinterestClone */ = {
 			isa = PBXGroup;
 			children = (
-				927CB17629F5AD20009765F3 /* ServiceAccessLayer */,
-				928E65BB29EF2B82000DA229 /* Auth */,
 				928E65B829EB40CF000DA229 /* UnsplashFiles */,
+				927CB17629F5AD20009765F3 /* ServiceAccessLayer */,
+				927CB17729F7F38A009765F3 /* SplashView */,
+				928E65BB29EF2B82000DA229 /* Auth */,
+				92D5A81129C620F0000F7A1C /* ImageList */,
 				9290C93B29D7296D00ADF3C3 /* SingleImage */,
 				9290C93829D7294300ADF3C3 /* Profile */,
-				92D5A81129C620F0000F7A1C /* ImageList */,
 				92D5A80E29C5C38F000F7A1C /* Helpers */,
 				92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */,
-				927CB17429F49049009765F3 /* SplashViewController.swift */,
 				92D5A7DC29C360D9000F7A1C /* SceneDelegate.swift */,
 				9290C93229D7270D00ADF3C3 /* Main.storyboard */,
 				92D5A7E329C360DA000F7A1C /* Assets.xcassets */,

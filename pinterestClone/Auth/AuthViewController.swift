@@ -19,9 +19,9 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
-            super.viewDidLoad()
-            print("Auth Screen Controller loaded")
-        }
+        super.viewDidLoad()
+        //            print("Auth Screen Controller loaded")
+    }
     
     // MARK: -Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -26,7 +26,7 @@ final class WebViewViewController: UIViewController {
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()     
-//        print("WebView Screen Controller loaded")
+        //        print("WebView Screen Controller loaded")
         
         webView.navigationDelegate = self
         
@@ -36,7 +36,7 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "redirect_uri", value: RedirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: AccessScope)]
-        // Do any additional setup after loading the view.
+        
         let url  = urlComponents.url!
         
         let request = URLRequest(url: url)
@@ -47,7 +47,7 @@ final class WebViewViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        ///Задание Наблюдателя
+        ///установка Наблюдателя
         webView.addObserver(self,
                             forKeyPath: #keyPath(WKWebView.estimatedProgress),
                             options: .new,
@@ -56,6 +56,7 @@ final class WebViewViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        ///удаление Наблюдателя
         webView.removeObserver(self,
                                forKeyPath: #keyPath(WKWebView.estimatedProgress),
                                context: nil)
@@ -63,7 +64,7 @@ final class WebViewViewController: UIViewController {
     }
     
     //MARK: -Methods
-    ///оверрайдим Обработчик обновлений
+    /// Обработчик обновлений
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
             updateProgress()
@@ -84,11 +85,11 @@ final class WebViewViewController: UIViewController {
 
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
-                         decidePolicyFor navigationAction: WKNavigationAction,
-                         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-           //TODO: process code
+            //TODO: process code
             decisionHandler(.cancel)
         } else {
             //TODO: process code

@@ -8,7 +8,6 @@
 import UIKit
 
 class SplashViewController: UIViewController {
-    private let oauth2Service = OAuth2Services()
     private let tokenStorage = OAuth2TokenStorage()
     private let ShowAuthSegueIdentifier = "ShowAuth"
     
@@ -16,10 +15,10 @@ class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let _ = tokenStorage.token {
-            // Если токен сохранен, значит пользователь уже авторизован. Можно перенаправить на экран галереи-таблицы
+            /// Если токен сохранен, значит пользователь уже авторизован. Можно перенаправить на экран галереи-таблицы
             switchToTabBarController()
         } else {
-            // Если токен не сохранен, значит пользователь не был ранее авторизован. Можно перенаправить на экран авторизации
+            /// Если токен не сохранен, значит пользователь не был ранее авторизован. Можно перенаправить на экран авторизации
             performSegue(withIdentifier: ShowAuthSegueIdentifier, sender: nil)
         }
     }
@@ -28,15 +27,15 @@ class SplashViewController: UIViewController {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
     }
-
+    
     override func viewDidLoad() {
-            super.viewDidLoad()
-            if let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first {
-            let preferencesPath = libraryPath + "/Preferences"
-            print(preferencesPath)
-        }
-            print("Splash Screen Controller loaded")
-        }
+        super.viewDidLoad()
+        //            if let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first {
+        //            let preferencesPath = libraryPath + "/Preferences"
+        //            print(preferencesPath)
+        //        }
+        //            print("Splash Screen Controller loaded")
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
@@ -52,15 +51,15 @@ class SplashViewController: UIViewController {
 
 extension SplashViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //Проверяем переход на авторизацию
+        ///Проверяем переход на авторизацию
         if segue.identifier == ShowAuthSegueIdentifier {
-            //Идем к первому контролеру навигации
+            ///Идем к первому контролеру навигации
             guard
                 let navigationController = segue.destination as? UINavigationController,
                 let viewController = navigationController.viewControllers[0] as? AuthViewController
             else {fatalError("Failed to prepare for \(ShowAuthSegueIdentifier)")}
             
-            //Делегатом контроллера устанавливаем SplashVC
+            ///Делегатом контроллера устанавливаем SplashVC
             viewController.delegate = self
         } else {
             super.prepare(for: segue, sender: sender)
@@ -75,9 +74,9 @@ extension SplashViewController: AuthViewControllerDelegate {
             self.fetchOAuthToken(code)
         }
     }
-
+    
     private func fetchOAuthToken(_ code: String) {
-        oauth2Service.fetchOAuthToken(code) { [weak self] result in
+        OAuth2Services.shared.fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
