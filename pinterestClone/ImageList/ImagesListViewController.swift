@@ -64,7 +64,7 @@ final class ImagesListViewController: UIViewController {
 //MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качетсве аргумента)
+        ///Этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качетсве аргумента)
         if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
             cell.isSelected = false
         }
@@ -92,9 +92,8 @@ extension ImagesListViewController: UITableViewDataSource {
         //Так как секция у нас одна - проигнорируем значение параметра section
         return 20
     }
-    
+    ///Метод возвращает ячейку (у Класса UITableView есть дефолтный конструктор без аргументов)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //Метод возвращает ячейку (у Класса UITableView есть дефолтный конструктор без аргументов)
         ///1) Добавляем метод, который из всех ячеек, зарегистрированных ранее, возвращает ячейку по идентификатору, добавленому ранее.
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for:  indexPath)
         ///2) Для работы с ячейкой как с экземпляром класса ImagesListCell - нужно сделать приведение типов
