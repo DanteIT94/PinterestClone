@@ -18,6 +18,7 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
+    //MARK: -viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         //            print("Auth Screen Controller loaded")
@@ -39,6 +40,7 @@ final class AuthViewController: UIViewController {
     }
 }
 
+// MARK: -WebViewViewControllerDelegate через расширение
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)

@@ -9,6 +9,7 @@ import UIKit
 
 //MARK: - Класс-Сервис -> Слой Доступа к сервису (Service Access Layer)
 final class OAuth2Services {
+    //MARK: - Properties
     ///Создание экземпляра класса OAuth2Services в виде синглтона (Singleton), что означает, что всегда будет существовать только один экземпляр этого класса в приложении.
     static let shared = OAuth2Services()
     
@@ -16,6 +17,11 @@ final class OAuth2Services {
     
     ///Создание экземпляра класса URLSession для выполнения HTTP-запросов. Этот экземпляр создается один раз при создании объекта OAuth2Services.
     private let urlSession = URLSession.shared
+    
+    ///Переменная для хранения указателя на последнюю созданную задачу
+    private var task: URLSessionTask?
+    ///Переменная для хранения значения "code", которое было передано в последнем созданном запросе
+    private var lastCode: String?
     
     private let tokenStorage = OAuth2TokenStorage()
     ///свойство authToken для сохранения токена аутентификации
@@ -28,21 +34,56 @@ final class OAuth2Services {
         }
     }
     
+    
+    
+    //MARK: - Methods
+    
     ///Объявление метода fetchAuthToken для выполнения запроса на получение токена аутентификации.
     func fetchOAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
+        ///проверка что метод вызывается из главного потока
+        assert(Thread.isMainThread)
+//        ///проверяем, Выполняется ли Post-запрос в данный момент (УЖЕ НЕАКТУЛЬНО!!)
+//       if task != nil {
+//            ///Проверяем, что в последнем (сейчас выполняющемся) запросе значение code такое же как в переданном аргументе.
+//            ///Если значение не совпадает, нужно отменить предыдущий запрос и выполнить новый
+//            if lastCode != code {
+//                task?.cancel()
+//            } else {
+//                ///Если сейчас выполняется запрос и значение code совпало - делать нам больше нечего
+//                return
+//            }
+//        } else {
+//            ///если же сейчас нет никаких запросов, но мы уже получили AuthToken для данного code - ничего не делаем и возвращаемся
+//            if lastCode == code {
+//                return
+//            }
+//        }
+        ///Проверка на Post-запрос № 2 (Укороченная)
+        //Если lastCode != code -> мы должны сделать запрос
+        if lastCode == code {return}
+        //Старый запрос отменяем, но если task==nil -> ничего не выполняем
+        task?.cancel()
+
+        lastCode = code
+        
         let request = authTokenRequest(code: code)
         let task = object(for: request) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let body):
-                let authToken = body.accessToken
-                self.authToken = authToken
-                completion(.success(authToken))//в случае успеха, токен аутентификации извлекается из ответа на запрос и сохраняется в OAuth2TokenStorage и в свойстве authToken
-            case .failure(let error):
-                completion(.failure(error))
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                switch result {
+                case .success(let body):
+                    let authToken = body.accessToken
+                    self.authToken = authToken
+                    completion(.success(authToken))//в случае успеха, токен аутентификации извлекается из ответа на запрос и сохраняется в OAuth2TokenStorage и в свойстве authToken
+                    self.task = nil
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastCode = nil
+                }
             }
         }
-        task.resume()
+            self.task = task
+            task.resume()
     }
 }
 
@@ -53,7 +94,7 @@ extension OAuth2Services {
     ///Функция использует переданный URLRequest и обработчик завершения для создания URLSessionDataTask, который выполняет запрос и возвращает ответ.
     ///
     ///Если запрос был выполнен успешно, данные из ответа декодируются в экземпляр структуры OAuthTokenResponseBody, и успешный результат передается в обработчик завершения. Если произошла ошибка, она передается в обработчик завершения.
-    private func object( for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
+    private func object(for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
         let decoder = JSONDecoder()
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             ///Определяем константу response, используя flatMap для извлечения данных из результата выполнения запроса.

@@ -9,6 +9,9 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel!
     private var logoutButton: UIButton!
     
+    let profileService = ProfileService()
+    let tokenStorage = OAuth2TokenStorage()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .YPBlack
@@ -18,6 +21,23 @@ final class ProfileViewController: UIViewController {
         createLoginLabel(safeArea: view.safeAreaLayoutGuide)
         createDescriptionLabel(safeArea: view.safeAreaLayoutGuide)
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
+        
+        ///Вызываем метод fetchProfile и обновляем лейблы
+        let token = tokenStorage.token
+        profileService.fetchProfile(token!) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let profile):
+                DispatchQueue.main.async {
+                    self.nameLabel.text = profile.name
+                    self.loginLabel.text = profile.loginName
+                    self.descriptionLabel.text = profile.bio
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+        
     }
     
     
