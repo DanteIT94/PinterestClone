@@ -10,28 +10,9 @@ import Foundation
 
 final class ProfileService {
     
-    ///Определяем структуру ProfileResult, которая будет использоваться для декодирования ответа сервера.
-    struct ProfileResult: Codable {
-        let username: String
-        let firstName: String
-        let lastName: String
-        let bio: String?
-        
-        enum CodingKeys: String, CodingKey {
-            case username = "username"
-            case firstName = "first_name"
-            case lastName = "last_name"
-            case bio = "bio"
-        }
-    }
+    static let shared = ProfileService()
     
-    ///Определяем свойства структуры, которые соответствуют полям ответа сервера.
-    struct Profile {
-        var  username: String
-        var name: String
-        var loginName: String
-        var bio: String?
-    }
+    private(set) var profile: Profile?
     
     enum ProfileError: Error {
         case unauthorized
@@ -69,15 +50,38 @@ final class ProfileService {
             
             do {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-                let profile = Profile(username: profileResult.username,
+                self.profile = Profile(username: profileResult.username,
                                       name: "\(profileResult.firstName) \(profileResult.lastName)",
                                       loginName: "@\(profileResult.username)",
                                       bio: profileResult.bio)
-                completion(.success(profile))
+                completion(.success(self.profile!))
             } catch {
                 completion(.failure(ProfileError.decodingFailed))
             }
         }
         fetchProfileTask?.resume()
     }
+}
+
+///Определяем структуру ProfileResult, которая будет использоваться для декодирования ответа сервера.
+struct ProfileResult: Codable {
+    let username: String
+    let firstName: String
+    let lastName: String
+    let bio: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case username = "username"
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case bio = "bio"
+    }
+}
+
+///Определяем свойства структуры, которые соответствуют полям ответа сервера.
+struct Profile {
+    var  username: String
+    var name: String
+    var loginName: String
+    var bio: String?
 }

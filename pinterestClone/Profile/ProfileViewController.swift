@@ -9,7 +9,7 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel!
     private var logoutButton: UIButton!
     
-    let profileService = ProfileService()
+    private let profileService = ProfileService.shared
     let tokenStorage = OAuth2TokenStorage()
     
     override func viewDidLoad() {
@@ -22,22 +22,33 @@ final class ProfileViewController: UIViewController {
         createDescriptionLabel(safeArea: view.safeAreaLayoutGuide)
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
         
+        updateProfileDetails(profile: profileService.profile)
         ///Вызываем метод fetchProfile и обновляем лейблы
-        let token = tokenStorage.token
-        profileService.fetchProfile(token!) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self.nameLabel.text = profile.name
-                    self.loginLabel.text = profile.loginName
-                    self.descriptionLabel.text = profile.bio
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        let token = tokenStorage.token
+//        profileService.fetchProfile(token!) { [weak self] result in
+//            guard let self = self else {return}
+//            switch result {
+//            case .success(let profile):
+//                DispatchQueue.main.async {
+//                    self.nameLabel.text = profile.name
+//                    self.loginLabel.text = profile.loginName
+//                    self.descriptionLabel.text = profile.bio
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//
+//        self.nameLabel.text = profileService.profile?.name
+//        self.loginLabel.text = profileService.profile?.loginName
+//        self.descriptionLabel.text = profileService.profile?.bio
         
+//        downloadProfileImage(from: "https://static.wikia.nocookie.net/houkai-star-rail/images/9/9a/Character_Seele_Icon.png/revision/latest/scale-to-width-down/74?cb=20220608120653") { image in
+//            guard let image = image else {return}
+//            DispatchQueue.main.async {
+//                self.avatarImage.image = image
+//            }
+//        }
     }
     
     
@@ -107,5 +118,35 @@ final class ProfileViewController: UIViewController {
         logoutButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -26).isActive = true
     }
     
+    private func updateProfileDetails(profile: Profile?) {
+        if let profile = profile {
+            nameLabel.text = profile.name
+            loginLabel.text = profile.loginName
+            descriptionLabel.text = profile.bio
+        } else {
+            nameLabel.text = "Error"
+            loginLabel.text = "Error"
+            descriptionLabel.text = "Error"
+        }
+    }
+    
+//    func downloadProfileImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+//        guard let url = URL(string: urlString) else {
+//            completion(nil)
+//            return
+//        }
+//
+//        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+//            guard let data = data, error == nil else {
+//                completion(nil)
+//                return
+//            }
+//
+//            let image = UIImage(data: data)
+//            completion(image)
+//        }
+//
+//        task.resume()
+//    }
 
 }

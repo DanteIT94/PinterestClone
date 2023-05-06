@@ -8,12 +8,10 @@
 import UIKit
 
 //MARK: - Класс-Сервис -> Слой Доступа к сервису (Service Access Layer)
-final class OAuth2Services {
+final class OAuth2Service {
     //MARK: - Properties
-    ///Создание экземпляра класса OAuth2Services в виде синглтона (Singleton), что означает, что всегда будет существовать только один экземпляр этого класса в приложении.
-    static let shared = OAuth2Services()
-    
-    private init() {}
+    ///Создание экземпляра класса OAuth2Services в виде синглтона (Singleton), что означает, что всегда будет существовать только один экземпляр этого класса в приложении. (Пока удилил Сиглтон)
+    static let shared = OAuth2Service()
     
     ///Создание экземпляра класса URLSession для выполнения HTTP-запросов. Этот экземпляр создается один раз при создании объекта OAuth2Services.
     private let urlSession = URLSession.shared
@@ -88,7 +86,7 @@ final class OAuth2Services {
 }
 
 //MARK: - Расширение для класса OAuth2Services
-extension OAuth2Services {
+extension OAuth2Service {
     ///Функция, которая создает задачу URLSessionTask для выполнения запроса и получения данных.
     ///
     ///Функция использует переданный URLRequest и обработчик завершения для создания URLSessionDataTask, который выполняет запрос и возвращает ответ.

@@ -9,15 +9,19 @@ import UIKit
 import ProgressHUD
 
 class SplashViewController: UIViewController {
+    private let oauth2Service = OAuth2Service()
     private let tokenStorage = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
     private let ShowAuthSegueIdentifier = "ShowAuth"
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let _ = tokenStorage.token {
+        if let token = tokenStorage.token {
             /// Если токен сохранен, значит пользователь уже авторизован. Можно перенаправить на экран галереи-таблицы
-            switchToTabBarController()
+            fetchProfile(token: token)
+//            switchToTabBarController()
         } else {
             /// Если токен не сохранен, значит пользователь не был ранее авторизован. Можно перенаправить на экран авторизации
             performSegue(withIdentifier: ShowAuthSegueIdentifier, sender: nil)
@@ -36,6 +40,7 @@ class SplashViewController: UIViewController {
         //            print(preferencesPath)
         //        }
         //            print("Splash Screen Controller loaded")
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,9 +49,9 @@ class SplashViewController: UIViewController {
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
-        window.rootViewController = tabBarController
+            let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "TabBarViewController")
+            window.rootViewController = tabBarController
     }
 }
 
@@ -78,15 +83,31 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchOAuthToken(_ code: String) {
-        OAuth2Services.shared.fetchOAuthToken(code) { [weak self] result in
+        oauth2Service.fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
-                UIBlockingProgressHUD.dismiss()
-                self.switchToTabBarController()
+            case .success (let token):
+                self.fetchProfile(token: token)
             case .failure:
-                print("Error")
+                UIBlockingProgressHUD.dismiss()
+                print("Error") //TODO: Показать ошибку - будет дальше
                 break
+            }
+        }
+    }
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) {[weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                switch result {
+                case .success:
+                    UIBlockingProgressHUD.dismiss()
+                    self.switchToTabBarController()
+                case .failure:
+                    print("Error")  //TODO: Показать ошибку - будет дальше
+                    break
+                }
             }
         }
     }
