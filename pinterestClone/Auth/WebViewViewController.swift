@@ -19,9 +19,11 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     //MARK: Properties
+    private var estimatedProgressObservation: NSKeyValueObservation?
     weak var delegate: WebViewViewControllerDelegate?
     @IBOutlet private var webView: WKWebView!
     @IBOutlet private var progressView: UIProgressView!
+    
     
     //MARK: viewDidLoad
     override func viewDidLoad() {
@@ -42,36 +44,43 @@ final class WebViewViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
         
-        updateProgress()
+        estimatedProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: {[weak self] _, _ in
+                 guard let self = self else {return}
+                 self.updateProgress()
+             })
+//        updateProgress()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ///установка Наблюдателя
-        webView.addObserver(self,
-                            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-                            options: .new,
-                            context: nil)
+//        webView.addObserver(self,
+//                            forKeyPath: #keyPath(WKWebView.estimatedProgress),
+//                            options: .new,
+//                            context: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ///удаление Наблюдателя
-        webView.removeObserver(self,
-                               forKeyPath: #keyPath(WKWebView.estimatedProgress),
-                               context: nil)
-        updateProgress()
+//        webView.removeObserver(self,
+//                               forKeyPath: #keyPath(WKWebView.estimatedProgress),
+//                               context: nil)
+//        updateProgress()
     }
     
     //MARK: -Methods
-    /// Обработчик обновлений
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
+    /// Обработчик обновлений ("Старый" API)
+//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+//        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+//            updateProgress()
+//        } else {
+//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+//        }
+//    }
     ///Подсчет шкалы подгрузки  Веба
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)

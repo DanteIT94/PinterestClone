@@ -12,6 +12,8 @@ class SplashViewController: UIViewController {
     private let oauth2Service = OAuth2Service()
     private let tokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+//    private let profileImageService = ProfileImageService.shared
     private let ShowAuthSegueIdentifier = "ShowAuth"
     
     
@@ -21,7 +23,6 @@ class SplashViewController: UIViewController {
         if let token = tokenStorage.token {
             /// Если токен сохранен, значит пользователь уже авторизован. Можно перенаправить на экран галереи-таблицы
             fetchProfile(token: token)
-//            switchToTabBarController()
         } else {
             /// Если токен не сохранен, значит пользователь не был ранее авторизован. Можно перенаправить на экран авторизации
             performSegue(withIdentifier: ShowAuthSegueIdentifier, sender: nil)
@@ -35,11 +36,6 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //            if let libraryPath = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first {
-        //            let preferencesPath = libraryPath + "/Preferences"
-        //            print(preferencesPath)
-        //        }
-        //            print("Splash Screen Controller loaded")
         
     }
     
@@ -101,11 +97,14 @@ extension SplashViewController: AuthViewControllerDelegate {
             DispatchQueue.main.async {
                 guard let self = self else {return}
                 switch result {
-                case .success:
+                case .success (let result):
+                    self.profileImageService.fetchProfileImageURL(username: result.username) { _ in }
                     UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
-                    print("Error")  //TODO: Показать ошибку - будет дальше
+                    let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                     break
                 }
             }

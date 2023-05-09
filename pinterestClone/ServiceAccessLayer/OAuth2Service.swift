@@ -40,22 +40,6 @@ final class OAuth2Service {
     func fetchOAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
         ///проверка что метод вызывается из главного потока
         assert(Thread.isMainThread)
-//        ///проверяем, Выполняется ли Post-запрос в данный момент (УЖЕ НЕАКТУЛЬНО!!)
-//       if task != nil {
-//            ///Проверяем, что в последнем (сейчас выполняющемся) запросе значение code такое же как в переданном аргументе.
-//            ///Если значение не совпадает, нужно отменить предыдущий запрос и выполнить новый
-//            if lastCode != code {
-//                task?.cancel()
-//            } else {
-//                ///Если сейчас выполняется запрос и значение code совпало - делать нам больше нечего
-//                return
-//            }
-//        } else {
-//            ///если же сейчас нет никаких запросов, но мы уже получили AuthToken для данного code - ничего не делаем и возвращаемся
-//            if lastCode == code {
-//                return
-//            }
-//        }
         ///Проверка на Post-запрос № 2 (Укороченная)
         //Если lastCode != code -> мы должны сделать запрос
         if lastCode == code {return}
@@ -93,6 +77,7 @@ extension OAuth2Service {
     ///
     ///Если запрос был выполнен успешно, данные из ответа декодируются в экземпляр структуры OAuthTokenResponseBody, и успешный результат передается в обработчик завершения. Если произошла ошибка, она передается в обработчик завершения.
     private func object(for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
+        
         let decoder = JSONDecoder()
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             ///Определяем константу response, используя flatMap для извлечения данных из результата выполнения запроса.

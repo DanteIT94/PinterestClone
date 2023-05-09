@@ -10,7 +10,11 @@ final class ProfileViewController: UIViewController {
     private var logoutButton: UIButton!
     
     private let profileService = ProfileService.shared
-    let tokenStorage = OAuth2TokenStorage()
+    private let tokenStorage = OAuth2TokenStorage()
+    ///Проперти для хранения обсервера
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,32 +27,19 @@ final class ProfileViewController: UIViewController {
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
         
         updateProfileDetails(profile: profileService.profile)
-        ///Вызываем метод fetchProfile и обновляем лейблы
-//        let token = tokenStorage.token
-//        profileService.fetchProfile(token!) { [weak self] result in
-//            guard let self = self else {return}
-//            switch result {
-//            case .success(let profile):
-//                DispatchQueue.main.async {
-//                    self.nameLabel.text = profile.name
-//                    self.loginLabel.text = profile.loginName
-//                    self.descriptionLabel.text = profile.bio
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//
-//        self.nameLabel.text = profileService.profile?.name
-//        self.loginLabel.text = profileService.profile?.loginName
-//        self.descriptionLabel.text = profileService.profile?.bio
         
-//        downloadProfileImage(from: "https://static.wikia.nocookie.net/houkai-star-rail/images/9/9a/Character_Seele_Icon.png/revision/latest/scale-to-width-down/74?cb=20220608120653") { image in
-//            guard let image = image else {return}
-//            DispatchQueue.main.async {
-//                self.avatarImage.image = image
-//            }
-//        }
+        ///Присваиваевам обсервер, возвращаемый функцией addObserver
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(forName: ProfileImageService.DidChangeNotfication,
+                         ///nil - т к мы хотим получать уведомления из любых источников
+                         object: nil,
+                         ///очередь, на которой мы хотим получать уведомления
+                         queue: .main
+            ) { [weak self] _ in
+                guard let self = self else {return}
+                self.updateAvatar()
+            }
+        updateAvatar()
     }
     
     
@@ -130,6 +121,18 @@ final class ProfileViewController: UIViewController {
         }
     }
     
+    //MARK: - ObserverBlock
+    ///Метод для обновления аватарки
+    ///нет анотации @objc так как не нужен селектор и нет проверки на isViewLoaded -> есть гарантия вызова updateAvatar либо напрямую из ViewDidLoad либо после,
+    ///получив Нотификацию
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {return}
+        // TODO: KingFisher - обновляем аватарку
+        
+    }
 //    func downloadProfileImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
 //        guard let url = URL(string: urlString) else {
 //            completion(nil)
