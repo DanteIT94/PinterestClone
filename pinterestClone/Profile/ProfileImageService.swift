@@ -39,12 +39,12 @@ final class ProfileImageService {
         let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let userResult):
-                self?.avatarURL = userResult.profileImage.smallImage
+                self?.avatarURL = userResult.profileImage.small
                 if let avatarURL = self?.avatarURL {
-                    completion(.success(userResult.profileImage.smallImage))
+                    completion(.success(userResult.profileImage.small))
                     NotificationCenter.default.post(name: ProfileImageService.DidChangeNotfication,
                                                       object: self,
-                                                      userInfo:  ["URL": userResult.profileImage.smallImage])
+                                                      userInfo:  ["URL": userResult.profileImage.small])
                 } else {
                     completion(.failure(ProfileImageError.invalidData))
                 }
@@ -66,7 +66,7 @@ struct UserResult: Codable {
     }
     
     struct ProfileImage: Codable {
-        let smallImage: String
+        let small: String
     }
 }
 
