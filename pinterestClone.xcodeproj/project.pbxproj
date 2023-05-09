@@ -29,6 +29,7 @@
 		92D5A7E729C360DA000F7A1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92D5A7E529C360DA000F7A1C /* LaunchScreen.storyboard */; };
 		92D5A81029C5C3B4000F7A1C /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D5A80F29C5C3B4000F7A1C /* UIColor+Extension.swift */; };
 		92D5A81329C62112000F7A1C /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D5A81229C62112000F7A1C /* ImagesListCell.swift */; };
+		92F590442A0AB75E002727E3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 92F590432A0AB75E002727E3 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92F590442A0AB75E002727E3 /* Kingfisher in Frameworks */,
 				92C14DEF29FC05150035C527 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,6 +198,7 @@
 			name = pinterestClone;
 			packageProductDependencies = (
 				92C14DEE29FC05150035C527 /* ProgressHUD */,
+				92F590432A0AB75E002727E3 /* Kingfisher */,
 			);
 			productName = pinterestClone;
 			productReference = 92D5A7D729C360D9000F7A1C /* pinterestClone.app */;
@@ -227,6 +230,7 @@
 			mainGroup = 92D5A7CE29C360D9000F7A1C;
 			packageReferences = (
 				92C14DED29FC05150035C527 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				92F590422A0AB75E002727E3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 92D5A7D829C360D9000F7A1C /* Products */;
 			projectDirPath = "";
@@ -500,6 +504,14 @@
 				minimumVersion = 13.0.0;
 			};
 		};
+		92F590422A0AB75E002727E3 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -507,6 +519,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 92C14DED29FC05150035C527 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
+		};
+		92F590432A0AB75E002727E3 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92F590422A0AB75E002727E3 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -18,6 +18,8 @@ final class ProfileImageService {
     
     private (set) var avatarURL: String?
     
+    private init() {}
+    
     enum ProfileImageError: Error {
         case unauthorized
         case invalidData
@@ -31,24 +33,27 @@ final class ProfileImageService {
         guard let url = URL(string: urlString) else { return}
         
         var request = URLRequest(url: url)
+        request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        task?.cancel()
-        
-        task = urlSession.objectTask(for: request) {[weak self] (result: Result<UserResult, Error>) in
+        let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let userResult):
                 self?.avatarURL = userResult.profileImage.smallImage
-                completion(.success(userResult.profileImage.smallImage))
+                if let avatarURL = self?.avatarURL {
+                    completion(.success(userResult.profileImage.smallImage))
+                    NotificationCenter.default.post(name: ProfileImageService.DidChangeNotfication,
+                                                      object: self,
+                                                      userInfo:  ["URL": userResult.profileImage.smallImage])
+                } else {
+                    completion(.failure(ProfileImageError.invalidData))
+                }
+                self?.task = nil
             case .failure(_):
-                completion(.failure(ProfileImageError.decodingFailed))
-            }
+                completion(.failure(ProfileImageError.decodingFailed))            }
         }
+        task = dataTask
         task?.resume()
-//        NotificationCenter.default
-//            .post(name: ProfileImageService.DidChangeNotfication,
-//                  object: self,
-//                  userInfo:  ["URL": profileImageURL])
     }
 }
 

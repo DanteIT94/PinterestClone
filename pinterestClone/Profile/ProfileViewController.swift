@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -10,11 +11,12 @@ final class ProfileViewController: UIViewController {
     private var logoutButton: UIButton!
     
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
     private let tokenStorage = OAuth2TokenStorage()
     ///Проперти для хранения обсервера
     private var profileImageServiceObserver: NSObjectProtocol?
     
- 
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,18 +29,7 @@ final class ProfileViewController: UIViewController {
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
         
         updateProfileDetails(profile: profileService.profile)
-        
-        ///Присваиваевам обсервер, возвращаемый функцией addObserver
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(forName: ProfileImageService.DidChangeNotfication,
-                         ///nil - т к мы хотим получать уведомления из любых источников
-                         object: nil,
-                         ///очередь, на которой мы хотим получать уведомления
-                         queue: .main
-            ) { [weak self] _ in
-                guard let self = self else {return}
-                self.updateAvatar()
-            }
+        subscribeForAvatarUpdates()
         updateAvatar()
     }
     
@@ -49,11 +40,11 @@ final class ProfileViewController: UIViewController {
         avatarImage.image = UIImage(named: "my_avatar")
         avatarImage.contentMode = .scaleAspectFill
         avatarImage.clipsToBounds = true
-
+        
         avatarImage.layer.cornerRadius = 35
         avatarImage.layer.masksToBounds = true
-//        avatarImage.layer.borderWidth = 2
-//        avatarImage.layer.borderColor = UIColor.white.cgColor
+        //        avatarImage.layer.borderWidth = 2
+        //        avatarImage.layer.borderColor = UIColor.white.cgColor
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(avatarImage)
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -121,35 +112,27 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    //MARK: - ObserverBlock
-    ///Метод для обновления аватарки
-    ///нет анотации @objc так как не нужен селектор и нет проверки на isViewLoaded -> есть гарантия вызова updateAvatar либо напрямую из ViewDidLoad либо после,
-    ///получив Нотификацию
     private func updateAvatar() {
         guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let profileImageURL = profileImageService.avatarURL,
             let url = URL(string: profileImageURL)
         else {return}
-        // TODO: KingFisher - обновляем аватарку
-        
+        let placeholderImage = UIImage(systemName: "my_avatar")
+        avatarImage.kf.setImage(with: url, placeholder: placeholderImage)
     }
-//    func downloadProfileImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-//        guard let url = URL(string: urlString) else {
-//            completion(nil)
-//            return
-//        }
-//
-//        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-//            guard let data = data, error == nil else {
-//                completion(nil)
-//                return
-//            }
-//
-//            let image = UIImage(data: data)
-//            completion(image)
-//        }
-//
-//        task.resume()
-//    }
-
+    
+    private func subscribeForAvatarUpdates() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.DidChangeNotfication,
+            ///nil - т к мы хотим получать уведомления из любых источников
+            object: nil,
+            ///очередь, на которой мы хотим получать уведомления
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else {return}
+            self.updateAvatar()
+        }
+        updateAvatar()
+    }
+    
 }
