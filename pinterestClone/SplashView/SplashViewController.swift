@@ -55,17 +55,7 @@ class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-    
-    private func showAlertViewController() {
-        let alertVC = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default)
-        alertVC.addAction(action)
-        present(alertVC, animated: true)
-    }
-    
+    ///Переход на AuthViewController
     private func presentAuthViewController() {
 //        let authVC = AuthViewController()
         let authVC = UIStoryboard(
@@ -78,21 +68,7 @@ class SplashViewController: UIViewController {
 }
 
 extension SplashViewController {
-    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //        ///Проверяем переход на авторизацию
-    //        if segue.identifier == ShowAuthSegueIdentifier {
-    //            ///Идем к первому контролеру навигации
-    //            guard
-    //                let navigationController = segue.destination as? UINavigationController,
-    //                let viewController = navigationController.viewControllers[0] as? AuthViewController
-    //            else {fatalError("Failed to prepare for \(ShowAuthSegueIdentifier)")}
-    //
-    //            ///Делегатом контроллера устанавливаем SplashVC
-    //            viewController.delegate = self
-    //        } else {
-    //            super.prepare(for: segue, sender: sender)
-    //        }
-    //    }
+    ///Отрисовываем дубликат стартового Лого
     private func createSplashLogoImage(safeArea: UILayoutGuide) {
         view.backgroundColor = .YPBlack
         splashLogoImage = UIImageView()
@@ -149,5 +125,15 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
             }
         }
+    }
+
+    private func showAlertViewController() {
+        let alertVC = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default)
+        alertVC.addAction(action)
+        present(alertVC, animated: true)
     }
 }

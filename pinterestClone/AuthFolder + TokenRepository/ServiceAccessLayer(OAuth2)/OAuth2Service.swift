@@ -107,7 +107,7 @@ extension OAuth2Service {
     }
     
     ///Определяем структуру OAuthTokenResponseBody, которая будет использоваться для декодирования ответа сервера.
-    private struct OAuthTokenResponseBody: Decodable {
+    private struct OAuthTokenResponseBody: Codable {
         let accessToken: String
         let tokenType: String
         let scope: String

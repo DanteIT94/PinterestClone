@@ -75,13 +75,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		927CB17629F5AD20009765F3 /* ServiceAccessLayer */ = {
+		927CB17629F5AD20009765F3 /* ServiceAccessLayer(OAuth2) */ = {
 			isa = PBXGroup;
 			children = (
 				927CB16F29F350C0009765F3 /* OAuth2Service.swift */,
 				927CB17229F436CB009765F3 /* OAuth2TokenStorage.swift */,
 			);
-			path = ServiceAccessLayer;
+			path = "ServiceAccessLayer(OAuth2)";
 			sourceTree = "<group>";
 		};
 		927CB17729F7F38A009765F3 /* SplashView */ = {
@@ -93,24 +93,17 @@
 			path = SplashView;
 			sourceTree = "<group>";
 		};
-		928E65B829EB40CF000DA229 /* UnsplashFiles */ = {
+		928E65BB29EF2B82000DA229 /* AuthFolder + TokenRepository */ = {
 			isa = PBXGroup;
 			children = (
-				928E65B929EB40E4000DA229 /* Constants.swift */,
-			);
-			path = UnsplashFiles;
-			sourceTree = "<group>";
-		};
-		928E65BB29EF2B82000DA229 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
+				927CB17629F5AD20009765F3 /* ServiceAccessLayer(OAuth2) */,
 				928E65BC29EF2BAB000DA229 /* AuthViewController.swift */,
 				928E65BE29EF5922000DA229 /* WebViewViewController.swift */,
 			);
-			path = Auth;
+			path = "AuthFolder + TokenRepository";
 			sourceTree = "<group>";
 		};
-		9290C93829D7294300ADF3C3 /* Profile */ = {
+		9290C93829D7294300ADF3C3 /* UserProfileFolder */ = {
 			isa = PBXGroup;
 			children = (
 				9290C93629D7293D00ADF3C3 /* ProfileViewController.swift */,
@@ -118,7 +111,7 @@
 				92A3C1292A06E44F004598E0 /* ProfileImageService.swift */,
 				92A3C12B2A08D52D004598E0 /* OldAPINotification(Useless).swift */,
 			);
-			path = Profile;
+			path = UserProfileFolder;
 			sourceTree = "<group>";
 		};
 		9290C93B29D7296D00ADF3C3 /* SingleImage */ = {
@@ -148,14 +141,11 @@
 		92D5A7D929C360D9000F7A1C /* pinterestClone */ = {
 			isa = PBXGroup;
 			children = (
-				92F590482A0CD242002727E3 /* TabBar */,
-				928E65B829EB40CF000DA229 /* UnsplashFiles */,
-				927CB17629F5AD20009765F3 /* ServiceAccessLayer */,
 				927CB17729F7F38A009765F3 /* SplashView */,
-				928E65BB29EF2B82000DA229 /* Auth */,
-				92D5A81129C620F0000F7A1C /* ImagesList */,
-				9290C93B29D7296D00ADF3C3 /* SingleImage */,
-				9290C93829D7294300ADF3C3 /* Profile */,
+				928E65BB29EF2B82000DA229 /* AuthFolder + TokenRepository */,
+				92F590482A0CD242002727E3 /* TabBar */,
+				92D5A81129C620F0000F7A1C /* ImagesListFolder */,
+				9290C93829D7294300ADF3C3 /* UserProfileFolder */,
 				92D5A80E29C5C38F000F7A1C /* Helpers */,
 				92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */,
 				92D5A7DC29C360D9000F7A1C /* SceneDelegate.swift */,
@@ -170,19 +160,21 @@
 		92D5A80E29C5C38F000F7A1C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				928E65B929EB40E4000DA229 /* Constants.swift */,
 				92D5A80F29C5C3B4000F7A1C /* UIColor+Extension.swift */,
 				92A3C12D2A0944C4004598E0 /* URLSession - GenericFunc.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		92D5A81129C620F0000F7A1C /* ImagesList */ = {
+		92D5A81129C620F0000F7A1C /* ImagesListFolder */ = {
 			isa = PBXGroup;
 			children = (
 				92D5A7DE29C360D9000F7A1C /* ImagesListViewController.swift */,
 				92D5A81229C62112000F7A1C /* ImagesListCell.swift */,
+				9290C93B29D7296D00ADF3C3 /* SingleImage */,
 			);
-			path = ImagesList;
+			path = ImagesListFolder;
 			sourceTree = "<group>";
 		};
 		92F590482A0CD242002727E3 /* TabBar */ = {
