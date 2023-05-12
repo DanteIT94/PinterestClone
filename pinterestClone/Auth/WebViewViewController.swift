@@ -17,7 +17,6 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 
 final class WebViewViewController: UIViewController {
-    
     //MARK: Properties
     private var estimatedProgressObservation: NSKeyValueObservation?
     weak var delegate: WebViewViewControllerDelegate?
