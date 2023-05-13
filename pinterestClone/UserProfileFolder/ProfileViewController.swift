@@ -3,7 +3,7 @@ import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    //MARK: - private properties
+    //MARK: - Private Properties
     private var avatarImage: UIImageView!
     private var nameLabel: UILabel!
     private var loginLabel: UILabel!
@@ -34,18 +34,18 @@ final class ProfileViewController: UIViewController {
     }
     
     
-    //MARK: - private Methods
+    //MARK: - Private Methods
+    //В профиле 
     private func createAvatarImage(safeArea: UILayoutGuide) {
         avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "my_avatar")
         avatarImage.contentMode = .scaleAspectFill
         avatarImage.clipsToBounds = true
-        
+    
         avatarImage.layer.cornerRadius = 35
         avatarImage.layer.masksToBounds = true
-        //        avatarImage.layer.borderWidth = 2
-        //        avatarImage.layer.borderColor = UIColor.white.cgColor
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(avatarImage)
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImage.widthAnchor.constraint(equalToConstant: 70).isActive = true

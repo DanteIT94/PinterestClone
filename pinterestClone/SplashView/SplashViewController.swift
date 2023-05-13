@@ -42,17 +42,12 @@ class SplashViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    //БУДЕМ ПРАВИТЬ - скоро поменяем!!!
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid config")
-            showAlertViewController()
-            return
-        }
         let tabBarController = UIStoryboard(
             name: "Main",
             bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-        window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController
     private func presentAuthViewController() {
@@ -98,9 +93,9 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure:
                 showAlertViewController()
-                UIBlockingProgressHUD.dismiss()
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
@@ -111,12 +106,12 @@ extension SplashViewController: AuthViewControllerDelegate {
                 switch result {
                 case .success (let result):
                     self.profileImageService.fetchProfileImageURL(username: result.username) { _ in }
-                    UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
                     self.showAlertViewController()
                     break
                 }
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }

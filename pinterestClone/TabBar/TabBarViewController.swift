@@ -21,8 +21,6 @@ final class TabBarController: UITabBarController {
             title: nil,
             image: UIImage(named: "tab_profile_active"),
             selectedImage: nil)
-//        storyboard.instantiateViewController(
-//            withIdentifier: "ProfileViewController")
         
         self.viewControllers = [imagesListViewController, profileViewController]
     }

@@ -11,7 +11,7 @@ extension URLSession {
     enum NetworkError: Error {
         case httpStatusCode(Int)
         case urlRequestError(Error)
-        case urlSessionError
+        case decodingError
     }
     
     
@@ -21,16 +21,16 @@ extension URLSession {
     ) -> URLSessionTask {
         let task = dataTask(with: request) { data, response, error in
             ///проверяем наличие ошибок
-            guard error == nil else {
+            if let error = error as? NetworkError  {
                 DispatchQueue.main.async {
-                    completion(.failure(NetworkError.urlRequestError(error!)))
+                    completion(.failure(NetworkError.urlRequestError(error)))
                 }
                 return
             }
             
             ///Проверка на успешный HTTP-статус кода
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200..<300).contains(httpResponse.statusCode) else {
+            if let httpResponse = response as? HTTPURLResponse,
+                  (200..<300).contains(httpResponse.statusCode)  {
                 DispatchQueue.main.async {
                     completion(.failure(NetworkError.httpStatusCode(0)))
                 }
@@ -45,7 +45,7 @@ extension URLSession {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    completion(.failure(NetworkError.urlSessionError))
+                    completion(.failure(NetworkError.decodingError))
                 }
             }
         }
