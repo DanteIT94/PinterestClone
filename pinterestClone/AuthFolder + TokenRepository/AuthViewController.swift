@@ -12,31 +12,68 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    //MARK: -Properties
-    let segueIdentifier = "ShowWebView"
-    let oAuth2Service = OAuth2Service.shared
-    
+    //MARK: - Properties
     weak var delegate: AuthViewControllerDelegate?
     
-    //MARK: -viewDidLoad
+    //MARK: - Private Properties
+    private let segueIdentifier = "ShowWebView"
+    private let oAuth2Service = OAuth2Service.shared
+    
+    //MARK: - Calculated Properties
+    private let authLogo: UIImageView = {
+        let authLogo = UIImageView()
+        authLogo.translatesAutoresizingMaskIntoConstraints = false
+        authLogo.image = UIImage(named: "auth_screen_logo")
+        authLogo.contentMode = .scaleAspectFill
+        return authLogo
+    }()
+    
+    private let enterButton: UIButton = {
+        let enterButton = UIButton()
+        enterButton.translatesAutoresizingMaskIntoConstraints = false
+        enterButton.backgroundColor = .YPWhite
+        enterButton.setTitle("Войти", for: .normal)
+        enterButton.setTitleColor(.YPBlack, for: .normal)
+        enterButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+        enterButton.layer.cornerRadius = 16
+        enterButton.layer.masksToBounds = true
+        enterButton.addTarget(nil, action: #selector(enterButtonTapped), for: .touchUpInside)
+        return enterButton
+    }()
+    
+    
+    //MARK: - ViewLifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        //            print("Auth Screen Controller loaded")
+        createLayout()
     }
     
-    // MARK: -Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == segueIdentifier {
-            ///Через авторское guard-решение
-            guard
-                let webViewVC = segue.destination as? WebViewViewController
-            else {
-                fatalError("Failed to prepare for \(segueIdentifier)")
-            }
-            webViewVC.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    //MARK: - Private Methods
+    
+    @objc func enterButtonTapped() {
+        let webVC = WebViewViewController()
+        webVC.delegate = self
+        webVC.modalPresentationStyle = .fullScreen
+        present(webVC, animated: true)
+    }
+    
+    private func createLayout() {
+        view.backgroundColor = .YPBlack
+        
+        view.addSubview(enterButton)
+        view.addSubview(authLogo)
+        
+        NSLayoutConstraint.activate([
+            authLogo.widthAnchor.constraint(equalToConstant: 60),
+            authLogo.heightAnchor.constraint(equalToConstant: 60),
+            authLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            authLogo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            //--------------------------------------------------------------
+            enterButton.heightAnchor.constraint(equalToConstant: 48),
+            enterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            enterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            enterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90)//возможны корректировки
+        ])
     }
 }
 

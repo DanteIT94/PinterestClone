@@ -15,34 +15,83 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-
 final class WebViewViewController: UIViewController {
-    //MARK: Properties
-    private var estimatedProgressObservation: NSKeyValueObservation?
+    
     weak var delegate: WebViewViewControllerDelegate?
-    @IBOutlet private var webView: WKWebView!
-    @IBOutlet private var progressView: UIProgressView!
+    
+    //MARK: - Private Properties
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
+    //MARK: - Calculated Properties
+    
+    private let webView: WKWebView = {
+        let webView = WKWebView()
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        return webView
+    }()
+    
+    ///Шкала прогресса загрузки веба
+    private let progressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.tintColor = .YPBackground
+        return progressView
+    }()
+    
+    private let backButton: UIButton = {
+        let backButton = UIButton()
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.setTitle("", for: .normal)
+        backButton.setImage(UIImage(named: "nav_back_button"), for: .normal)
+        backButton.imageView?.contentMode = .scaleAspectFill
+        backButton.addTarget(nil, action: #selector(didTapBackButton), for: .touchUpInside)
+        return backButton
+    }()
     
     
-    //MARK: viewDidLoad
+    //MARK: - ViewLifeCicle
     override func viewDidLoad() {
-        super.viewDidLoad()     
-        //        print("WebView Screen Controller loaded")
+        super.viewDidLoad()
+        
+        createWebViewLayout()
         
         webView.navigationDelegate = self
+        let request = URLRequest(url: createAuthURL())
+        webView.load(request)
+        configureProgressBarObserver()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
+    //MARK: - Private Methods
+    ///Подсчет шкалы загрузки  веб-страницы
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
+    ///Конфигуруруем URL-запрос для авторизации
+    private func createAuthURL() -> URL {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize")!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: AccessKey),
             URLQueryItem(name: "redirect_uri", value: RedirectURI),
             URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: AccessScope)]
-        
+            URLQueryItem(name: "scope", value: AccessScope)
+        ]
         let url  = urlComponents.url!
-        
-        let request = URLRequest(url: url)
-        webView.load(request)
-        
+        return url
+    }
+    
+   ///Привязываем обновление шкалы
+    private func configureProgressBarObserver(){
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
              options: [],
@@ -50,43 +99,36 @@ final class WebViewViewController: UIViewController {
                  guard let self = self else {return}
                  self.updateProgress()
              })
-//        updateProgress()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        ///установка Наблюдателя
-//        webView.addObserver(self,
-//                            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//                            options: .new,
-//                            context: nil)
+    ///Создаем WebView версткой + раставляем констрейты
+    private func createWebViewLayout() {
+        view.backgroundColor = .YPWhite
+        
+        view.addSubview(webView)
+        view.addSubview(backButton)
+        view.addSubview(progressView)
+        
+        ///Задаем пул констрейтов
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            //-------------------------------------------------
+            backButton.widthAnchor.constraint(equalToConstant: 24),
+            backButton.heightAnchor.constraint(equalToConstant: 24),
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            //-------------------------------------------------
+            progressView.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+            progressView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 8),
+            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -29)
+        ])
+        
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        ///удаление Наблюдателя
-//        webView.removeObserver(self,
-//                               forKeyPath: #keyPath(WKWebView.estimatedProgress),
-//                               context: nil)
-//        updateProgress()
-    }
-    
-    //MARK: -Methods
-    /// Обработчик обновлений ("Старый" API)
-//    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-//        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-//            updateProgress()
-//        } else {
-//            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-//        }
-//    }
-    ///Подсчет шкалы подгрузки  Веба
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-    
-    @IBAction func didTapBackButton(_ sender: Any?) {
+        @objc func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
 }

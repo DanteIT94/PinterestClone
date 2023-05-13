@@ -23,7 +23,6 @@ class SplashViewController: UIViewController {
         if let token = tokenStorage.token {
             fetchProfile(token: token)
         } else {
-            //            performSegue(withIdentifier: ShowAuthSegueIdentifier, sender: nil)
             presentAuthViewController()
         }
     }
@@ -57,11 +56,8 @@ class SplashViewController: UIViewController {
     }
     ///Переход на AuthViewController
     private func presentAuthViewController() {
-//        let authVC = AuthViewController()
-        let authVC = UIStoryboard(
-            name: "Main",
-            bundle: .main).instantiateViewController(withIdentifier: "AuthViewController")
-//        authVC.delegate = self
+        let authVC = AuthViewController()
+        authVC.delegate = self
         authVC.modalPresentationStyle = .fullScreen
         present(authVC, animated: true)
     }
@@ -118,9 +114,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
-                    let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.showAlertViewController()
                     break
                 }
             }
