@@ -49,7 +49,6 @@ final class ProfileService {
     }
 }
 
-
 ///Определяем структуру ProfileResult, которая будет использоваться для декодирования ответа сервера.
 struct ProfileResult: Codable {
     let username: String

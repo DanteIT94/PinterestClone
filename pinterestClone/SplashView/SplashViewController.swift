@@ -19,6 +19,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        createSplashLogoImage(safeArea: view.safeAreaLayoutGuide)
         
         if let token = tokenStorage.token {
             fetchProfile(token: token)
@@ -34,7 +35,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createSplashLogoImage(safeArea: view.safeAreaLayoutGuide)
+
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,10 +45,16 @@ class SplashViewController: UIViewController {
     // MARK: - Private Methods
     //БУДЕМ ПРАВИТЬ - скоро поменяем!!!
     private func switchToTabBarController() {
+        guard let window = UIApplication.shared.windows.first else {
+                    assertionFailure("Invalid config")
+                    showAlertViewController()
+                    return
+                }
         let tabBarController = UIStoryboard(
             name: "Main",
             bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
+        window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController
     private func presentAuthViewController() {

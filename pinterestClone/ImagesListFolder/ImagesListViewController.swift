@@ -43,20 +43,14 @@ final class ImagesListViewController: UIViewController {
     }
     
     //MARK: - Public methods
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
-    //MARK: - IBAction
-    
     //MARK: - Private Methods
-
+    private func presentSingleImageView(for indexPath: IndexPath) {
+        let singleImageVC = SingleImageViewController()
+        let image = UIImage(named: photosName[indexPath.row])
+        singleImageVC.image = image
+        singleImageVC.modalPresentationStyle = .fullScreen
+        present(singleImageVC, animated: true, completion: nil)
+    }
 }
 
 
@@ -68,7 +62,7 @@ extension ImagesListViewController: UITableViewDelegate {
         if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
             cell.isSelected = false
         }
-        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
+        presentSingleImageView(for: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
