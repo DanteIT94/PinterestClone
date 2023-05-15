@@ -8,19 +8,13 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-
-    //MARK: - Types
-
-    //MARK: - Constants
     
-    //MARK: Public Properties
-    
-    //MARK: IBOutlet
-    @IBOutlet private var tableView: UITableView!
-    
-    //MARK: Private Properties
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
+    //MARK: Computered Properties
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
+    }()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -28,22 +22,39 @@ final class ImagesListViewController: UIViewController {
         return formatter
     } ()
     
+    //MARK: Private Properties
+    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let photosName: [String] = Array(0..<20).map{"\($0)"}
+   
     //MARK: -Initializers
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tabBarController?.tabBar.barTintColor = .YPBlack
-//        tabBarController?.tabBar.isTranslucent = false
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
-//        tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
+        createTableViewLayout()
+
+        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
+        tableView.register(ImagesListCell.self, forCellReuseIdentifier: "ImagesListCell")
         tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0 )
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     //MARK: - Public methods
     //MARK: - Private Methods
+    private func createTableViewLayout() {
+        
+        view.addSubview(tableView)
+        tableView.backgroundColor = .YPBlack
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
     private func presentSingleImageView(for indexPath: IndexPath) {
         let singleImageVC = SingleImageViewController()
         let image = UIImage(named: photosName[indexPath.row])
@@ -53,8 +64,6 @@ final class ImagesListViewController: UIViewController {
     }
 }
 
-
-//MARK: - Extensions
 //MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -83,35 +92,35 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //данный метод опред. кол. ячеек в секции таблицы
-        //Так как секция у нас одна - проигнорируем значение параметра section
-        return 20
+        return photosName.count
     }
     ///Метод возвращает ячейку (у Класса UITableView есть дефолтный конструктор без аргументов)
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         ///1) Добавляем метод, который из всех ячеек, зарегистрированных ранее, возвращает ячейку по идентификатору, добавленому ранее.
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for:  indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath)
         ///2) Для работы с ячейкой как с экземпляром класса ImagesListCell - нужно сделать приведение типов
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.backgroundColor = .YPBlack
         ///3) Метод конфигурации ячейки (искать в классе ImageList)
         configCell(for: imageListCell, with: indexPath)
         ///4) Возвращаем ячейку
         return imageListCell
     }
 }
-
+//MARK: - Протягивание данных из класса ImageListCell
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let imageName = "\(indexPath.row)"
         
         guard let image = UIImage(named: imageName) else { return }
-        cell.dateLabel.text =  dateFormatter.string(from: Date())
-        cell.cellImage.image = image
-        
+        let date =  dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
-        let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked")
-        cell.likeButton.setImage(likedImage, for: .normal)
+        guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
+            return
+        }
+        cell.configureCellElements(image: image, date: date, likeImage: likedImage)
         
         //TODO: реализуем эффект нажатия на ячейку без серого выделения (✅DONE)
         let selectedView = UIView()

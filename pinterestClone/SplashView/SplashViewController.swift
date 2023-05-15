@@ -50,10 +50,7 @@ class SplashViewController: UIViewController {
                     showAlertViewController()
                     return
                 }
-        let tabBarController = UIStoryboard(
-            name: "Main",
-            bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+        let tabBarController = TabBarController()
         window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController
