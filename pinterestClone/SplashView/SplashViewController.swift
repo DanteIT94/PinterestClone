@@ -19,11 +19,11 @@ class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        createSplashLogoImage(safeArea: view.safeAreaLayoutGuide)
         
         if let token = tokenStorage.token {
             fetchProfile(token: token)
         } else {
-            //            performSegue(withIdentifier: ShowAuthSegueIdentifier, sender: nil)
             presentAuthViewController()
         }
     }
@@ -35,7 +35,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        createSplashLogoImage(safeArea: view.safeAreaLayoutGuide)
+
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -43,25 +43,20 @@ class SplashViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    //БУДЕМ ПРАВИТЬ - скоро поменяем!!!
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid config")
-            showAlertViewController()
-            return
-        }
-        let tabBarController = UIStoryboard(
-            name: "Main",
-            bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
+                    assertionFailure("Invalid config")
+                    showAlertViewController()
+                    return
+                }
+        let tabBarController = TabBarController()
         window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController
     private func presentAuthViewController() {
-//        let authVC = AuthViewController()
-        let authVC = UIStoryboard(
-            name: "Main",
-            bundle: .main).instantiateViewController(withIdentifier: "AuthViewController")
-//        authVC.delegate = self
+        let authVC = AuthViewController()
+        authVC.delegate = self
         authVC.modalPresentationStyle = .fullScreen
         present(authVC, animated: true)
     }
@@ -102,9 +97,9 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token: token)
             case .failure:
                 showAlertViewController()
-                UIBlockingProgressHUD.dismiss()
                 break
             }
+            UIBlockingProgressHUD.dismiss()
         }
     }
     
@@ -115,14 +110,12 @@ extension SplashViewController: AuthViewControllerDelegate {
                 switch result {
                 case .success (let result):
                     self.profileImageService.fetchProfileImageURL(username: result.username) { _ in }
-                    UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
-                    let alert = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось войти в систему", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    self.showAlertViewController()
                     break
                 }
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }
