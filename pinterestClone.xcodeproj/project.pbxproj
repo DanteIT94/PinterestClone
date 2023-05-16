@@ -32,6 +32,7 @@
 		92F590472A0C2835002727E3 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 92F590462A0C2835002727E3 /* SwiftKeychainWrapper */; };
 		92F5904A2A0CD259002727E3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590492A0CD259002727E3 /* TabBarViewController.swift */; };
 		92F5904C2A111661002727E3 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904B2A111661002727E3 /* OAuthTokenResponseBody.swift */; };
+		92F5904E2A12CAE8002727E3 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		92D5A81229C62112000F7A1C /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		92F590492A0CD259002727E3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		92F5904B2A111661002727E3 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
+		92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				928E65B929EB40E4000DA229 /* Constants.swift */,
 				92D5A80F29C5C3B4000F7A1C /* UIColor+Extension.swift */,
 				92A3C12D2A0944C4004598E0 /* URLSession - GenericFunc.swift */,
+				92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				9290C93A29D7296200ADF3C3 /* SingleImageViewController.swift in Sources */,
 				92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */,
 				927CB17529F49049009765F3 /* SplashViewController.swift in Sources */,
+				92F5904E2A12CAE8002727E3 /* KeyChainManager.swift in Sources */,
 				92D5A7DD29C360D9000F7A1C /* SceneDelegate.swift in Sources */,
 				92D5A81029C5C3B4000F7A1C /* UIColor+Extension.swift in Sources */,
 				92F5904C2A111661002727E3 /* OAuthTokenResponseBody.swift in Sources */,
