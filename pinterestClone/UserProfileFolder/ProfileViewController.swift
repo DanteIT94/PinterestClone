@@ -1,13 +1,22 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
-    //MARK: - private properties
+    //MARK: - Private Properties
     private var avatarImage: UIImageView!
     private var nameLabel: UILabel!
     private var loginLabel: UILabel!
     private var descriptionLabel: UILabel!
     private var logoutButton: UIButton!
+    
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let tokenStorage = OAuth2TokenStorage()
+    ///Проперти для хранения обсервера
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,21 +27,25 @@ final class ProfileViewController: UIViewController {
         createLoginLabel(safeArea: view.safeAreaLayoutGuide)
         createDescriptionLabel(safeArea: view.safeAreaLayoutGuide)
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
+        
+        updateProfileDetails(profile: profileService.profile)
+        subscribeForAvatarUpdates()
+        updateAvatar()
     }
     
     
-    //MARK: - private Methods
+    //MARK: - Private Methods
+    //В профиле 
     private func createAvatarImage(safeArea: UILayoutGuide) {
         avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "my_avatar")
         avatarImage.contentMode = .scaleAspectFill
         avatarImage.clipsToBounds = true
-
+    
         avatarImage.layer.cornerRadius = 35
         avatarImage.layer.masksToBounds = true
-//        avatarImage.layer.borderWidth = 2
-//        avatarImage.layer.borderColor = UIColor.white.cgColor
         avatarImage.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(avatarImage)
         avatarImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
         avatarImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -87,5 +100,39 @@ final class ProfileViewController: UIViewController {
         logoutButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -26).isActive = true
     }
     
-
+    private func updateProfileDetails(profile: Profile?) {
+        if let profile = profile {
+            nameLabel.text = profile.name
+            loginLabel.text = profile.loginName
+            descriptionLabel.text = profile.bio
+        } else {
+            nameLabel.text = "Error"
+            loginLabel.text = "Error"
+            descriptionLabel.text = "Error"
+        }
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {return}
+        let placeholderImage = UIImage(systemName: "my_avatar")
+        avatarImage.kf.setImage(with: url, placeholder: placeholderImage)
+    }
+    
+    private func subscribeForAvatarUpdates() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.DidChangeNotfication,
+            ///nil - т к мы хотим получать уведомления из любых источников
+            object: nil,
+            ///очередь, на которой мы хотим получать уведомления
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else {return}
+            self.updateAvatar()
+        }
+        updateAvatar()
+    }
+    
 }
