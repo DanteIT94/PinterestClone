@@ -128,4 +128,9 @@ extension ImagesListViewController {
         selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         cell.selectedBackgroundView = selectedView
     }
+    
+    ///В этом методе вызываем метод fetchPhotosNextPage из ImagesListService
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        <#code#>
+    }
 }

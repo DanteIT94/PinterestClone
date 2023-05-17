@@ -32,7 +32,10 @@
 		92F590472A0C2835002727E3 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 92F590462A0C2835002727E3 /* SwiftKeychainWrapper */; };
 		92F5904A2A0CD259002727E3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590492A0CD259002727E3 /* TabBarViewController.swift */; };
 		92F5904C2A111661002727E3 /* OAuthTokenResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904B2A111661002727E3 /* OAuthTokenResponseBody.swift */; };
-		92F5904E2A12CAE8002727E3 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */; };
+		92F5904E2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904D2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift */; };
+		92F590502A14C420002727E3 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904F2A14C420002727E3 /* ImagesListService.swift */; };
+		92F590522A14C47D002727E3 /* Photo(UI).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590512A14C47D002727E3 /* Photo(UI).swift */; };
+		92F590542A14CE22002727E3 /* PhotoResult(JSON).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,7 +63,10 @@
 		92D5A81229C62112000F7A1C /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		92F590492A0CD259002727E3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		92F5904B2A111661002727E3 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
-		92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		92F5904D2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyChainManager(NEED TO ADD).swift"; sourceTree = "<group>"; };
+		92F5904F2A14C420002727E3 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
+		92F590512A14C47D002727E3 /* Photo(UI).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo(UI).swift"; sourceTree = "<group>"; };
+		92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoResult(JSON).swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +171,7 @@
 				928E65B929EB40E4000DA229 /* Constants.swift */,
 				92D5A80F29C5C3B4000F7A1C /* UIColor+Extension.swift */,
 				92A3C12D2A0944C4004598E0 /* URLSession - GenericFunc.swift */,
-				92F5904D2A12CAE8002727E3 /* KeyChainManager.swift */,
+				92F5904D2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -174,7 +180,10 @@
 			isa = PBXGroup;
 			children = (
 				92D5A7DE29C360D9000F7A1C /* ImagesListViewController.swift */,
+				92F5904F2A14C420002727E3 /* ImagesListService.swift */,
 				92D5A81229C62112000F7A1C /* ImagesListCell.swift */,
+				92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */,
+				92F590512A14C47D002727E3 /* Photo(UI).swift */,
 				9290C93B29D7296D00ADF3C3 /* SingleImage */,
 			);
 			path = ImagesListFolder;
@@ -273,10 +282,11 @@
 				9290C93729D7293D00ADF3C3 /* ProfileViewController.swift in Sources */,
 				92D5A7DF29C360D9000F7A1C /* ImagesListViewController.swift in Sources */,
 				92D5A81329C62112000F7A1C /* ImagesListCell.swift in Sources */,
+				92F590502A14C420002727E3 /* ImagesListService.swift in Sources */,
 				9290C93A29D7296200ADF3C3 /* SingleImageViewController.swift in Sources */,
 				92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */,
 				927CB17529F49049009765F3 /* SplashViewController.swift in Sources */,
-				92F5904E2A12CAE8002727E3 /* KeyChainManager.swift in Sources */,
+				92F5904E2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift in Sources */,
 				92D5A7DD29C360D9000F7A1C /* SceneDelegate.swift in Sources */,
 				92D5A81029C5C3B4000F7A1C /* UIColor+Extension.swift in Sources */,
 				92F5904C2A111661002727E3 /* OAuthTokenResponseBody.swift in Sources */,
@@ -284,7 +294,9 @@
 				928E65BD29EF2BAB000DA229 /* AuthViewController.swift in Sources */,
 				927CB17029F350C1009765F3 /* OAuth2Service.swift in Sources */,
 				92F5904A2A0CD259002727E3 /* TabBarViewController.swift in Sources */,
+				92F590522A14C47D002727E3 /* Photo(UI).swift in Sources */,
 				927CB17329F436CB009765F3 /* OAuth2TokenStorage + SKW.swift in Sources */,
+				92F590542A14CE22002727E3 /* PhotoResult(JSON).swift in Sources */,
 				92A3C12E2A0944C4004598E0 /* URLSession - GenericFunc.swift in Sources */,
 				928E65BA29EB40E4000DA229 /* Constants.swift in Sources */,
 				92C14DF12A04EC5D0035C527 /* UIBlockingProgressHUD.swift in Sources */,
