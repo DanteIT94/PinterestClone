@@ -5,81 +5,75 @@
 //  Created by Денис on 17.05.2023.
 //
 
-import UIKit
+import Foundation
 
 class ImagesListService {
     //MARK: - Public Propeties
     static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     let tokenStorage = OAuth2TokenStorage()
-    
     //MARK: - Private Properties
     private (set) var photos: [Photo] = []
-    
     private var lastLoadedPage: Int?
-    
-    
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
-    
-//    private var isFetchingNextPage = false
-    
+    private let dateFormatter = ISO8601DateFormatter()
+
+//MARK: - Methods
     func fetchPhotosNextPage() {
-        guard let token = tokenStorage.token else {return}
-        task?.cancel()
+        guard task == nil else {return}
+        let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
         
-        let nextPage = lastLoadedPage == nil
-        ? 1
-        : lastLoadedPage! + 1
         
-        let perPage = 10 //Количество фотографий на странице
-        
-        //ЖДУ ИНФОРМАЦИИ
-        let urlString = "https://api.unsplash.com/photos?page=\(nextPage)&per_page=\(perPage)"
-        guard let url = URL(string: urlString) else {
-            print("Invalid URL:", urlString)
-            return}
-        
+        var urlComponents = URLComponents(string: "https://api.unsplash.com")
+        urlComponents?.path = "/photos"
+        urlComponents?.queryItems = [
+        URLQueryItem(name: "page", value: "\(nextPage)")
+        ]
+
+        guard let url = urlComponents?.url else { return }
+  
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        guard let token = tokenStorage.token else {return}
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        task = urlSession.objectTask(for: request) {[weak self] (result: Result<[PhotoResult],Error>) in
+        let dataTask = urlSession.objectTask(for: request) {[weak self] (result: Result<[PhotoResult],Error>) in
             guard let self = self else { return }
-            defer {
-                self.task = nil
-            }
-            
+            print(result)
             switch result {
             case .success(let photoResults):
                 DispatchQueue.main.async {
-                    let newPhotos = photoResults.map { photoResults -> Photo? in
-                         let regularURLString = photoResults.urls.regular
-                              let regularURL = URL(string: regularURLString)
-                        
-                        guard let imageData = try? Data(contentsOf: regularURL!),
-                              let image = UIImage(data: imageData) else {
-                            return nil
-                        }
-                        let photo = Photo(
-                            id: photoResults.id,
-                            size: image.size,
-                            createdAt: photoResults.createdAt,
-                            welcomeDescription: photoResults.description,
-                            thumbImageURL: photoResults.urls.thumb,
-                            largeImageURL: photoResults.urls.full,
-                            isLiked: false
-                        )
-                        return photo
-                    }.compactMap { $0 }
-                    self.photos.append(contentsOf: newPhotos)
-                    
+                    for photoResult in photoResults {
+                        self.photos.append(self.convertPhoto(photoResult))
+                    }
                     ///Оповещаем об изменении массива фотографий
-                    NotificationCenter.default.post(name: ImagesListService.DidChangeNotification, object: nil)
+                    NotificationCenter.default.post(
+                                                    name: ImagesListService.DidChangeNotification,
+                                                    object: nil)
+                    self.lastLoadedPage = nextPage
+                    self.task = nil
                 }
             case .failure(let error):
                 print("Failed to fetch photos:", error)
+                task = nil
+                return
             }
         }
+        task = dataTask
+        task?.resume()
+    }
+    
+    private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
+        let createdAt = photoResult.createdAt ?? ""
+        
+        let photo = Photo(id: photoResult.id,
+                          size: CGSize(width: photoResult.width, height: photoResult.height),
+                          createdAt: dateFormatter.date(from: createdAt),
+                          welcomeDescription: photoResult.description,
+                          thumbImageURL: photoResult.urls.thumb,
+                          largeImageURL: photoResult.urls.full,
+                          isLiked: true
+        )
+        return photo
     }
 }

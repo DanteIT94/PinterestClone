@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+
 final class ImagesListCell: UITableViewCell {
     //MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
@@ -18,7 +20,7 @@ final class ImagesListCell: UITableViewCell {
         dateLabel.textColor = .YPWhite
         return dateLabel
     }()
-    private let cellImage: UIImageView = {
+    let cellImage: UIImageView = {
         let cellImage = UIImageView()
         cellImage.translatesAutoresizingMaskIntoConstraints = false
         cellImage.layer.cornerRadius = 16
@@ -49,6 +51,12 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer?.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        //отменяем загрузку во избежании багов
+        cellImage.kf.cancelDownloadTask()
     }
     
     //MARK: - Public Methods

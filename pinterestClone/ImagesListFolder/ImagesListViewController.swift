@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
     
@@ -15,6 +17,7 @@ final class ImagesListViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -25,19 +28,36 @@ final class ImagesListViewController: UIViewController {
     //MARK: Private Properties
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
-   
+    private var photos: [Photo] = []
+    private let imageListService = ImagesListService()
+    
     //MARK: -Initializers
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         createTableViewLayout()
-
+        
         ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: "ImagesListCell")
+        
         tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0 )
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
+        if photos.count == 0 {
+            imageListService.fetchPhotosNextPage()
+        }
+        
+        NotificationCenter.default.addObserver(
+            forName: ImagesListService.DidChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                guard let self else {return}
+                self.updateTableViewAnimated()
+                
+            }
     }
     
     //MARK: - Public methods
@@ -62,12 +82,26 @@ final class ImagesListViewController: UIViewController {
         singleImageVC.modalPresentationStyle = .fullScreen
         present(singleImageVC, animated: true, completion: nil)
     }
+    
+    private func updateTableViewAnimated() {
+        let oldCount = photos.count
+        let newCount = imageListService.photos.count
+        photos = imageListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
+    }
 }
 
 //MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ///Этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качетсве аргумента)
+        ///Этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качестве аргумента)
         if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
             cell.isSelected = false
         }
@@ -75,9 +109,7 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
+        let image = photos[indexPath.row]
         //TODO- ПОВТОРИТЬ (сделал через авторское решение)⚠️
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
@@ -86,15 +118,23 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
+    
+    ///В этом методе вызываем метод fetchPhotosNextPage из ImagesListService
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard indexPath.row + 1 == imageListService.photos.count else { return }
+        imageListService.fetchPhotosNextPage()
+    }
 }
 
 //MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //данный метод опред. кол. ячеек в секции таблицы
-        return photosName.count
+//        return photosName.count
+        return photos.count
     }
-    ///Метод возвращает ячейку (у Класса UITableView есть дефолтный конструктор без аргументов)
+    
+    ///Метод возвращает ячейку
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         ///1) Добавляем метод, который из всех ячеек, зарегистрированных ранее, возвращает ячейку по идентификатору, добавленому ранее.
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath)
@@ -112,25 +152,33 @@ extension ImagesListViewController: UITableViewDataSource {
 //MARK: - Протягивание данных из класса ImageListCell
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let imageName = "\(indexPath.row)"
+        guard let date = photos[indexPath.row].createdAt else { return }
+        let dateString = dateFormatter.string(from: date)
+//        let date =  dateFormatter.string(from: Date())
         
-        guard let image = UIImage(named: imageName) else { return }
-        let date =  dateFormatter.string(from: Date())
         let isLiked = indexPath.row % 2 == 0
         guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
             return
         }
-        cell.configureCellElements(image: image, date: date, likeImage: likedImage)
         
+//        let imageName = "\(indexPath.row)"
+//        guard let image = UIImage(named: imageName) else { return }
+        guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
+        cell.cellImage.kf.indicatorType = .activity
+        cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "image_placeholder")) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let image):
+                cell.configureCellElements(image: image.image, date: dateString, likeImage: likedImage)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            case .failure(_):
+                return
+            }
+        }
         //TODO: реализуем эффект нажатия на ячейку без серого выделения (✅DONE)
         let selectedView = UIView()
         ///Устанавливаем цвет фона
         selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         cell.selectedBackgroundView = selectedView
-    }
-    
-    ///В этом методе вызываем метод fetchPhotosNextPage из ImagesListService
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        <#code#>
     }
 }
