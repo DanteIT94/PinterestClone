@@ -8,9 +8,14 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     //MARK: - Public Properties
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
     
     //MARK: - Private Computered Properties
     private let dateLabel: UILabel = {
@@ -31,6 +36,7 @@ final class ImagesListCell: UITableViewCell {
         let likeButton = UIButton()
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.setTitle("", for: .normal)
+        likeButton.addTarget(nil, action: #selector(likeButtonClicked), for: .touchUpInside)
         return  likeButton
     }()
     
@@ -102,5 +108,17 @@ final class ImagesListCell: UITableViewCell {
             cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             cellImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
+    }
+    
+     func setIsLiked(_ isLiked: Bool) {
+        if isLiked {
+            likeButton.setImage(UIImage(named: "isLiked"), for: .normal)
+        } else {
+            likeButton.setImage(UIImage(named:"isUnliked"), for: .normal)
+        }
+    }
+    
+    @objc private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
     }
 }

@@ -36,6 +36,7 @@
 		92F590502A14C420002727E3 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F5904F2A14C420002727E3 /* ImagesListService.swift */; };
 		92F590522A14C47D002727E3 /* Photo(UI).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590512A14C47D002727E3 /* Photo(UI).swift */; };
 		92F590542A14CE22002727E3 /* PhotoResult(JSON).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */; };
+		92F590642A179837002727E3 /* LikeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590632A179837002727E3 /* LikeResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		92F5904F2A14C420002727E3 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		92F590512A14C47D002727E3 /* Photo(UI).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo(UI).swift"; sourceTree = "<group>"; };
 		92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoResult(JSON).swift"; sourceTree = "<group>"; };
+		92F590632A179837002727E3 /* LikeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +186,7 @@
 				92D5A81229C62112000F7A1C /* ImagesListCell.swift */,
 				92F590532A14CE22002727E3 /* PhotoResult(JSON).swift */,
 				92F590512A14C47D002727E3 /* Photo(UI).swift */,
+				92F590632A179837002727E3 /* LikeResult.swift */,
 				9290C93B29D7296D00ADF3C3 /* SingleImage */,
 			);
 			path = ImagesListFolder;
@@ -285,6 +288,7 @@
 				92F590502A14C420002727E3 /* ImagesListService.swift in Sources */,
 				9290C93A29D7296200ADF3C3 /* SingleImageViewController.swift in Sources */,
 				92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */,
+				92F590642A179837002727E3 /* LikeResult.swift in Sources */,
 				927CB17529F49049009765F3 /* SplashViewController.swift in Sources */,
 				92F5904E2A12CAE8002727E3 /* KeyChainManager(NEED TO ADD).swift in Sources */,
 				92D5A7DD29C360D9000F7A1C /* SceneDelegate.swift in Sources */,

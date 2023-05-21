@@ -76,6 +76,7 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func presentSingleImageView(for indexPath: IndexPath) {
+//        guard let url = URL(string: photos[indexPath.row].largeImageURL) else {return}
         let singleImageVC = SingleImageViewController()
         let image = UIImage(named: photosName[indexPath.row])
         singleImageVC.image = image
@@ -143,6 +144,7 @@ extension ImagesListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         imageListCell.backgroundColor = .YPBlack
+        imageListCell.delegate = self
         ///3) Метод конфигурации ячейки (искать в классе ImageList)
         configCell(for: imageListCell, with: indexPath)
         ///4) Возвращаем ячейку
@@ -154,13 +156,11 @@ extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let date = photos[indexPath.row].createdAt else { return }
         let dateString = dateFormatter.string(from: date)
-//        let date =  dateFormatter.string(from: Date())
         
         let isLiked = indexPath.row % 2 == 0
         guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
             return
         }
-        
 //        let imageName = "\(indexPath.row)"
 //        guard let image = UIImage(named: imageName) else { return }
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
@@ -181,4 +181,44 @@ extension ImagesListViewController {
         selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         cell.selectedBackgroundView = selectedView
     }
+}
+
+//MARK: - Реализуем делегат для Кнопки Лайка
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        
+        let photo = photos[indexPath.row]
+        ///show Loader
+        UIBlockingProgressHUD.show()
+        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    ///синх. массив картинок с сервисом
+                    self.photos = self.imageListService.photos
+                    ///Измен
+                    cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                    UIBlockingProgressHUD.dismiss()
+                }
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                self.showAlertViewController()
+            }
+            
+        }
+    }
+    
+    private func showAlertViewController() {
+        let alertVC = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось поставить лайк:(",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default)
+        alertVC.addAction(action)
+        present(alertVC, animated: true)
+    }
+    
+    
 }

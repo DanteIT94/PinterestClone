@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Kingfisher
 
 class ImagesListService {
     //MARK: - Public Propeties
@@ -18,8 +19,9 @@ class ImagesListService {
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
-
-//MARK: - Methods
+    
+    
+    //MARK: - Ловим Фото из сети
     func fetchPhotosNextPage() {
         guard task == nil else {return}
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
@@ -28,11 +30,11 @@ class ImagesListService {
         var urlComponents = URLComponents(string: "https://api.unsplash.com")
         urlComponents?.path = "/photos"
         urlComponents?.queryItems = [
-        URLQueryItem(name: "page", value: "\(nextPage)")
+            URLQueryItem(name: "page", value: "\(nextPage)")
         ]
-
+        
         guard let url = urlComponents?.url else { return }
-  
+        
         var request = URLRequest(url: url)
         guard let token = tokenStorage.token else {return}
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -48,8 +50,8 @@ class ImagesListService {
                     }
                     ///Оповещаем об изменении массива фотографий
                     NotificationCenter.default.post(
-                                                    name: ImagesListService.DidChangeNotification,
-                                                    object: nil)
+                        name: ImagesListService.DidChangeNotification,
+                        object: nil)
                     self.lastLoadedPage = nextPage
                     self.task = nil
                 }
@@ -62,7 +64,49 @@ class ImagesListService {
         task = dataTask
         task?.resume()
     }
-    
+    //MARK: - Функция Лайка
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        var urlComponents = URLComponents(string: "https://api.unsplash.com")
+        urlComponents?.path = "/photos/\(photoId)/like"
+        
+        guard let url = urlComponents?.url else {return}
+        
+        var request = URLRequest(url: url)
+        guard let token = tokenStorage.token else {return}
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<LikeResult, Error>) in
+            guard let self = self else {return}
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    ///Поиск индекса элемента
+                    if let index = self.photos.firstIndex(where: {$0.id == photoId}) {
+                        // Текущий элемент
+                        let photo = self.photos[index]
+                        //Копия элемента с инвертированным значением isLiked
+                        let newPhoto = Photo(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageURL: photo.thumbImageURL,
+                            largeImageURL: photo.largeImageURL,
+                            isLiked: !photo.isLiked
+                        )
+                        ///Подменяем элемент в массиве
+                        self.photos[index] = newPhoto
+                        completion(.success(()))
+                    }
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+    }
+    //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
         let createdAt = photoResult.createdAt ?? ""
         
@@ -72,7 +116,7 @@ class ImagesListService {
                           welcomeDescription: photoResult.description,
                           thumbImageURL: photoResult.urls.thumb,
                           largeImageURL: photoResult.urls.full,
-                          isLiked: true
+                          isLiked: photoResult.isLiked
         )
         return photo
     }
