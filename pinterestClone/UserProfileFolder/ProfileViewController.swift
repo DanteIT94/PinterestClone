@@ -1,5 +1,8 @@
 import UIKit
+import WebKit
 import Kingfisher
+import ProgressHUD
+import SwiftKeychainWrapper
 
 final class ProfileViewController: UIViewController {
     
@@ -88,16 +91,17 @@ final class ProfileViewController: UIViewController {
     }
     
     private func createLogoutButton(safeArea: UILayoutGuide) {
-        logoutButton = UIButton.systemButton(
-            with: UIImage(named: "logout_button") ?? UIImage(),
-            target: self,
-            action: nil
-        )
+        let logoutButton = UIButton()
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        logoutButton.setTitle("", for: .normal)
+        logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
+        logoutButton.imageView?.contentMode = .scaleAspectFill
+        logoutButton.addTarget(nil, action: #selector(accountLogout), for: .touchUpInside)
         view.addSubview(logoutButton)
         logoutButton.tintColor = .YPRed
         logoutButton.centerYAnchor.constraint(equalTo: avatarImage.centerYAnchor).isActive = true
         logoutButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -26).isActive = true
+        self.logoutButton = logoutButton
     }
     
     private func updateProfileDetails(profile: Profile?) {
@@ -133,6 +137,25 @@ final class ProfileViewController: UIViewController {
             self.updateAvatar()
         }
         updateAvatar()
+    }
+    
+    //MARK: -Логаут из акка
+    @objc private func accountLogout() {
+        tokenStorage.keychainWrapper.removeObject(forKey: "token")
+        UIBlockingProgressHUD.show()
+        ///Чистим куки из хранилища
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            ///Массив полученных записей удаляем из хранилища
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
+        let window = UIApplication.shared.windows.first
+        let splashVC = SplashViewController()
+        window?.rootViewController = splashVC
+        UIBlockingProgressHUD.dismiss()
+        
     }
     
 }
