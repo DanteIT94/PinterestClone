@@ -67,10 +67,10 @@ final class ImagesListCell: UITableViewCell {
     
     //MARK: - Public Methods
     ///Метод для передачи данных об элементах отдельной ячейки
-    func configureCellElements(image: UIImage, date: String, likeImage: UIImage) {
+    func configureCellElements(image: UIImage, date: String, isLiked: Bool) {
         cellImage.image = image
         dateLabel.text = date
-        likeButton.setImage(likeImage, for: .normal)
+        setIsLiked(isLiked)
     }
     
     

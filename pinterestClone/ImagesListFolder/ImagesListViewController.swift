@@ -76,10 +76,8 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func presentSingleImageView(for indexPath: IndexPath) {
-//        guard let url = URL(string: photos[indexPath.row].largeImageURL) else {return}
-        let singleImageVC = SingleImageViewController()
-        let image = UIImage(named: photosName[indexPath.row])
-        singleImageVC.image = image
+        guard let url = URL(string: photos[indexPath.row].largeImageURL) else {return}
+        let singleImageVC = SingleImageViewController(fullImageUrl: url)
         singleImageVC.modalPresentationStyle = .fullScreen
         present(singleImageVC, animated: true, completion: nil)
     }
@@ -156,20 +154,17 @@ extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let date = photos[indexPath.row].createdAt else { return }
         let dateString = dateFormatter.string(from: date)
-        
-        let isLiked = indexPath.row % 2 == 0
-        guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
-            return
-        }
-//        let imageName = "\(indexPath.row)"
-//        guard let image = UIImage(named: imageName) else { return }
+//        let isLiked = indexPath.row % 2 == 0
+//        guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
+//            return
+//        }
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "image_placeholder")) { [weak self] result in
             guard let self = self else {return}
             switch result {
             case .success(let image):
-                cell.configureCellElements(image: image.image, date: dateString, likeImage: likedImage)
+                cell.configureCellElements(image: image.image, date: dateString, isLiked: photos[indexPath.row].isLiked)
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(_):
                 return

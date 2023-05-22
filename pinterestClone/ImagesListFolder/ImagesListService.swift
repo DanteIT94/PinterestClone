@@ -64,6 +64,7 @@ class ImagesListService {
         task = dataTask
         task?.resume()
     }
+    
     //MARK: - Функция Лайка
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         var urlComponents = URLComponents(string: "https://api.unsplash.com")
@@ -104,7 +105,7 @@ class ImagesListService {
                 completion(.failure(error))
             }
         }
-        
+        dataTask.resume()
     }
     //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
