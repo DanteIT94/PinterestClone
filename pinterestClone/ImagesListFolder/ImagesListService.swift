@@ -111,7 +111,7 @@ class ImagesListService {
     //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
         let createdAt = photoResult.createdAt ?? ""
-
+        
         let photo = Photo(id: photoResult.id,
                           size: CGSize(width: photoResult.width, height: photoResult.height),
                           createdAt: dateFormatter.date(from: createdAt),

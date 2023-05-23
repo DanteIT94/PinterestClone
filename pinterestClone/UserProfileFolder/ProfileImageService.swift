@@ -8,24 +8,22 @@
 import UIKit
 
 final class ProfileImageService {
-    
-    static let DidChangeNotfication = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    static var shared = ProfileImageService()
-    let tokenStorage = OAuth2TokenStorage()
-    
-    private var task: URLSessionTask?
-    private let urlSession = URLSession.shared
-    
-    private (set) var avatarURL: String?
-    
-    private init() {}
-    
     enum ProfileImageError: Error {
         case unauthorized
         case invalidData
         case decodingFailed
     }
-
+    //MARK: -Properties
+    static let DidChangeNotfication = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+    static var shared = ProfileImageService()
+    private init() {}
+    
+    let tokenStorage = OAuth2TokenStorage()
+    private var task: URLSessionTask?
+    private let urlSession = URLSession.shared
+    private (set) var avatarURL: String?
+    
+//MARK: - Methods
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         guard let token = tokenStorage.token else {return}
         
@@ -43,8 +41,8 @@ final class ProfileImageService {
                 if let avatarURL = self?.avatarURL {
                     completion(.success(userResult.profileImage.small))
                     NotificationCenter.default.post(name: ProfileImageService.DidChangeNotfication,
-                                                      object: self,
-                                                      userInfo:  ["URL": userResult.profileImage.small])
+                                                    object: self,
+                                                    userInfo:  ["URL": userResult.profileImage.small])
                 } else {
                     completion(.failure(ProfileImageError.invalidData))
                 }
@@ -57,7 +55,7 @@ final class ProfileImageService {
     }
 }
 
-
+//MARK: -Structs
 struct UserResult: Codable {
     let profileImage: ProfileImage
     

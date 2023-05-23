@@ -38,13 +38,13 @@ final class ProfileViewController: UIViewController {
     
     
     //MARK: - Private Methods
-    //В профиле 
+    //В профиле
     private func createAvatarImage(safeArea: UILayoutGuide) {
         avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "my_avatar")
         avatarImage.contentMode = .scaleAspectFill
         avatarImage.clipsToBounds = true
-    
+        
         avatarImage.layer.cornerRadius = 35
         avatarImage.layer.masksToBounds = true
         avatarImage.translatesAutoresizingMaskIntoConstraints = false

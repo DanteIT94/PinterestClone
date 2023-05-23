@@ -99,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				927CB17429F49049009765F3 /* SplashViewController.swift */,
-				92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */,
 			);
 			path = SplashView;
 			sourceTree = "<group>";
@@ -170,6 +169,7 @@
 		92D5A80E29C5C38F000F7A1C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */,
 				928E65B929EB40E4000DA229 /* Constants.swift */,
 				92D5A80F29C5C3B4000F7A1C /* UIColor+Extension.swift */,
 				92A3C12D2A0944C4004598E0 /* URLSession - GenericFunc.swift */,

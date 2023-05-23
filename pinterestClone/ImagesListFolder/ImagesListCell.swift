@@ -48,7 +48,7 @@ final class ImagesListCell: UITableViewCell {
         createCell()
         createGradientLayer()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         assertionFailure("Error")
@@ -110,7 +110,7 @@ final class ImagesListCell: UITableViewCell {
         ])
     }
     
-     func setIsLiked(_ isLiked: Bool) {
+    func setIsLiked(_ isLiked: Bool) {
         if isLiked {
             likeButton.setImage(UIImage(named: "isLiked"), for: .normal)
         } else {

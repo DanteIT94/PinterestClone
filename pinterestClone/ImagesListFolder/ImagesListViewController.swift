@@ -18,15 +18,11 @@ final class ImagesListViewController: UIViewController {
         return tableView
     }()
     
-
-    
     //MARK: Private Properties
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private var photos: [Photo] = []
     private let imageListService = ImagesListService()
-    
-    //MARK: -Initializers
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -35,7 +31,6 @@ final class ImagesListViewController: UIViewController {
         
         ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: "ImagesListCell")
-        
         tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0 )
         
         tableView.delegate = self
@@ -55,10 +50,8 @@ final class ImagesListViewController: UIViewController {
             }
     }
     
-    //MARK: - Public methods
     //MARK: - Private Methods
     private func createTableViewLayout() {
-        
         view.addSubview(tableView)
         tableView.backgroundColor = .YPBlack
         
@@ -124,7 +117,6 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //данный метод опред. кол. ячеек в секции таблицы
-//        return photosName.count
         return photos.count
     }
     
@@ -150,7 +142,7 @@ extension ImagesListViewController {
         guard let date = photos[indexPath.row].createdAt else { return }
         let dateString = dateFormatter.string(from: date)
         
-
+        
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "image_placeholder")) { [weak self] result in
@@ -210,6 +202,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
     
 }
 
+//MARK: -DateFormatter
 extension ImagesListViewController {
     private  var dateFormatter: DateFormatter {
         let formatter = DateFormatter()

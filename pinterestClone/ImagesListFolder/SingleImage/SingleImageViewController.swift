@@ -3,16 +3,10 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     
     //MARK: - Properties
-//     var image: UIImage! {
-//        didSet {
-//            guard isViewLoaded else { return }
-//            imageView.image = image
-//            rescaleAndCenterImageInScrollView(image: image)
-//        }
-//    }
     
     var fullImageUrl: URL?
     
+    //MARK: - Computered Properties
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,8 +56,8 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.delegate = self
         fetchFullImage()
-}
-
+    }
+    
     
     
     //MARK: - Private Methods
@@ -126,7 +120,7 @@ final class SingleImageViewController: UIViewController {
         view.addSubview(shareButton)
         
         NSLayoutConstraint.activate([
-        //Задаем ScrollView на весь экран контроллера
+            //Задаем ScrollView на весь экран контроллера
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -168,7 +162,7 @@ final class SingleImageViewController: UIViewController {
     
 }
 
-    //MARK: -UIScrollViewDelegate - Centring
+//MARK: -UIScrollViewDelegate - Centring
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView

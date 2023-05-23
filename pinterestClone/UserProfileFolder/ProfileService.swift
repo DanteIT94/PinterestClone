@@ -9,20 +9,20 @@ import UIKit
 import Foundation
 
 final class ProfileService {
-    
-    static let shared = ProfileService()
-    
-    private(set) var profile: Profile?
-    
     enum ProfileError: Error {
         case unauthorized
         case invalidData
         case decodingFailed
     }
+    //MARK: - Properties
+    static let shared = ProfileService()
     
+    private(set) var profile: Profile?
+
     private var fetchProfileTask: URLSessionTask?
     private let urlSession = URLSession.shared
     
+    //MARK: -Methods
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         ///Закрываем предыдущую таску если fetchProfileTask не nil
         fetchProfileTask?.cancel()
@@ -49,6 +49,7 @@ final class ProfileService {
     }
 }
 
+//MARK: - Structs
 ///Определяем структуру ProfileResult, которая будет использоваться для декодирования ответа сервера.
 struct ProfileResult: Codable {
     let username: String

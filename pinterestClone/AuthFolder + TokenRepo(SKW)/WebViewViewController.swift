@@ -23,7 +23,6 @@ final class WebViewViewController: UIViewController {
     private var estimatedProgressObservation: NSKeyValueObservation?
     
     //MARK: - Calculated Properties
-    
     private let webView: WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +46,6 @@ final class WebViewViewController: UIViewController {
         backButton.addTarget(nil, action: #selector(didTapBackButton), for: .touchUpInside)
         return backButton
     }()
-    
     
     //MARK: - ViewLifeCicle
     override func viewDidLoad() {
@@ -77,7 +75,7 @@ final class WebViewViewController: UIViewController {
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
-    ///Конфигуруруем URL-запрос для авторизации
+    ///Конфигурируем URL-запрос для авторизации
     private func createAuthURL() -> URL {
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize")!
         urlComponents.queryItems = [
@@ -133,6 +131,7 @@ final class WebViewViewController: UIViewController {
     }
 }
 
+//MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,

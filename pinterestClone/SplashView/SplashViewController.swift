@@ -9,6 +9,7 @@ import UIKit
 import ProgressHUD
 
 class SplashViewController: UIViewController {
+    //MARK: - Private Properties
     private let oauth2Service = OAuth2Service()
     private let tokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
@@ -17,6 +18,7 @@ class SplashViewController: UIViewController {
     
     private var splashLogoImage: UIImageView!
     
+    //MARK: - Life Cycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         createSplashLogoImage(safeArea: view.safeAreaLayoutGuide)
@@ -61,6 +63,7 @@ class SplashViewController: UIViewController {
     }
 }
 
+//MARK: - createSplashLogo
 extension SplashViewController {
     ///Отрисовываем дубликат стартового Лого
     private func createSplashLogoImage(safeArea: UILayoutGuide) {
@@ -79,6 +82,7 @@ extension SplashViewController {
     }
 }
 
+// MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         dismiss(animated: true) { [weak self] in
