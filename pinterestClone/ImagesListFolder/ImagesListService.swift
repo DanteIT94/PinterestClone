@@ -21,6 +21,7 @@ class ImagesListService {
     private let dateFormatter = ISO8601DateFormatter()
     
     
+    
     //MARK: - Ловим Фото из сети
     func fetchPhotosNextPage() {
         guard task == nil else {return}
@@ -110,7 +111,7 @@ class ImagesListService {
     //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
         let createdAt = photoResult.createdAt ?? ""
-        
+
         let photo = Photo(id: photoResult.id,
                           size: CGSize(width: photoResult.width, height: photoResult.height),
                           createdAt: dateFormatter.date(from: createdAt),

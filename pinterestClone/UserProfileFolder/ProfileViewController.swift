@@ -96,7 +96,7 @@ final class ProfileViewController: UIViewController {
         logoutButton.setTitle("", for: .normal)
         logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
         logoutButton.imageView?.contentMode = .scaleAspectFill
-        logoutButton.addTarget(nil, action: #selector(accountLogout), for: .touchUpInside)
+        logoutButton.addTarget(nil, action: #selector(logoutButtonTapped), for: .touchUpInside)
         view.addSubview(logoutButton)
         logoutButton.tintColor = .YPRed
         logoutButton.centerYAnchor.constraint(equalTo: avatarImage.centerYAnchor).isActive = true
@@ -139,8 +139,26 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
     }
     
+    //MARK: - Алерт по кнопку выхода
+    @objc private func logoutButtonTapped() {
+        let alert = UIAlertController(title: "Пока, Пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else {return}
+            self.accountLogout()
+        }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
     //MARK: -Логаут из акка
-    @objc private func accountLogout() {
+    private func accountLogout() {
         tokenStorage.keychainWrapper.removeObject(forKey: "token")
         UIBlockingProgressHUD.show()
         ///Чистим куки из хранилища

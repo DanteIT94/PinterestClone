@@ -18,12 +18,7 @@ final class ImagesListViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    } ()
+
     
     //MARK: Private Properties
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
@@ -154,10 +149,8 @@ extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let date = photos[indexPath.row].createdAt else { return }
         let dateString = dateFormatter.string(from: date)
-//        let isLiked = indexPath.row % 2 == 0
-//        guard let likedImage = isLiked ? UIImage(named: "isLiked") : UIImage(named: "isUnliked") else {
-//            return
-//        }
+        
+
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "image_placeholder")) { [weak self] result in
@@ -215,5 +208,15 @@ extension ImagesListViewController: ImagesListCellDelegate {
         present(alertVC, animated: true)
     }
     
-    
+}
+
+extension ImagesListViewController {
+    private  var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }
 }
