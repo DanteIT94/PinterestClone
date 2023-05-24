@@ -142,8 +142,8 @@ extension ImagesListViewController {
         guard let date = photos[indexPath.row].createdAt else { return }
         let dateString = dateFormatter.string(from: date)
         
-        
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
+        cell.setAnimatedGradient()
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "image_placeholder")) { [weak self] result in
             guard let self = self else {return}

@@ -40,7 +40,23 @@ final class ImagesListCell: UITableViewCell {
         return  likeButton
     }()
     
+    private let animatedGradient: CAGradientLayer = {
+       let animatedGradient = CAGradientLayer()
+        animatedGradient.locations = [0, 0.1, 0.3]
+        animatedGradient.colors = [
+            UIColor(red: 0.682, green: 0.686, blue: 0.706, alpha: 1).cgColor,
+            UIColor(red: 0.531, green: 0.533, blue: 0.553, alpha: 1).cgColor,
+            UIColor(red: 0.431, green: 0.433, blue: 0.453, alpha: 1).cgColor
+        ]
+        animatedGradient.startPoint = CGPoint(x: 0, y: 0.5)
+        animatedGradient.endPoint = CGPoint(x: 1, y: 0.5)
+        animatedGradient.cornerRadius = 16
+        animatedGradient.masksToBounds = true
+        return animatedGradient
+    }()
+    
     private var gradientLayer: CAGradientLayer!
+    private var animationLayers = Set<CALayer>()
     
     //MARK: - Methods-initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -57,6 +73,7 @@ final class ImagesListCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer?.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+        animatedGradient.frame = cellImage.bounds
     }
     
     override func prepareForReuse() {
@@ -71,6 +88,19 @@ final class ImagesListCell: UITableViewCell {
         cellImage.image = image
         dateLabel.text = date
         setIsLiked(isLiked)
+        createGradientLayer()
+        removeAnimatedGradient()
+    }
+    
+    func setAnimatedGradient() {
+        animationLayers.insert(animatedGradient)
+        cellImage.layer.addSublayer(animatedGradient)
+        let gradientChangeAnimation = CABasicAnimation(keyPath: "locations")
+        gradientChangeAnimation.duration = 1
+        gradientChangeAnimation.repeatCount = .infinity
+        gradientChangeAnimation.fromValue = [0, 0.1, 0.3]
+        gradientChangeAnimation.toValue = [0, 0.8, 1]
+        animatedGradient.add(gradientChangeAnimation, forKey: "locationsChange")
     }
     
     
@@ -120,5 +150,11 @@ final class ImagesListCell: UITableViewCell {
     
     @objc private func likeButtonClicked() {
         delegate?.imageListCellDidTapLike(self)
+    }
+    
+    func removeAnimatedGradient() {
+        animationLayers.forEach { layers in
+            layers.removeFromSuperlayer()
+        }
     }
 }
