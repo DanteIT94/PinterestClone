@@ -20,7 +20,7 @@ final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     private var animationLayers = Set<CALayer>()
     
-    
+    //MARK: -Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .YPBlack
@@ -41,7 +41,6 @@ final class ProfileViewController: UIViewController {
         
         updateAvatar()
     }
-    
     
     //MARK: - Private Methods
     //В профиле
@@ -137,8 +136,6 @@ final class ProfileViewController: UIViewController {
                 self?.avatarImage.image = UIImage(named: "my_avatar")
             }
         }
-//        let placeholderImage = UIImage(systemName: "my_avatar")
-//        avatarImage.kf.setImage(with: url, placeholder: placeholderImage)
     }
     
     private func subscribeForAvatarUpdates() {
@@ -172,7 +169,7 @@ final class ProfileViewController: UIViewController {
     
     //MARK: -Логаут из акка
     private func accountLogout() {
-        tokenStorage.keychainWrapper.removeObject(forKey: "token")
+        KeychainWrapper.standard.removeObject(forKey: "token")
         UIBlockingProgressHUD.show()
         ///Чистим куки из хранилища
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
@@ -186,9 +183,7 @@ final class ProfileViewController: UIViewController {
         let splashVC = SplashViewController()
         window?.rootViewController = splashVC
         UIBlockingProgressHUD.dismiss()
-        
     }
-    
 }
 
 //MARK: Наводим градиентную анимацию

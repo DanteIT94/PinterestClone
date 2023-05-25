@@ -20,13 +20,10 @@ class ImagesListService {
     private let urlSession = URLSession.shared
     private let dateFormatter = ISO8601DateFormatter()
     
-    
-    
     //MARK: - Ловим Фото из сети
     func fetchPhotosNextPage() {
         guard task == nil else {return}
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
-        
         
         var urlComponents = URLComponents(string: "https://api.unsplash.com")
         urlComponents?.path = "/photos"
@@ -40,7 +37,7 @@ class ImagesListService {
         guard let token = tokenStorage.token else {return}
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        let dataTask = urlSession.objectTask(for: request) {[weak self] (result: Result<[PhotoResult],Error>) in
+        let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self = self else { return }
             print(result)
             switch result {
@@ -57,9 +54,10 @@ class ImagesListService {
                     self.task = nil
                 }
             case .failure(let error):
-                print("Failed to fetch photos:", error)
-                task = nil
-                return
+                DispatchQueue.main.async {
+                    print("Failed to fetch photos:", error)
+                    self.task = nil
+                }
             }
         }
         task = dataTask
@@ -103,7 +101,9 @@ class ImagesListService {
                     }
                 }
             case .failure(let error):
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
         dataTask.resume()
@@ -111,7 +111,6 @@ class ImagesListService {
     //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
         let createdAt = photoResult.createdAt ?? ""
-        
         let photo = Photo(id: photoResult.id,
                           size: CGSize(width: photoResult.width, height: photoResult.height),
                           createdAt: dateFormatter.date(from: createdAt),

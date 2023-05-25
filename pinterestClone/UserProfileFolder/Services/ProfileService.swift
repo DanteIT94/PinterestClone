@@ -35,7 +35,7 @@ final class ProfileService {
             switch result {
             case .success(let profileResult):
                 let profile = Profile(username: profileResult.username,
-                                      name: "\(profileResult.firstName) \(profileResult.lastName)",
+                                      name: "\(profileResult.firstName) \(profileResult.lastName ?? " ")",
                                       loginName: "@\(profileResult.username)",
                                       bio: profileResult.bio
                 )
@@ -47,29 +47,4 @@ final class ProfileService {
         }
         fetchProfileTask?.resume()
     }
-}
-
-//MARK: - Structs
-///Определяем структуру ProfileResult, которая будет использоваться для декодирования ответа сервера.
-struct ProfileResult: Codable {
-    let username: String
-    let firstName: String
-    let lastName: String
-    let bio: String?
-    
-    ///Определяем свойства структуры, которые соответствуют полям ответа сервера.
-    enum CodingKeys: String, CodingKey {
-        case username = "username"
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case bio = "bio"
-    }
-}
-
-///Структура для "переформатирования" полученных данных под модель профиля
-struct Profile: Codable {
-    var  username: String
-    var name: String
-    var loginName: String
-    var bio: String?
 }

@@ -72,7 +72,7 @@ final class ImagesListCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        gradientLayer?.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+        gradientLayer.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
         animatedGradient.frame = cellImage.bounds
     }
     
@@ -88,7 +88,6 @@ final class ImagesListCell: UITableViewCell {
         cellImage.image = image
         dateLabel.text = date
         setIsLiked(isLiked)
-        createGradientLayer()
         removeAnimatedGradient()
     }
     
@@ -105,16 +104,17 @@ final class ImagesListCell: UITableViewCell {
     
     
     //MARK: - Private Methods
+    ///Задаем градиентный  слой внизу ячейки
     private func createGradientLayer() {
-        //MARK: - градиентный слой (✅DONE)
         ///Задаем градиентный слой ячейкам
         gradientLayer = CAGradientLayer()
         gradientLayer.colors = [UIColor.YPGradient0?.cgColor as Any, UIColor.YPGradient20?.cgColor as Any]
         gradientLayer.locations = [0.0, 1.0]
-        //Установливаем границы градиента
-        gradientLayer.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+        gradientLayer.startPoint = CGPoint(x: 0.25, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 0.75, y: 0.5)
+        gradientLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 0.54, c: -0.54, d: 0, tx: 0.77, ty: 0))
         //Добавляем градиентный слой
-        cellImage.layer.insertSublayer(gradientLayer, at: 0)
+        cellImage.layer.addSublayer(gradientLayer)
     }
     
     private func createCell() {

@@ -140,7 +140,7 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         guard let date = photos[indexPath.row].createdAt else { return }
-        let dateString = dateFormatter.string(from: date)
+        let dateString = date.dateTimeString
         
         guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
         cell.setAnimatedGradient()
@@ -152,10 +152,12 @@ extension ImagesListViewController {
                 cell.configureCellElements(image: image.image, date: dateString, isLiked: photos[indexPath.row].isLiked)
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(_):
-                return
+                guard let placeholderImage = UIImage(named: "image_placeholder") else { return }
+                cell.configureCellElements(image: placeholderImage, date: "Error", isLiked: false)
             }
         }
-        //TODO: реализуем эффект нажатия на ячейку без серого выделения (✅DONE)
+        
+        /// эффект нажатия на ячейку без серого выделения
         let selectedView = UIView()
         ///Устанавливаем цвет фона
         selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
@@ -166,7 +168,7 @@ extension ImagesListViewController {
 //MARK: - Реализуем делегат для Кнопки Лайка
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         let photo = photos[indexPath.row]
         ///show Loader
@@ -183,10 +185,11 @@ extension ImagesListViewController: ImagesListCellDelegate {
                     UIBlockingProgressHUD.dismiss()
                 }
             case .failure:
-                UIBlockingProgressHUD.dismiss()
-                self.showAlertViewController()
+                DispatchQueue.main.async {
+                    UIBlockingProgressHUD.dismiss()
+                    self.showAlertViewController()
+                }
             }
-            
         }
     }
     
@@ -198,18 +201,5 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let action = UIAlertAction(title: "Ok", style: .default)
         alertVC.addAction(action)
         present(alertVC, animated: true)
-    }
-    
-}
-
-//MARK: -DateFormatter
-extension ImagesListViewController {
-    private  var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        formatter.locale = Locale(identifier: "ru")
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter
     }
 }
