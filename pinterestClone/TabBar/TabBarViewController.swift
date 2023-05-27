@@ -8,6 +8,7 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    //MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.isTranslucent = false

@@ -7,6 +7,16 @@
 
 import UIKit
 
+
+
+extension JSONDecoder {
+    static var shared: JSONDecoder = {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        return decoder
+    }()
+}
+
 ///Работаем с сетевым запросом
 ///
 ///Перечисление NetworkError, которое может быть использовано для указания ошибок, связанных с сетевыми запросами.
@@ -28,9 +38,11 @@ extension URLSession {
         let task = dataTask(with: request) { data, response, error in
             if let data = data, let response = response as? HTTPURLResponse {
                 if 200..<300 ~= response.statusCode {
-                    let jsonDecoder = JSONDecoder()
+//                    let jsonDecoder = JSONDecoder()
+//                    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                     do {
-                        let decodedModel = try jsonDecoder.decode(T.self, from: data)
+                        let decodedModel = try JSONDecoder.shared.decode(T.self, from: data)
+                        print(decodedModel)
                         fulfilCompletion(.success(decodedModel))
                     } catch {
                         fulfilCompletion(.failure(NetworkError.decodingError))

@@ -3,14 +3,10 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     
     //MARK: - Properties
-     var image: UIImage! {
-        didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-            rescaleAndCenterImageInScrollView(image: image)
-        }
-    }
     
+    var fullImageUrl: URL?
+    
+    //MARK: - Computered Properties
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,14 +41,23 @@ final class SingleImageViewController: UIViewController {
         return shareButton
     }()
     
+    //MARK: - Life Cycle
+    
+    init(fullImageUrl: URL? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        self.fullImageUrl = fullImageUrl
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
-        createSingleImageView()
         scrollView.delegate = self
-        rescaleAndCenterImageInScrollView(image: image)
-}
-
+        fetchFullImage()
+    }
+    
     
     
     //MARK: - Private Methods
@@ -61,7 +66,7 @@ final class SingleImageViewController: UIViewController {
     }
     
     @objc private func didtapShareButton(_ sender: UIButton) {
-        guard let image = image else { return }
+        guard let image = imageView.image else { return }
         let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         ///Показ UIActivityViewController
         if let popoverPresentationController = vc.popoverPresentationController {
@@ -88,6 +93,24 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
+    func fetchFullImage() {
+        guard let fullImageUrl = fullImageUrl else { return }
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: fullImageUrl) { [weak self] result in
+            guard let self = self else {return}
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success(let resultImage):
+                createSingleImageView()
+                self.rescaleAndCenterImageInScrollView(image: resultImage.image)
+            case .failure:
+                self.showError()
+            }
+        }
+        
+    }
+    
+    
     private func createSingleImageView() {
         view.backgroundColor = .YPBlack
         
@@ -97,7 +120,7 @@ final class SingleImageViewController: UIViewController {
         view.addSubview(shareButton)
         
         NSLayoutConstraint.activate([
-        //Задаем ScrollView на весь экран контроллера
+            //Задаем ScrollView на весь экран контроллера
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -120,8 +143,26 @@ final class SingleImageViewController: UIViewController {
         ])
     }
     
+    private func showError() {
+        let alertVC = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Повторим еще раз?",
+            preferredStyle: .alert)
+        let actionNo = UIAlertAction(title: "Не надо", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true)
+        }
+        let actionAgain = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+            self?.fetchFullImage()
+        }
+        
+        alertVC.addAction(actionNo)
+        alertVC.addAction(actionAgain)
+        present(alertVC, animated: true)
+    }
+    
 }
 
+//MARK: -UIScrollViewDelegate - Centring
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
