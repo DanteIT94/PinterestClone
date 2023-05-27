@@ -94,16 +94,16 @@ final class SingleImageViewController: UIViewController {
     }
     
     func fetchFullImage() {
-        guard let fullImageUrl = fullImageUrl else {return}
+        guard let fullImageUrl = fullImageUrl else { return }
         UIBlockingProgressHUD.show()
-        imageView.kf.setImage(with: fullImageUrl) {[weak self] result in
+        imageView.kf.setImage(with: fullImageUrl) { [weak self] result in
             guard let self = self else {return}
             UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success(let ResultImage):
+            case .success(let resultImage):
                 createSingleImageView()
-                self.rescaleAndCenterImageInScrollView(image: ResultImage.image)
-            case .failure(_):
+                self.rescaleAndCenterImageInScrollView(image: resultImage.image)
+            case .failure:
                 self.showError()
             }
         }
@@ -148,7 +148,7 @@ final class SingleImageViewController: UIViewController {
             title: "Что-то пошло не так(",
             message: "Повторим еще раз?",
             preferredStyle: .alert)
-        let actionNo = UIAlertAction(title: "Не надо", style: .default) {[weak self] _ in
+        let actionNo = UIAlertAction(title: "Не надо", style: .default) { [weak self] _ in
             self?.dismiss(animated: true)
         }
         let actionAgain = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in

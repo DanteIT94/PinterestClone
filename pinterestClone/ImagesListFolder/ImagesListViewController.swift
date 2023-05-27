@@ -29,7 +29,7 @@ final class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         createTableViewLayout()
         
-        ///Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
+        /// Настраиваем ячейку таблицы "из кода" (обычно это делается из viewDidLoad)
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: "ImagesListCell")
         tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0 )
         
@@ -88,7 +88,7 @@ final class ImagesListViewController: UIViewController {
 //MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ///Этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качестве аргумента)
+        /// Этот метод ответчает за действия, которые будут выполнены при тапе по ячейке (адрес ячейки содержиться в indexPath и передается в качестве аргумента)
         if let cell = tableView.cellForRow(at: indexPath) as? ImagesListCell {
             cell.isSelected = false
         }
@@ -105,8 +105,8 @@ extension ImagesListViewController: UITableViewDelegate {
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
     }
-    
-    ///В этом методе вызываем метод fetchPhotosNextPage из ImagesListService
+     
+    /// В этом методе вызываем метод fetchPhotosNextPage из ImagesListService
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard indexPath.row + 1 == imageListService.photos.count else { return }
         imageListService.fetchPhotosNextPage()
@@ -120,19 +120,19 @@ extension ImagesListViewController: UITableViewDataSource {
         return photos.count
     }
     
-    ///Метод возвращает ячейку
+    /// Метод возвращает ячейку
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         ///1) Добавляем метод, который из всех ячеек, зарегистрированных ранее, возвращает ячейку по идентификатору, добавленому ранее.
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath)
-        ///2) Для работы с ячейкой как с экземпляром класса ImagesListCell - нужно сделать приведение типов
+        /// 2) Для работы с ячейкой как с экземпляром класса ImagesListCell - нужно сделать приведение типов
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
         imageListCell.backgroundColor = .YPBlack
         imageListCell.delegate = self
-        ///3) Метод конфигурации ячейки (искать в классе ImageList)
+        /// 3) Метод конфигурации ячейки (искать в классе ImageList)
         configCell(for: imageListCell, with: indexPath)
-        ///4) Возвращаем ячейку
+        /// 4) Возвращаем ячейку
         return imageListCell
     }
 }
@@ -149,7 +149,7 @@ extension ImagesListViewController {
             guard let self = self else {return}
             switch result {
             case .success(let image):
-                cell.configureCellElements(image: image.image, date: dateString, isLiked: photos[indexPath.row].isLiked)
+                cell.configureCellElements(image: image.image, date: dateString, isLiked: photos[indexPath.row].likedByUser)
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(_):
                 guard let placeholderImage = UIImage(named: "image_placeholder") else { return }
@@ -159,7 +159,7 @@ extension ImagesListViewController {
         
         /// эффект нажатия на ячейку без серого выделения
         let selectedView = UIView()
-        ///Устанавливаем цвет фона
+        /// Устанавливаем цвет фона
         selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
         cell.selectedBackgroundView = selectedView
     }
@@ -171,17 +171,16 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         
         let photo = photos[indexPath.row]
-        ///show Loader
+        /// show Loader
         UIBlockingProgressHUD.show()
-        imageListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self] result in
+        imageListService.changeLike(photoId: photo.id, isLike: !photo.likedByUser) { [weak self] result in
             guard let self = self else {return}
             switch result {
             case .success:
                 DispatchQueue.main.async {
                     ///синх. массив картинок с сервисом
                     self.photos = self.imageListService.photos
-                    ///Измен
-                    cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                    cell.setIsLiked(self.photos[indexPath.row].likedByUser)
                     UIBlockingProgressHUD.dismiss()
                 }
             case .failure:
@@ -198,7 +197,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             title: "Что-то пошло не так(",
             message: "Не удалось поставить лайк:(",
             preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default)
+        let action = UIAlertAction(title: "Ok", style: .default) 
         alertVC.addAction(action)
         present(alertVC, animated: true)
     }

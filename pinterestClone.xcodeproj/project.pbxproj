@@ -31,6 +31,7 @@
 		92D726582A1F652500003B8B /* Date+Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D726572A1F652500003B8B /* Date+Extension .swift */; };
 		92D7265A2A1F7E4700003B8B /* ProfileResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D726592A1F7E4700003B8B /* ProfileResultModel.swift */; };
 		92D7265F2A1FA63000003B8B /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D7265E2A1FA63000003B8B /* ProfileModel.swift */; };
+		92D726612A21F94B00003B8B /* AlertPresenter(inProgress).swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D726602A21F94B00003B8B /* AlertPresenter(inProgress).swift */; };
 		92F590442A0AB75E002727E3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 92F590432A0AB75E002727E3 /* Kingfisher */; };
 		92F590472A0C2835002727E3 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 92F590462A0C2835002727E3 /* SwiftKeychainWrapper */; };
 		92F5904A2A0CD259002727E3 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F590492A0CD259002727E3 /* TabBarViewController.swift */; };
@@ -68,6 +69,7 @@
 		92D726572A1F652500003B8B /* Date+Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension .swift"; sourceTree = "<group>"; };
 		92D726592A1F7E4700003B8B /* ProfileResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResultModel.swift; sourceTree = "<group>"; };
 		92D7265E2A1FA63000003B8B /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		92D726602A21F94B00003B8B /* AlertPresenter(inProgress).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertPresenter(inProgress).swift"; sourceTree = "<group>"; };
 		92F590492A0CD259002727E3 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		92F5904B2A111661002727E3 /* OAuthTokenResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthTokenResponseBody.swift; sourceTree = "<group>"; };
 		92F5904D2A12CAE8002727E3 /* KeyChainManager(inProgress).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyChainManager(inProgress).swift"; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				92D726572A1F652500003B8B /* Date+Extension .swift */,
 				92F5904D2A12CAE8002727E3 /* KeyChainManager(inProgress).swift */,
 				92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */,
+				92D726602A21F94B00003B8B /* AlertPresenter(inProgress).swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -188,9 +191,9 @@
 		92D5A81129C620F0000F7A1C /* ImagesListFolder */ = {
 			isa = PBXGroup;
 			children = (
+				92D726622A21FA7B00003B8B /* Services */,
 				92D7265B2A1FA5B600003B8B /* Models */,
 				92D5A7DE29C360D9000F7A1C /* ImagesListViewController.swift */,
-				92F5904F2A14C420002727E3 /* ImagesListService.swift */,
 				92D5A81229C62112000F7A1C /* ImagesListCell.swift */,
 				9290C93B29D7296D00ADF3C3 /* SingleImageFolder */,
 			);
@@ -223,6 +226,14 @@
 				92D7265E2A1FA63000003B8B /* ProfileModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		92D726622A21FA7B00003B8B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				92F5904F2A14C420002727E3 /* ImagesListService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		92F590482A0CD242002727E3 /* TabBar */ = {
@@ -329,6 +340,7 @@
 				92D726582A1F652500003B8B /* Date+Extension .swift in Sources */,
 				92D5A7DD29C360D9000F7A1C /* SceneDelegate.swift in Sources */,
 				92D5A81029C5C3B4000F7A1C /* UIColor+Extension.swift in Sources */,
+				92D726612A21F94B00003B8B /* AlertPresenter(inProgress).swift in Sources */,
 				92F5904C2A111661002727E3 /* OAuthTokenResponseBody.swift in Sources */,
 				92A3C12A2A06E44F004598E0 /* ProfileImageService.swift in Sources */,
 				928E65BD29EF2BAB000DA229 /* AuthViewController.swift in Sources */,

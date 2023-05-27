@@ -169,7 +169,7 @@ final class ProfileViewController: UIViewController {
     
     //MARK: -Логаут из акка
     private func accountLogout() {
-        KeychainWrapper.standard.removeObject(forKey: "token")
+        tokenStorage.deleteToken()
         UIBlockingProgressHUD.show()
         ///Чистим куки из хранилища
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)

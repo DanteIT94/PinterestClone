@@ -35,13 +35,13 @@ final class ProfileService {
             switch result {
             case .success(let profileResult):
                 let profile = Profile(username: profileResult.username,
-                                      name: "\(profileResult.firstName) \(profileResult.lastName ?? " ")",
+                                      name: "\(profileResult.firstName) \(profileResult.lastName ?? "")",
                                       loginName: "@\(profileResult.username)",
                                       bio: profileResult.bio
                 )
                 self?.profile = profile
                 completion(.success(profile))
-            case .failure(_):
+            case .failure:
                 completion(.failure(ProfileError.decodingFailed))
             }
         }

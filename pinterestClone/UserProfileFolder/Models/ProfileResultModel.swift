@@ -15,11 +15,11 @@ struct ProfileResult: Codable {
     let bio: String?
     
     ///Определяем свойства структуры, которые соответствуют полям ответа сервера.
-    enum CodingKeys: String, CodingKey {
-        case username = "username"
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case bio = "bio"
-    }
+//    enum CodingKeys: String, CodingKey {
+//        case username = "username"
+//        case firstName = "first_name"
+//        case lastName = "last_name"
+//        case bio = "bio"
+//    }
 }
 

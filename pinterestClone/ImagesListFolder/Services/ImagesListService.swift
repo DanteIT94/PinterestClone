@@ -93,7 +93,7 @@ class ImagesListService {
                             welcomeDescription: photo.welcomeDescription,
                             thumbImageURL: photo.thumbImageURL,
                             largeImageURL: photo.largeImageURL,
-                            isLiked: !photo.isLiked
+                            likedByUser: !photo.likedByUser
                         )
                         ///Подменяем элемент в массиве
                         self.photos[index] = newPhoto
@@ -111,13 +111,15 @@ class ImagesListService {
     //MARK: -Конверт. JSON в Photo
     private func convertPhoto(_ photoResult: PhotoResult) -> Photo {
         let createdAt = photoResult.createdAt ?? ""
+        let size = CGSize(width: photoResult.width, height: photoResult.height)
+        
         let photo = Photo(id: photoResult.id,
-                          size: CGSize(width: photoResult.width, height: photoResult.height),
+                          size: size,
                           createdAt: dateFormatter.date(from: createdAt),
                           welcomeDescription: photoResult.description,
                           thumbImageURL: photoResult.urls.thumb,
                           largeImageURL: photoResult.urls.full,
-                          isLiked: photoResult.isLiked
+                          likedByUser: photoResult.likedByUser
         )
         return photo
     }

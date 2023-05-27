@@ -17,8 +17,8 @@ private  let dateFormatter: DateFormatter = {
 
 extension Date {
     var dateTimeString: String {
-            var dateString = dateFormatter.string(from: self)
-            dateString = dateString.replacingOccurrences(of: "г.", with: "")
-            return dateString
-        }
+        var dateString = dateFormatter.string(from: self)
+        dateString = dateString.replacingOccurrences(of: "г.", with: "")
+        return dateString
+    }
 }
