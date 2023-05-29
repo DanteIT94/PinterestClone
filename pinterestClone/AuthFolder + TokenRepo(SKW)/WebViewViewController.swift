@@ -12,6 +12,9 @@ import WebKit
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? {get set}
     func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+    
 }
 
 protocol WebViewViewControllerDelegate: AnyObject {
@@ -22,7 +25,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
-
+    
     
     
     weak var delegate: WebViewViewControllerDelegate?
@@ -77,39 +80,47 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
     
     //MARK: - Methods
-    ///Подсчет шкалы загрузки  веб-страницы
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    ///Подсчет шкалы загрузки  веб-страницы(УДАЛИТЬ - БЫЛО ПЕРЕНЕСЕНО В ПРЕЗЕНТЕР)
+    //    private func updateProgress() {
+    //        progressView.progress = Float(webView.estimatedProgress)
+    //        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    //    }
+    
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+    
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
     
     ///Конфигурируем URL-запрос для авторизации (ПЕРЕНЕСЕНО В PRESENTER)
-//    private func createAuthURL() -> URL {
-//        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-//        urlComponents.queryItems = [
-//            URLQueryItem(name: "client_id", value: AccessKey),
-//            URLQueryItem(name: "redirect_uri", value: RedirectURI),
-//            URLQueryItem(name: "response_type", value: "code"),
-//            URLQueryItem(name: "scope", value: AccessScope)
-//        ]
-//        let url  = urlComponents.url!
-//        return url
-//    }
+    //    private func createAuthURL() -> URL {
+    //        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
+    //        urlComponents.queryItems = [
+    //            URLQueryItem(name: "client_id", value: AccessKey),
+    //            URLQueryItem(name: "redirect_uri", value: RedirectURI),
+    //            URLQueryItem(name: "response_type", value: "code"),
+    //            URLQueryItem(name: "scope", value: AccessScope)
+    //        ]
+    //        let url  = urlComponents.url!
+    //        return url
+    //    }
     
-   ///Привязываем обновление шкалы
+    ///Привязываем обновление шкалы
     private func configureProgressBarObserver(){
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
              options: [],
              changeHandler: {[weak self] _, _ in
                  guard let self = self else {return}
-                 self.updateProgress()
+                 presenter?.didUpdateProgressValue(webView.estimatedProgress)
              })
     }
     
     func load(request: URLRequest) {
         webView.load(request)
-}
+    }
     
     ///Создаем WebView версткой + раставляем констрейты
     private func createWebViewLayout() {
@@ -138,7 +149,7 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         
     }
     
-        @objc func didTapBackButton(_ sender: Any?) {
+    @objc func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
 }
