@@ -52,7 +52,8 @@ final class AuthViewController: UIViewController {
     
     @objc func enterButtonTapped() {
         let webVC = WebViewViewController()
-        let webViewPresenter = WebViewPresenter()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
         
         webVC.delegate = self
         
