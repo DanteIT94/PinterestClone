@@ -146,12 +146,22 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
             progressView.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 8),
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -29)
         ])
-        
     }
     
     @objc func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
+    
+    ///функция code(from:) - она возвращает код авторизации, если он получен
+    private func code(from navigationAction: WKNavigationAction) -> String? {
+        if
+            let url = navigationAction.request.url {
+            return presenter?.code(from: url)
+        } else {
+            return nil
+        }
+    }
+    
 }
 
 //MARK: - WKNavigationDelegate
@@ -168,20 +178,6 @@ extension WebViewViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-    
-    ///функция code(from:) - она возвращает код авторизации, если он получен
-    private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: {$0.name == "code"})
-        {
-            return codeItem.value
-        } else {
-            return nil
-        }
-    }
+
 }
 
