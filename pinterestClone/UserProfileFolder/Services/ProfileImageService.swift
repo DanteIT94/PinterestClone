@@ -48,7 +48,8 @@ final class ProfileImageService {
                 }
                 self?.task = nil
             case .failure(_):
-                completion(.failure(ProfileImageError.decodingFailed))            }
+                completion(.failure(ProfileImageError.decodingFailed))
+            }
         }
         task = dataTask
         task?.resume()

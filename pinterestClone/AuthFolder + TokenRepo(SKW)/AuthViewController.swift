@@ -52,9 +52,17 @@ final class AuthViewController: UIViewController {
     
     @objc func enterButtonTapped() {
         let webVC = WebViewViewController()
+        let webViewPresenter = WebViewPresenter()
+        
         webVC.delegate = self
+        
+        webVC.presenter = webViewPresenter
+        webViewPresenter.view = webVC
+        
         webVC.modalPresentationStyle = .fullScreen
         present(webVC, animated: true)
+        
+        
     }
     
     private func createLayout() {
