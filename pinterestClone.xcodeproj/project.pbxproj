@@ -21,7 +21,7 @@
 		92A3C12E2A0944C4004598E0 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3C12D2A0944C4004598E0 /* URLSession+Extension.swift */; };
 		92C0DD0E2A24CCDC002E8CB5 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD0D2A24CCDC002E8CB5 /* WebViewPresenter.swift */; };
 		92C0DD102A2531DE002E8CB5 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD0F2A2531DE002E8CB5 /* AuthHelper.swift */; };
-		92C0DD182A253CB6002E8CB5 /* pinterestCloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD172A253CB6002E8CB5 /* pinterestCloneTests.swift */; };
+		92C0DD182A253CB6002E8CB5 /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD172A253CB6002E8CB5 /* WebViewTests.swift */; };
 		92C14DEF29FC05150035C527 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 92C14DEE29FC05150035C527 /* ProgressHUD */; };
 		92C14DF12A04EC5D0035C527 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */; };
 		92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */; };
@@ -72,7 +72,7 @@
 		92C0DD0D2A24CCDC002E8CB5 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		92C0DD0F2A2531DE002E8CB5 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		92C0DD152A253CB6002E8CB5 /* pinterestCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pinterestCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		92C0DD172A253CB6002E8CB5 /* pinterestCloneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pinterestCloneTests.swift; sourceTree = "<group>"; };
+		92C0DD172A253CB6002E8CB5 /* WebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTests.swift; sourceTree = "<group>"; };
 		92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		92D5A7D729C360D9000F7A1C /* pinterestClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pinterestClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 		92C0DD162A253CB6002E8CB5 /* pinterestCloneTests */ = {
 			isa = PBXGroup;
 			children = (
-				92C0DD172A253CB6002E8CB5 /* pinterestCloneTests.swift */,
+				92C0DD172A253CB6002E8CB5 /* WebViewTests.swift */,
 			);
 			path = pinterestCloneTests;
 			sourceTree = "<group>";
@@ -391,7 +391,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92C0DD182A253CB6002E8CB5 /* pinterestCloneTests.swift in Sources */,
+				92C0DD182A253CB6002E8CB5 /* WebViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

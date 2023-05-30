@@ -62,8 +62,6 @@ final class AuthViewController: UIViewController {
         
         webVC.modalPresentationStyle = .fullScreen
         present(webVC, animated: true)
-        
-        
     }
     
     private func createLayout() {

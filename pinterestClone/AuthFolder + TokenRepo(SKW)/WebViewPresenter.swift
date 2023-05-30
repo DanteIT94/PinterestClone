@@ -54,7 +54,7 @@ final class WebViewPresenter:WebViewPresenterProtocol {
     }
     
     ///Функция вычисления того, должен ли быть скрыт progressView во WebView (ДЛЯ ТЕСТИРОВАНИЯ). 
-    private func shouldHideProgress(for value: Float) -> Bool {
+    func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
     }
     
