@@ -24,7 +24,7 @@ final class ProfileService: ProfileServiceProtocol {
     private var fetchProfileTask: URLSessionTask?
     private let urlSession = URLSession.shared
     
-    //MARK: -Methods
+    //MARK: - Methods
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         ///Закрываем предыдущую таску если fetchProfileTask не nil
         fetchProfileTask?.cancel()

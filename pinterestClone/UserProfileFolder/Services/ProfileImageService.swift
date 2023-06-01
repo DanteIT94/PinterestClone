@@ -21,8 +21,6 @@ final class ProfileImageService:  ProfileImageServiceProtocol {
     }
     //MARK: -Properties
     private(set) var DidChangeNotfication = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-//    static var shared = ProfileImageService()
-//    private init() {}
     
     private let tokenStorage = OAuth2TokenStorage()
     private var task: URLSessionTask?
@@ -44,13 +42,13 @@ final class ProfileImageService:  ProfileImageServiceProtocol {
             guard let self else { return }
             switch result {
             case .success(let userResult):
-                self.avatarURL = userResult.profileImage.small
+                self.avatarURL = userResult.profileImage.large
                 if self.avatarURL != nil {
-                    completion(.success(userResult.profileImage.small))
+                    completion(.success(userResult.profileImage.large))
                     NotificationCenter.default.post(
                                                     name: self.DidChangeNotfication,
                                                     object: self,
-                                                    userInfo:  ["URL": userResult.profileImage.small])
+                                                    userInfo:  ["URL": userResult.profileImage.large])
                 } else {
                     completion(.failure(ProfileImageError.invalidData))
                 }
@@ -70,7 +68,7 @@ struct UserResult: Codable {
     let profileImage: ProfileImage
     
     struct ProfileImage: Codable {
-        let small: String
+        let large: String
     }
 }
 
