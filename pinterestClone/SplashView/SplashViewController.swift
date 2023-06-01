@@ -14,13 +14,17 @@ class SplashViewController: UIViewController {
     private let tokenStorage = OAuth2TokenStorage()
     private let profileService: ProfileServiceProtocol
     private let profileImageService: ProfileImageServiceProtocol
+    private let profileImageHelper: ProfileImageHelperProtocol
     private let ShowAuthSegueIdentifier = "ShowAuth"
     
     private var splashLogoImage: UIImageView!
     
-    init(profileService: ProfileServiceProtocol, profileImageService: ProfileImageServiceProtocol) {
+    init(profileService: ProfileServiceProtocol,
+         profileImageService: ProfileImageServiceProtocol,
+         profileImageHelper: ProfileImageHelperProtocol) {
         self.profileService = profileService
         self.profileImageService = profileImageService
+        self.profileImageHelper = profileImageHelper
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,7 +65,10 @@ class SplashViewController: UIViewController {
                     showAlertViewController()
                     return
                 }
-        let tabBarController = TabBarController(profileService: profileService, profileImageService: profileImageService)
+        let tabBarController = TabBarController(
+            profileService: profileService,
+            profileImageService: profileImageService,
+            profileImageHelper: profileImageHelper)
         window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController

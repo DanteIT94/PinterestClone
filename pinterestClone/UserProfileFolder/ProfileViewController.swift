@@ -142,39 +142,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         avatarImage.image = avatar
     }
     
-    
-    //MARK: УДАЛИТЬ!!
-//    func updateAvatar() {
-//        guard
-//            let profileImageURL = presenter?.profileImageService.avatarURL,
-//            let url = URL(string: profileImageURL)
-//        else {return}
-//
-//        let processor = RoundCornerImageProcessor(radius: .point(61))
-//        avatarImage.kf.setImage(with: url, options: [.processor(processor)]) { [weak self] result in
-//            switch result {
-//            case .success:
-//                self?.removeGradient()
-//            case .failure:
-//                self?.avatarImage.image = UIImage(named: "my_avatar")
-//            }
-//        }
-//    }
-//
-//    func subscribeForAvatarUpdates() {
-//        profileImageServiceObserver = NotificationCenter.default.addObserver(
-//            forName: ProfileImageService.DidChangeNotfication,
-//            ///nil - т к мы хотим получать уведомления из любых источников
-//            object: nil,
-//            ///очередь, на которой мы хотим получать уведомления
-//            queue: .main
-//        ) { [weak self] _ in
-//            guard let self = self else {return}
-//            self.updateAvatar()
-//        }
-//        updateAvatar()
-//    }
-    
     //MARK: - Алерт по кнопку выхода
     @objc private func logoutButtonTapped() {
         let alert = UIAlertController(title: "Пока, Пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
@@ -189,25 +156,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         present(alert, animated: true, completion: nil)
         
     }
-    
-    //MARK: -Логаут из акка
-//    func accountLogout() {
-//        tokenStorage.deleteToken()
-//        UIBlockingProgressHUD.show()
-//        ///Чистим куки из хранилища
-//        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-//        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-//            ///Массив полученных записей удаляем из хранилища
-//            records.forEach { record in
-//                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-//            }
-//        }
-//        let window = UIApplication.shared.windows.first
-//        let splashVC = SplashViewController()
-//        window?.rootViewController = splashVC
-//        UIBlockingProgressHUD.dismiss()
-//    }
-    
 }
 
 

@@ -18,7 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         let profileService = ProfileService()
         let profileImageService = ProfileImageService()
-        let splashViewController = SplashViewController(profileService: profileService, profileImageService: profileImageService)
+        let profileImageHelper = ProfileImageHelper()
+        let splashViewController = SplashViewController(
+            profileService: profileService,
+            profileImageService: profileImageService,
+            profileImageHelper: profileImageHelper)
         window?.rootViewController = splashViewController
         window?.makeKeyAndVisible()
     }

@@ -78,11 +78,6 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
     
     //MARK: - Methods
-    ///Подсчет шкалы загрузки  веб-страницы(УДАЛИТЬ - БЫЛО ПЕРЕНЕСЕНО В ПРЕЗЕНТЕР)
-    //    private func updateProgress() {
-    //        progressView.progress = Float(webView.estimatedProgress)
-    //        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    //    }
     
     func setProgressValue(_ newValue: Float) {
         progressView.progress = newValue
@@ -91,19 +86,6 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
     }
-    
-    ///Конфигурируем URL-запрос для авторизации (ПЕРЕНЕСЕНО В PRESENTER)
-    //    private func createAuthURL() -> URL {
-    //        var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)!
-    //        urlComponents.queryItems = [
-    //            URLQueryItem(name: "client_id", value: AccessKey),
-    //            URLQueryItem(name: "redirect_uri", value: RedirectURI),
-    //            URLQueryItem(name: "response_type", value: "code"),
-    //            URLQueryItem(name: "scope", value: AccessScope)
-    //        ]
-    //        let url  = urlComponents.url!
-    //        return url
-    //    }
     
     ///Привязываем обновление шкалы
     private func configureProgressBarObserver(){
@@ -159,7 +141,6 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
             return nil
         }
     }
-    
 }
 
 //MARK: - WKNavigationDelegate

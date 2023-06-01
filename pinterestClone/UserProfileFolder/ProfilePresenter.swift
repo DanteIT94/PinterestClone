@@ -15,7 +15,6 @@ protocol ProfilePresenterProtocol: AnyObject  {
     func subscribeForAvatarUpdates()
     func accountLogout()
     func updateAvatar()
-    func retrieveImage(url: URL, options: KingfisherOptionsInfo?, completion: @escaping (Result<UIImage, Error>) -> Void)
 }
 
 
@@ -28,26 +27,18 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private var profileImageServiceObserver: NSObjectProtocol?
     private let profileService: ProfileServiceProtocol
     private let profileImageService: ProfileImageServiceProtocol
+    private let profileImageHelper: ProfileImageHelperProtocol
     private let tokenStorage = OAuth2TokenStorage()
     
     //MARK: - Initilizers
-    init(profileService: ProfileServiceProtocol, profileImageService: ProfileImageServiceProtocol) {
+    init(profileService: ProfileServiceProtocol, profileImageService: ProfileImageServiceProtocol, profileImageHelper: ProfileImageHelperProtocol) {
         self.profileService = profileService
         self.profileImageService = profileImageService
+        self.profileImageHelper = profileImageHelper
     }
     
     //MARK: - Methods
-    //    ✅
-    func retrieveImage(url: URL, options: KingfisherOptionsInfo?, completion: @escaping (Result<UIImage, Error>) -> Void) {
-        KingfisherManager.shared.retrieveImage(with: url, options: options) { result in
-            switch result {
-            case .success(let avatarResult):
-                completion(.success(avatarResult.image))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+
     //    ✅
     func updateAvatar() {
         guard
@@ -57,7 +48,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         
         let processor = RoundCornerImageProcessor(radius: .point(61))
         
-        retrieveImage(url: url, options: [.processor(processor)]) { [weak self] result in
+        profileImageHelper.retrieveImage(url: url, options: [.processor(processor)]) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let avatar):
@@ -98,9 +89,13 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                 WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
             }
         }
-        let profileService = ProfileService()
-        let profileImageService = ProfileImageService()
-        let splashVC = SplashViewController(profileService: profileService, profileImageService: profileImageService)
+        let profileServiceAfterLogout = ProfileService()
+        let profileImageServiceAfterLogout = ProfileImageService()
+        let profileImageHelperAfterLogout = ProfileImageHelper()
+        let splashVC = SplashViewController(
+            profileService: profileServiceAfterLogout,
+            profileImageService: profileImageServiceAfterLogout,
+            profileImageHelper: profileImageHelperAfterLogout)
         window.rootViewController = splashVC
         UIBlockingProgressHUD.dismiss()
     }

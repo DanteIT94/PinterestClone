@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-//MARK: ЗАГЛУШКИ ДЛЯ ТЕСТОВ!!!
+//MARK: - ЗАГЛУШКИ ДЛЯ ТЕСТОВ!!!
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
     var viewDidLoadCalled: Bool = false
     var view: WebViewViewControllerProtocol?
@@ -42,7 +42,7 @@ final class WebViewControllerSpy: WebViewViewControllerProtocol {
 }
 
 
-
+//-MARK: -Начало
 final class WebViewTests: XCTestCase {
     //MARK: Тест № 1 - Связь webVC & Presenter
     func testViewControllerCallsViewDidLoad() {

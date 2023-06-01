@@ -9,7 +9,13 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController {
+protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol {get}
+}
+
+final class ImagesListViewController: UIViewController & ImagesListViewControllerProtocol {
+    var presenter: ImagesListPresenterProtocol
+    
     
     //MARK: Computered Properties
     private let tableView: UITableView = {
@@ -19,10 +25,21 @@ final class ImagesListViewController: UIViewController {
     }()
     
     //MARK: Private Properties
+//    private (set) var presenter: ImagesListPresenterProtocol?
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private var photos: [Photo] = []
     private let imageListService = ImagesListService()
+    
+    //MARK: Initizilizer
+    init(presenter: ImagesListPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
