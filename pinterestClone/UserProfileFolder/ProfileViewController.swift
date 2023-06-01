@@ -4,8 +4,15 @@ import Kingfisher
 import ProgressHUD
 import SwiftKeychainWrapper
 
-final class ProfileViewController: UIViewController {
-    
+
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol {get}
+    func updateProfileDetails(profile: Profile?)
+    func updateProfileAvatar(avatar: UIImage)
+}
+
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+
     //MARK: - Private Properties
     private var avatarImage: UIImageView!
     private var nameLabel: UILabel!
@@ -13,37 +20,44 @@ final class ProfileViewController: UIViewController {
     private var descriptionLabel: UILabel!
     private var logoutButton: UIButton!
     
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private let tokenStorage = OAuth2TokenStorage()
-    ///Проперти для хранения обсервера
-    private var profileImageServiceObserver: NSObjectProtocol?
+    private (set) var presenter: ProfilePresenterProtocol
+    
+//    private var profileImageServiceObserver: NSObjectProtocol?
     private var animationLayers = Set<CALayer>()
+    
+    init(presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: -Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.view = self
         view.backgroundColor = .YPBlack
-        ///Cоздаем функции для отображения лэйблов, Картин, кнопок
+        ///вызов методов отображения Лэйблов, Авы, Кнопки
         createAvatarImage(safeArea: view.safeAreaLayoutGuide)
         createNameLabel(safeArea: view.safeAreaLayoutGuide)
         createLoginLabel(safeArea: view.safeAreaLayoutGuide)
         createDescriptionLabel(safeArea: view.safeAreaLayoutGuide)
         createLogoutButton(safeArea: view.safeAreaLayoutGuide)
-        
-        updateProfileDetails(profile: profileService.profile)
-        subscribeForAvatarUpdates()
-        
+        //-------------------------------------------------
         setAvatarGradient()
         setNameGradient()
         setLoginGradient()
         setDescriptionGradient()
-        
-        updateAvatar()
+        //--------------------------------------------------
+        //Передаем методы из Presenterа
+        presenter.subscribeForAvatarUpdates()
+        presenter.updateAvatar()
     }
     
     //MARK: - Private Methods
-    //В профиле
+    //MARK: UI-Функции
     private func createAvatarImage(safeArea: UILayoutGuide) {
         avatarImage = UIImageView()
         avatarImage.image = UIImage(named: "my_avatar")
@@ -109,7 +123,9 @@ final class ProfileViewController: UIViewController {
         self.logoutButton = logoutButton
     }
     
-    private func updateProfileDetails(profile: Profile?) {
+    //MARK: ProfileViewControllerProtocol
+    
+    func updateProfileDetails(profile: Profile?) {
         if let profile = profile {
             nameLabel.text = profile.name
             loginLabel.text = profile.loginName
@@ -121,44 +137,51 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.avatarURL,
-            let url = URL(string: profileImageURL)
-        else {return}
-        
-        let processor = RoundCornerImageProcessor(radius: .point(61))
-        avatarImage.kf.setImage(with: url, options: [.processor(processor)]) { [weak self] result in
-            switch result {
-            case .success:
-                self?.removeGradient()
-            case .failure:
-                self?.avatarImage.image = UIImage(named: "my_avatar")
-            }
-        }
+    func updateProfileAvatar(avatar: UIImage) {
+        removeGradient()
+        avatarImage.image = avatar
     }
     
-    private func subscribeForAvatarUpdates() {
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.DidChangeNotfication,
-            ///nil - т к мы хотим получать уведомления из любых источников
-            object: nil,
-            ///очередь, на которой мы хотим получать уведомления
-            queue: .main
-        ) { [weak self] _ in
-            guard let self = self else {return}
-            self.updateAvatar()
-        }
-        updateAvatar()
-    }
+    
+    //MARK: УДАЛИТЬ!!
+//    func updateAvatar() {
+//        guard
+//            let profileImageURL = presenter?.profileImageService.avatarURL,
+//            let url = URL(string: profileImageURL)
+//        else {return}
+//
+//        let processor = RoundCornerImageProcessor(radius: .point(61))
+//        avatarImage.kf.setImage(with: url, options: [.processor(processor)]) { [weak self] result in
+//            switch result {
+//            case .success:
+//                self?.removeGradient()
+//            case .failure:
+//                self?.avatarImage.image = UIImage(named: "my_avatar")
+//            }
+//        }
+//    }
+//
+//    func subscribeForAvatarUpdates() {
+//        profileImageServiceObserver = NotificationCenter.default.addObserver(
+//            forName: ProfileImageService.DidChangeNotfication,
+//            ///nil - т к мы хотим получать уведомления из любых источников
+//            object: nil,
+//            ///очередь, на которой мы хотим получать уведомления
+//            queue: .main
+//        ) { [weak self] _ in
+//            guard let self = self else {return}
+//            self.updateAvatar()
+//        }
+//        updateAvatar()
+//    }
     
     //MARK: - Алерт по кнопку выхода
     @objc private func logoutButtonTapped() {
         let alert = UIAlertController(title: "Пока, Пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
         
         let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
-            guard let self = self else {return}
-            self.accountLogout()
+            guard let self else { return }
+            presenter.accountLogout()
         }
         let noAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         alert.addAction(yesAction)
@@ -168,23 +191,26 @@ final class ProfileViewController: UIViewController {
     }
     
     //MARK: -Логаут из акка
-    private func accountLogout() {
-        tokenStorage.deleteToken()
-        UIBlockingProgressHUD.show()
-        ///Чистим куки из хранилища
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            ///Массив полученных записей удаляем из хранилища
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
-            }
-        }
-        let window = UIApplication.shared.windows.first
-        let splashVC = SplashViewController()
-        window?.rootViewController = splashVC
-        UIBlockingProgressHUD.dismiss()
-    }
+//    func accountLogout() {
+//        tokenStorage.deleteToken()
+//        UIBlockingProgressHUD.show()
+//        ///Чистим куки из хранилища
+//        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+//        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+//            ///Массив полученных записей удаляем из хранилища
+//            records.forEach { record in
+//                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+//            }
+//        }
+//        let window = UIApplication.shared.windows.first
+//        let splashVC = SplashViewController()
+//        window?.rootViewController = splashVC
+//        UIBlockingProgressHUD.dismiss()
+//    }
+    
 }
+
+
 
 //MARK: Наводим градиентную анимацию
 extension ProfileViewController {
@@ -293,7 +319,7 @@ extension ProfileViewController {
         descriptionGradient.add(gradientChangeAnimation, forKey: "locationsChange")
     }
     
-    private func removeGradient() {
+    func removeGradient() {
         animationLayers.forEach { layer in
             layer.removeFromSuperlayer()
         }

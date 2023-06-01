@@ -12,11 +12,21 @@ class SplashViewController: UIViewController {
     //MARK: - Private Properties
     private let oauth2Service = OAuth2Service()
     private let tokenStorage = OAuth2TokenStorage()
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
+    private let profileService: ProfileServiceProtocol
+    private let profileImageService: ProfileImageServiceProtocol
     private let ShowAuthSegueIdentifier = "ShowAuth"
     
     private var splashLogoImage: UIImageView!
+    
+    init(profileService: ProfileServiceProtocol, profileImageService: ProfileImageServiceProtocol) {
+        self.profileService = profileService
+        self.profileImageService = profileImageService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Life Cycle
     override func viewDidAppear(_ animated: Bool) {
@@ -51,7 +61,7 @@ class SplashViewController: UIViewController {
                     showAlertViewController()
                     return
                 }
-        let tabBarController = TabBarController()
+        let tabBarController = TabBarController(profileService: profileService, profileImageService: profileImageService)
         window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController

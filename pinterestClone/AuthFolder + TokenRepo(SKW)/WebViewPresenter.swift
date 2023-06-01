@@ -9,8 +9,6 @@ import UIKit
 
 //fileprivate let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 
-
-
 public protocol WebViewPresenterProtocol: AnyObject {
     var view: WebViewViewControllerProtocol? {get set}
     func viewDidLoad()

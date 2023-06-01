@@ -22,6 +22,7 @@
 		92C0DD0E2A24CCDC002E8CB5 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD0D2A24CCDC002E8CB5 /* WebViewPresenter.swift */; };
 		92C0DD102A2531DE002E8CB5 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD0F2A2531DE002E8CB5 /* AuthHelper.swift */; };
 		92C0DD182A253CB6002E8CB5 /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD172A253CB6002E8CB5 /* WebViewTests.swift */; };
+		92C0DD1F2A265683002E8CB5 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C0DD1E2A265683002E8CB5 /* ProfilePresenter.swift */; };
 		92C14DEF29FC05150035C527 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 92C14DEE29FC05150035C527 /* ProgressHUD */; };
 		92C14DF12A04EC5D0035C527 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */; };
 		92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */; };
@@ -73,6 +74,7 @@
 		92C0DD0F2A2531DE002E8CB5 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		92C0DD152A253CB6002E8CB5 /* pinterestCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pinterestCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92C0DD172A253CB6002E8CB5 /* WebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTests.swift; sourceTree = "<group>"; };
+		92C0DD1E2A265683002E8CB5 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		92C14DF02A04EC5D0035C527 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		92D5A7D729C360D9000F7A1C /* pinterestClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pinterestClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92D5A7DA29C360D9000F7A1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				92D7265D2A1FA60B00003B8B /* Models */,
 				92D7265C2A1FA5FE00003B8B /* Services */,
 				9290C93629D7293D00ADF3C3 /* ProfileViewController.swift */,
+				92C0DD1E2A265683002E8CB5 /* ProfilePresenter.swift */,
 			);
 			path = UserProfileFolder;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				9290C93729D7293D00ADF3C3 /* ProfileViewController.swift in Sources */,
 				92D5A7DF29C360D9000F7A1C /* ImagesListViewController.swift in Sources */,
 				92D5A81329C62112000F7A1C /* ImagesListCell.swift in Sources */,
+				92C0DD1F2A265683002E8CB5 /* ProfilePresenter.swift in Sources */,
 				92F590502A14C420002727E3 /* ImagesListService.swift in Sources */,
 				9290C93A29D7296200ADF3C3 /* SingleImageViewController.swift in Sources */,
 				92D5A7DB29C360D9000F7A1C /* AppDelegate.swift in Sources */,

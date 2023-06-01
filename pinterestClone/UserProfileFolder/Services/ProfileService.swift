@@ -8,17 +8,19 @@
 import UIKit
 import Foundation
 
-final class ProfileService {
+protocol ProfileServiceProtocol: AnyObject {
+    var profile: Profile? {get}
+    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void)
+}
+
+final class ProfileService: ProfileServiceProtocol {
     enum ProfileError: Error {
         case unauthorized
         case invalidData
         case decodingFailed
     }
     //MARK: - Properties
-    static let shared = ProfileService()
-    
     private(set) var profile: Profile?
-
     private var fetchProfileTask: URLSessionTask?
     private let urlSession = URLSession.shared
     
@@ -31,7 +33,8 @@ final class ProfileService {
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
-        fetchProfileTask = urlSession.objectTask(for: request) {[weak self] (result: Result<ProfileResult, Error>) in
+        fetchProfileTask = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self else { return }
             switch result {
             case .success(let profileResult):
                 let profile = Profile(username: profileResult.username,
@@ -39,12 +42,17 @@ final class ProfileService {
                                       loginName: "@\(profileResult.username)",
                                       bio: profileResult.bio
                 )
-                self?.profile = profile
+                self.profile = profile
                 completion(.success(profile))
             case .failure:
                 completion(.failure(ProfileError.decodingFailed))
             }
         }
-        fetchProfileTask?.resume()
+        if let profile {
+            self.fetchProfileTask = nil
+            completion(.success(profile))
+        } else {
+            fetchProfileTask?.resume()
+        }
     }
 }

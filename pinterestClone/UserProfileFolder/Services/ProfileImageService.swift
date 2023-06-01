@@ -7,18 +7,24 @@
 
 import UIKit
 
-final class ProfileImageService {
+protocol ProfileImageServiceProtocol: AnyObject {
+    var DidChangeNotfication: Notification.Name {get}
+    var avatarURL: String? {get}
+    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void)
+}
+
+final class ProfileImageService:  ProfileImageServiceProtocol {
     enum ProfileImageError: Error {
         case unauthorized
         case invalidData
         case decodingFailed
     }
     //MARK: -Properties
-    static let DidChangeNotfication = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    static var shared = ProfileImageService()
-    private init() {}
+    private(set) var DidChangeNotfication = Notification.Name(rawValue: "ProfileImageProviderDidChange")
+//    static var shared = ProfileImageService()
+//    private init() {}
     
-    let tokenStorage = OAuth2TokenStorage()
+    private let tokenStorage = OAuth2TokenStorage()
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     private (set) var avatarURL: String?
@@ -35,20 +41,23 @@ final class ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
+            guard let self else { return }
             switch result {
             case .success(let userResult):
-                self?.avatarURL = userResult.profileImage.small
-                if let avatarURL = self?.avatarURL {
+                self.avatarURL = userResult.profileImage.small
+                if self.avatarURL != nil {
                     completion(.success(userResult.profileImage.small))
-                    NotificationCenter.default.post(name: ProfileImageService.DidChangeNotfication,
+                    NotificationCenter.default.post(
+                                                    name: self.DidChangeNotfication,
                                                     object: self,
                                                     userInfo:  ["URL": userResult.profileImage.small])
                 } else {
                     completion(.failure(ProfileImageError.invalidData))
                 }
-                self?.task = nil
+                self.task = nil
             case .failure(_):
                 completion(.failure(ProfileImageError.decodingFailed))
+                self.task = nil
             }
         }
         task = dataTask
@@ -59,10 +68,6 @@ final class ProfileImageService {
 //MARK: -Structs
 struct UserResult: Codable {
     let profileImage: ProfileImage
-    
-//    enum CodingKeys: String, CodingKey {
-//        case profileImage =  "profile_image"
-//    }
     
     struct ProfileImage: Codable {
         let small: String

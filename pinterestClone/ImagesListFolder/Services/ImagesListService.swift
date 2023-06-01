@@ -39,7 +39,7 @@ class ImagesListService {
         
         let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self = self else { return }
-            print(result)
+//            print(result)
             switch result {
             case .success(let photoResults):
                 DispatchQueue.main.async {
