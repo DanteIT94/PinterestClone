@@ -15,16 +15,6 @@ struct PhotoResult: Codable {
     let description: String?
     let urls: UrlsResult
     let likedByUser: Bool
-    
-//    enum CodingKeys: String, CodingKey {
-//        case id
-//        case createdAt = "created_at"
-//        case width
-//        case height
-//        case description
-//        case urls
-//        case isLiked = "liked_by_user"
-//    }
 }
 
 struct UrlsResult: Codable {

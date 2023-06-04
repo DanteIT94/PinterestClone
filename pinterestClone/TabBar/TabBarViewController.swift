@@ -32,7 +32,12 @@ final class TabBarController: UITabBarController {
         tabBar.barTintColor = .YPBlack
         tabBar.tintColor = .white
         
-        let imagesListViewController = ImagesListViewController()
+        let imagesListHelper = ImagesListHelper()
+        let imagesListService = ImagesListService()
+        let imagesListPresenter = ImagesListPresenter(imagesListHelper: imagesListHelper, imagesListServise: imagesListService)
+        
+        let imagesListViewController = ImagesListViewController(presenter: imagesListPresenter)
+        
         imagesListViewController.tabBarItem = UITabBarItem(
             title: nil,
             image: UIImage(named: "tab_editorial_active"),

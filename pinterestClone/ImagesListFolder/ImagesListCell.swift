@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func stopImageTask(for url: URL)
 }
 
 final class ImagesListCell: UITableViewCell {
@@ -17,14 +18,6 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     weak var delegate: ImagesListCellDelegate?
     
-    //MARK: - Private Computered Properties
-    private let dateLabel: UILabel = {
-        let dateLabel = UILabel()
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.font = .systemFont(ofSize: 13)
-        dateLabel.textColor = .YPWhite
-        return dateLabel
-    }()
     let cellImage: UIImageView = {
         let cellImage = UIImageView()
         cellImage.translatesAutoresizingMaskIntoConstraints = false
@@ -32,6 +25,21 @@ final class ImagesListCell: UITableViewCell {
         cellImage.layer.masksToBounds = true
         return cellImage
     }()
+    
+    //MARK: - Private Computered Properties
+    private var gradientLayer: CAGradientLayer!
+    private var animationLayers = Set<CALayer>()
+    private var imageURL: URL?
+    
+    
+    private let dateLabel: UILabel = {
+        let dateLabel = UILabel()
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.font = .systemFont(ofSize: 13)
+        dateLabel.textColor = .YPWhite
+        return dateLabel
+    }()
+    
     private let likeButton: UIButton = {
         let likeButton = UIButton()
         likeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +63,7 @@ final class ImagesListCell: UITableViewCell {
         return animatedGradient
     }()
     
-    private var gradientLayer: CAGradientLayer!
-    private var animationLayers = Set<CALayer>()
+    
     
     //MARK: - Methods-initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -72,22 +79,27 @@ final class ImagesListCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        gradientLayer.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+        gradientLayer.frame = cellImage.bounds
+//        CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
         animatedGradient.frame = cellImage.bounds
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         //отменяем загрузку во избежании багов
-        cellImage.kf.cancelDownloadTask()
+        if let imageURL {
+            delegate?.stopImageTask(for: imageURL)
+        }
+        removeAnimatedGradient()
     }
     
     //MARK: - Public Methods
     ///Метод для передачи данных об элементах отдельной ячейки
-    func configureCellElements(image: UIImage, date: String, isLiked: Bool) {
+    func configureCellElements(image: UIImage, date: String?, isLiked: Bool, imageURL: URL) {
         cellImage.image = image
         dateLabel.text = date
         setIsLiked(isLiked)
+        self.imageURL = imageURL
         removeAnimatedGradient()
     }
     
@@ -113,6 +125,7 @@ final class ImagesListCell: UITableViewCell {
         gradientLayer.startPoint = CGPoint(x: 0.25, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 0.75, y: 0.5)
         gradientLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 0.54, c: -0.54, d: 0, tx: 0.77, ty: 0))
+        gradientLayer.shouldRasterize = true
         //Добавляем градиентный слой
         cellImage.layer.addSublayer(gradientLayer)
     }
