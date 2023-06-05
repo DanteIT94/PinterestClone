@@ -82,9 +82,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
     
     func fetchPhotosNextPage() {
-//        if photos.count == 0 {
             imagesListService.fetchPhotosNextPage()
-//        }
     }
     
     func likeButtonTapped(for indexPath: IndexPath, completion: @escaping (Bool) -> Void) {

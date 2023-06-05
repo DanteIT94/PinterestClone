@@ -167,6 +167,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 DispatchQueue.main.async {
                     UIBlockingProgressHUD.dismiss()
                     self.showAlertViewController()
+                    return
                 }
             }
         }
