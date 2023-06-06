@@ -38,7 +38,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     //MARK: - Methods
-
+    
     //    ✅
     func updateAvatar() {
         guard
@@ -60,7 +60,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             }
         }
     }
-//    ✅
+    //    ✅
     func subscribeForAvatarUpdates() {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: profileImageService.DidChangeNotfication,
@@ -76,7 +76,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             view?.updateProfileDetails(profile: profile)
         }
     }
-//    ✅
+    //    ✅
     func accountLogout() {
         UIBlockingProgressHUD.show()
         guard let window = UIApplication.shared.windows.first else { return }

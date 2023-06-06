@@ -113,7 +113,7 @@ final class pinterestCloneUITests: XCTestCase {
         sleep(3)
         // Проверить, что открылся экран авторизации
         XCTAssertTrue(app.staticTexts["Войти"].exists)
-
+        
     }
     
     

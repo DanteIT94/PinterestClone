@@ -51,7 +51,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -61,10 +61,10 @@ class SplashViewController: UIViewController {
     // MARK: - Private Methods
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-                    assertionFailure("Invalid config")
-                    showAlertViewController()
-                    return
-                }
+            assertionFailure("Invalid config")
+            showAlertViewController()
+            return
+        }
         let tabBarController = TabBarController(
             profileService: profileService,
             profileImageService: profileImageService,
@@ -140,7 +140,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             }
         }
     }
-
+    
     private func showAlertViewController() {
         let alertVC = UIAlertController(
             title: "Что-то пошло не так(",

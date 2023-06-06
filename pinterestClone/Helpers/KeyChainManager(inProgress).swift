@@ -18,7 +18,7 @@ final class KeychainManager {
     }
     
     private let appTag: Data
-
+    
     init(appTag: Data) {
         self.appTag = appTag
     }
@@ -51,9 +51,9 @@ final class KeychainManager {
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess,
-                let existingItem = item as? [String: Any],
-                let tokenData = existingItem[kSecValueData as String] as? Data,
-                let token = String(data: tokenData, encoding: .utf8) else {
+              let existingItem = item as? [String: Any],
+              let tokenData = existingItem[kSecValueData as String] as? Data,
+              let token = String(data: tokenData, encoding: .utf8) else {
             throw KeychainError.unhandledError(status: status)
         }
         return token

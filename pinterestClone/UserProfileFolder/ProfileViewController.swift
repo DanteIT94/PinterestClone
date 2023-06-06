@@ -12,7 +12,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
 }
 
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
-
+    
     //MARK: - Private Properties
     private var avatarImage: UIImageView!
     private var nameLabel: UILabel!
@@ -22,7 +22,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     
     private (set) var presenter: ProfilePresenterProtocol
     
-//    private var profileImageServiceObserver: NSObjectProtocol?
+    //    private var profileImageServiceObserver: NSObjectProtocol?
     private var animationLayers = Set<CALayer>()
     
     init(presenter: ProfilePresenterProtocol) {
@@ -161,8 +161,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
     }
 }
-
-
 
 //MARK: Наводим градиентную анимацию
 extension ProfileViewController {

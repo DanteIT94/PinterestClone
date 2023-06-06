@@ -14,7 +14,7 @@ protocol AlertPresenterProtocol: AnyObject {
 
 
 final class AlertPresenter: AlertPresenterProtocol {
-   weak var delegate: UIViewController?
+    weak var delegate: UIViewController?
     
     func show(result: AlertModel) {
         let alert = UIAlertController(
@@ -33,7 +33,7 @@ final class AlertPresenter: AlertPresenterProtocol {
         alert.addAction(noAction)
         
         delegate?.present(alert, animated: true, completion: nil)
-
+        
     }
 }
 

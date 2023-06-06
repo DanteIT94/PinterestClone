@@ -71,7 +71,7 @@ final class ImagesListViewController: UIViewController {
         singleImageVC.modalPresentationStyle = .fullScreen
         present(singleImageVC, animated: true, completion: nil)
     }
-
+    
 }
 
 //MARK: - UITableViewDelegate
@@ -142,7 +142,7 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
     
     func configureCellElements(cell: ImagesListCell, image: UIImage, date: String?, isLiked: Bool, imageURL: URL) {
         cell.configureCellElements(image: image, date: date, isLiked: isLiked, imageURL: imageURL)
-
+        
     }
 }
 

@@ -114,7 +114,6 @@ final class ImagesListCell: UITableViewCell {
         cellImage.image = image
         dateLabel.text = date
         setIsLiked(isLiked)
-//        gradientView.layer.addSublayer(gradient)
         gradientView.layer.insertSublayer(gradient, at: 0)
         self.imageURL = imageURL
         removeAnimatedGradient()
@@ -158,8 +157,6 @@ final class ImagesListCell: UITableViewCell {
             dateLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -8)
         ])
         contentView.layer.addSublayer(gradient)
-//        gradientView.layer.addSublayer(gradient)
-
     }
     
     func setIsLiked(_ isLiked: Bool) {

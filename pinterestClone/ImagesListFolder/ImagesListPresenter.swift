@@ -61,7 +61,6 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             switch result {
             case .success(let image):
                 view?.configureCellElements(cell: cell, image: image, date: dateString, isLiked: photos[indexPath.row].likedByUser, imageURL: url)
-//                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(_):
                 guard let placeholderImage = UIImage(named: "image_placeholder") else { return }
                 view?.configureCellElements(cell: cell, image: placeholderImage, date: "Error", isLiked: false, imageURL: url)
@@ -82,7 +81,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     }
     
     func fetchPhotosNextPage() {
-            imagesListService.fetchPhotosNextPage()
+        imagesListService.fetchPhotosNextPage()
     }
     
     func likeButtonTapped(for indexPath: IndexPath, completion: @escaping (Bool) -> Void) {

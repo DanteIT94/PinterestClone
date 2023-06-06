@@ -20,7 +20,7 @@ final class OAuth2Service {
     private var lastCode: String?
     
     private let tokenStorage = OAuth2TokenStorage()
-
+    
     private (set)  var authToken: String? {
         get {
             return tokenStorage.token
@@ -35,13 +35,13 @@ final class OAuth2Service {
     ///Объявление метода fetchAuthToken для выполнения запроса на получение токена аутентификации.
     func fetchOAuthToken(_ code: String, completion: @escaping(Result<String, Error>) -> Void ) {
         assert(Thread.isMainThread)
-
+        
         if lastCode == code {
             return
         }
         guard task == nil else { return }
         lastCode = code
-
+        
         var urlComponents = URLComponents(string: tokenURL)!
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: AccessKey),
@@ -52,7 +52,7 @@ final class OAuth2Service {
         ]
         var request = URLRequest(url: urlComponents.url!)
         request.httpMethod = "POST"
-
+        
         let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { print("self is not exist"); return }
             switch result {

@@ -10,22 +10,22 @@ import Foundation
 import XCTest
 
 final class ProfileViewTests: XCTestCase {
-
+    
     //MARK: Test № 1
-   func testUpdateAvatar() {
+    func testUpdateAvatar() {
         //given
-       let profileService = ProfileServiceMock()
-       let profileImageService = ProfileServiceImageMock()
-       let profileImageHelper = ProfileImageHelperMock()
-       let presenter = ProfilePresenter(profileService: profileService, profileImageService: profileImageService, profileImageHelper: profileImageHelper)
-       let profileVC = ProfileViewControllerSpy(presenter: presenter)
-       
-       //when
-       profileImageService.avatarURL = ImageURLMock.successURL?.absoluteString
-       presenter.updateAvatar()
-       
-       //then
-       XCTAssertEqual(profileVC.image, ImagesMock.successImage)
+        let profileService = ProfileServiceMock()
+        let profileImageService = ProfileServiceImageMock()
+        let profileImageHelper = ProfileImageHelperMock()
+        let presenter = ProfilePresenter(profileService: profileService, profileImageService: profileImageService, profileImageHelper: profileImageHelper)
+        let profileVC = ProfileViewControllerSpy(presenter: presenter)
+        
+        //when
+        profileImageService.avatarURL = ImageURLMock.successURL?.absoluteString
+        presenter.updateAvatar()
+        
+        //then
+        XCTAssertEqual(profileVC.image, ImagesMock.successImage)
     }
     
     //MARK: Test № 2
@@ -47,15 +47,15 @@ final class ProfileViewTests: XCTestCase {
             object: nil,
             userInfo: nil)
         //then
-//        XCTAssertTrue(profileImageService.isFetchProfileImageURLCalled)
-//        XCTAssertEqual(profileImageService.fetchProfileImageURLUsername, "success")
-//        XCTAssertNotNil(profileImageService.fetchProfileImageURLCompletion)
-//        XCTAssertTrue(profileVC.isUpdateProfileDetailsCalled)
-//        XCTAssertTrue(profileVC.updatedProfileDetails! == expectedProfile)
+        //        XCTAssertTrue(profileImageService.isFetchProfileImageURLCalled)
+        //        XCTAssertEqual(profileImageService.fetchProfileImageURLUsername, "success")
+        //        XCTAssertNotNil(profileImageService.fetchProfileImageURLCompletion)
+        //        XCTAssertTrue(profileVC.isUpdateProfileDetailsCalled)
+        //        XCTAssertTrue(profileVC.updatedProfileDetails! == expectedProfile)
     }
     
     
     
     
-
+    
 }
