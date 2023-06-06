@@ -18,6 +18,8 @@
 		927CB17329F436CB009765F3 /* OAuth2TokenStorage + SKW.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927CB17229F436CB009765F3 /* OAuth2TokenStorage + SKW.swift */; };
 		927CB17529F49049009765F3 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927CB17429F49049009765F3 /* SplashViewController.swift */; };
 		9283C49E2A2B508700BEF4D3 /* ImagesListHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283C49D2A2B508700BEF4D3 /* ImagesListHelper.swift */; };
+		9283C4A62A2DCE7F00BEF4D3 /* pinterestCloneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283C4A52A2DCE7F00BEF4D3 /* pinterestCloneUITests.swift */; };
+		9283C4A82A2DCE7F00BEF4D3 /* pinterestCloneUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283C4A72A2DCE7F00BEF4D3 /* pinterestCloneUITestsLaunchTests.swift */; };
 		928E65BA29EB40E4000DA229 /* AuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65B929EB40E4000DA229 /* AuthConfiguration.swift */; };
 		928E65BD29EF2BAB000DA229 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65BC29EF2BAB000DA229 /* AuthViewController.swift */; };
 		928E65BF29EF5922000DA229 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928E65BE29EF5922000DA229 /* WebViewViewController.swift */; };
@@ -63,6 +65,13 @@
 			remoteGlobalIDString = 92D5A7D629C360D9000F7A1C;
 			remoteInfo = pinterestClone;
 		};
+		9283C4A92A2DCE7F00BEF4D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92D5A7CF29C360D9000F7A1C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92D5A7D629C360D9000F7A1C;
+			remoteInfo = pinterestClone;
+		};
 		92C0DD192A253CB6002E8CB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92D5A7CF29C360D9000F7A1C /* Project object */;
@@ -85,6 +94,9 @@
 		927CB17229F436CB009765F3 /* OAuth2TokenStorage + SKW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2TokenStorage + SKW.swift"; sourceTree = "<group>"; };
 		927CB17429F49049009765F3 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		9283C49D2A2B508700BEF4D3 /* ImagesListHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListHelper.swift; sourceTree = "<group>"; };
+		9283C4A32A2DCE7F00BEF4D3 /* pinterestCloneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pinterestCloneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9283C4A52A2DCE7F00BEF4D3 /* pinterestCloneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pinterestCloneUITests.swift; sourceTree = "<group>"; };
+		9283C4A72A2DCE7F00BEF4D3 /* pinterestCloneUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pinterestCloneUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		928E65B929EB40E4000DA229 /* AuthConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConfiguration.swift; sourceTree = "<group>"; };
 		928E65BC29EF2BAB000DA229 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		928E65BE29EF5922000DA229 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +136,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		925923AC2A2882FF00AB91F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9283C4A02A2DCE7F00BEF4D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -188,6 +207,15 @@
 			path = SplashView;
 			sourceTree = "<group>";
 		};
+		9283C4A42A2DCE7F00BEF4D3 /* pinterestCloneUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9283C4A52A2DCE7F00BEF4D3 /* pinterestCloneUITests.swift */,
+				9283C4A72A2DCE7F00BEF4D3 /* pinterestCloneUITestsLaunchTests.swift */,
+			);
+			path = pinterestCloneUITests;
+			sourceTree = "<group>";
+		};
 		928E65BB29EF2B82000DA229 /* AuthFolder + TokenRepo(SKW) */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +262,7 @@
 			children = (
 				92D5A7D929C360D9000F7A1C /* pinterestClone */,
 				92C0DD162A253CB6002E8CB5 /* pinterestCloneTests */,
+				9283C4A42A2DCE7F00BEF4D3 /* pinterestCloneUITests */,
 				92D5A7D829C360D9000F7A1C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -244,6 +273,7 @@
 				92D5A7D729C360D9000F7A1C /* pinterestClone.app */,
 				92C0DD152A253CB6002E8CB5 /* pinterestCloneTests.xctest */,
 				925923AF2A2882FF00AB91F8 /* ProfileViewTests.xctest */,
+				9283C4A32A2DCE7F00BEF4D3 /* pinterestCloneUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -360,6 +390,24 @@
 			productReference = 925923AF2A2882FF00AB91F8 /* ProfileViewTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		9283C4A22A2DCE7F00BEF4D3 /* pinterestCloneUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9283C4AD2A2DCE7F00BEF4D3 /* Build configuration list for PBXNativeTarget "pinterestCloneUITests" */;
+			buildPhases = (
+				9283C49F2A2DCE7F00BEF4D3 /* Sources */,
+				9283C4A02A2DCE7F00BEF4D3 /* Frameworks */,
+				9283C4A12A2DCE7F00BEF4D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9283C4AA2A2DCE7F00BEF4D3 /* PBXTargetDependency */,
+			);
+			name = pinterestCloneUITests;
+			productName = pinterestCloneUITests;
+			productReference = 9283C4A32A2DCE7F00BEF4D3 /* pinterestCloneUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		92C0DD142A253CB6002E8CB5 /* pinterestCloneTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92C0DD1B2A253CB6002E8CB5 /* Build configuration list for PBXNativeTarget "pinterestCloneTests" */;
@@ -414,6 +462,10 @@
 						CreatedOnToolsVersion = 14.3;
 						TestTargetID = 92D5A7D629C360D9000F7A1C;
 					};
+					9283C4A22A2DCE7F00BEF4D3 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 92D5A7D629C360D9000F7A1C;
+					};
 					92C0DD142A253CB6002E8CB5 = {
 						CreatedOnToolsVersion = 14.3;
 						TestTargetID = 92D5A7D629C360D9000F7A1C;
@@ -444,12 +496,20 @@
 				92D5A7D629C360D9000F7A1C /* pinterestClone */,
 				92C0DD142A253CB6002E8CB5 /* pinterestCloneTests */,
 				925923AE2A2882FF00AB91F8 /* ProfileViewTests */,
+				9283C4A22A2DCE7F00BEF4D3 /* pinterestCloneUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		925923AD2A2882FF00AB91F8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9283C4A12A2DCE7F00BEF4D3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -485,6 +545,15 @@
 				925923BE2A28A8F200AB91F8 /* ProfileServiceMock.swift in Sources */,
 				925923C02A28A90B00AB91F8 /* ProfileServiceImageMock.swift in Sources */,
 				925923C42A28BD8100AB91F8 /* ProfileImageHelperMock.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9283C49F2A2DCE7F00BEF4D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9283C4A62A2DCE7F00BEF4D3 /* pinterestCloneUITests.swift in Sources */,
+				9283C4A82A2DCE7F00BEF4D3 /* pinterestCloneUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +614,11 @@
 			target = 92D5A7D629C360D9000F7A1C /* pinterestClone */;
 			targetProxy = 925923B32A2882FF00AB91F8 /* PBXContainerItemProxy */;
 		};
+		9283C4AA2A2DCE7F00BEF4D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92D5A7D629C360D9000F7A1C /* pinterestClone */;
+			targetProxy = 9283C4A92A2DCE7F00BEF4D3 /* PBXContainerItemProxy */;
+		};
 		92C0DD1A2A253CB6002E8CB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 92D5A7D629C360D9000F7A1C /* pinterestClone */;
@@ -599,6 +673,42 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pinterestClone.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/pinterestClone";
+			};
+			name = Release;
+		};
+		9283C4AB2A2DCE7F00BEF4D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C3Q4L42H3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChakyrIT.pinterestCloneUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = pinterestClone;
+			};
+			name = Debug;
+		};
+		9283C4AC2A2DCE7F00BEF4D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C3Q4L42H3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ChakyrIT.pinterestCloneUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = pinterestClone;
 			};
 			name = Release;
 		};
@@ -826,6 +936,15 @@
 			buildConfigurations = (
 				925923B62A2882FF00AB91F8 /* Debug */,
 				925923B72A2882FF00AB91F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9283C4AD2A2DCE7F00BEF4D3 /* Build configuration list for PBXNativeTarget "pinterestCloneUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9283C4AB2A2DCE7F00BEF4D3 /* Debug */,
+				9283C4AC2A2DCE7F00BEF4D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

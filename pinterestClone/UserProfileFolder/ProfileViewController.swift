@@ -80,6 +80,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(nameLabel)
         nameLabel.text = "Denis Chakyr"
+        nameLabel.accessibilityIdentifier = "NameLabel"
         ///Шрифты (требуется корректирование)
         nameLabel.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         nameLabel.textColor = UIColor.YPWhite
@@ -92,6 +93,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginLabel)
         loginLabel.text = "@ChakyrIT"
+        loginLabel.accessibilityIdentifier = "LoginLabel"
         loginLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         loginLabel.textColor = UIColor.YPGrey
         loginLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
@@ -103,6 +105,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)
         descriptionLabel.text = "Войти в Айти!"
+        descriptionLabel.accessibilityIdentifier = "DescriptionLabel"
         descriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         descriptionLabel.textColor = UIColor.YPWhite
         descriptionLabel.leadingAnchor.constraint(equalTo: loginLabel.leadingAnchor).isActive = true
@@ -114,6 +117,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.setTitle("", for: .normal)
         logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
+        logoutButton.accessibilityIdentifier = "LogoutButton"
         logoutButton.imageView?.contentMode = .scaleAspectFill
         logoutButton.addTarget(nil, action: #selector(logoutButtonTapped), for: .touchUpInside)
         view.addSubview(logoutButton)
@@ -145,11 +149,11 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     //MARK: - Алерт по кнопку выхода
     @objc private func logoutButtonTapped() {
         let alert = UIAlertController(title: "Пока, Пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
-        
         let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
             guard let self else { return }
             presenter.accountLogout()
         }
+        yesAction.accessibilityIdentifier = "yesAction"
         let noAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         alert.addAction(yesAction)
         alert.addAction(noAction)

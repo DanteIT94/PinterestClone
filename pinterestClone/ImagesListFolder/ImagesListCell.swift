@@ -35,6 +35,7 @@ final class ImagesListCell: UITableViewCell {
     private let likeButton: UIButton = {
         let likeButton = UIButton()
         likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.accessibilityIdentifier = "LikeButton"
         likeButton.setTitle("", for: .normal)
         likeButton.addTarget(nil, action: #selector(likeButtonClicked), for: .touchUpInside)
         return  likeButton
@@ -59,11 +60,10 @@ final class ImagesListCell: UITableViewCell {
     
     private let gradient: CAGradientLayer = {
         let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.YPBlack?.withAlphaComponent(0).cgColor, UIColor.YPBlack?.cgColor]
+        gradient.colors = [UIColor.YPBlack?.withAlphaComponent(0).cgColor as Any, UIColor.YPBlack?.cgColor as Any]
         gradient.startPoint = CGPoint(x: 0.5, y: 0)
         gradient.endPoint = CGPoint(x: 0.5, y: 1)
         gradient.locations = [0, 1]
-//        gradient.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 0.54, c: -0.54, d: 0, tx: 0.77, ty: 0))
         gradient.opacity = 0.4
         return gradient
     }()
@@ -133,19 +133,6 @@ final class ImagesListCell: UITableViewCell {
     
     
     //MARK: - Private Methods
-    ///Задаем градиентный  слой внизу ячейки
-//    private func createGradientLayer() {
-//        ///Задаем градиентный слой ячейкам
-//        gradientLayer = CAGradientLayer()
-//        gradientLayer.colors = [UIColor.YPGradient20?.cgColor, UIColor.YPGradient0?.cgColor]
-//        gradientLayer.locations = [0.0, 1.0]
-//        gradientLayer.startPoint = CGPoint(x: 0.25, y: 0.5)
-//        gradientLayer.endPoint = CGPoint(x: 0.75, y: 0.5)
-//        gradientLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 0.54, c: -0.54, d: 0, tx: 0.77, ty: 0))
-//        gradientLayer.shouldRasterize = true
-//        //Добавляем градиентный слой
-//        cellImage.layer.addSublayer(gradientLayer)
-//    }
     
     private func createCell() {
         [cellImage, likeButton, gradientView, dateLabel].forEach { contentView.addSubview($0)}

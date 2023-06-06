@@ -31,6 +31,7 @@ final class AuthViewController: UIViewController {
     private let enterButton: UIButton = {
         let enterButton = UIButton()
         enterButton.translatesAutoresizingMaskIntoConstraints = false
+        enterButton.accessibilityIdentifier = "Authenticate"
         enterButton.backgroundColor = .YPWhite
         enterButton.setTitle("Войти", for: .normal)
         enterButton.setTitleColor(.YPBlack, for: .normal)
