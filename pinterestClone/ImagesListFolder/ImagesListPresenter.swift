@@ -5,14 +5,12 @@
 //  Created by Денис on 01.06.2023.
 //
 
-import UIKit
-import Kingfisher
-import ProgressHUD
+import Foundation
 
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? {get set}
     var photos: [Photo] {get}
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath)
+//    func configCell(for cell: ImagesListCell, with indexPath: IndexPath)
     func fetchPhotosNextPage()
     func cancelImageDownloadTask(for url: URL)
     func likeButtonTapped(for indexPath: IndexPath, completion: @escaping (Bool) -> Void)
@@ -47,31 +45,6 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     
     
     //MARK: - Public Methods
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let date = photos[indexPath.row].createdAt else { return }
-        let dateString = date.dateTimeString
-        
-        guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
-        cell.setAnimatedGradient()
-        cell.cellImage.kf.indicatorType = .activity
-        
-        imagesListHelper.fetchImagesListImage(url: url, options: nil) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let image):
-                view?.configureCellElements(cell: cell, image: image, date: dateString, isLiked: photos[indexPath.row].likedByUser, imageURL: url)
-            case .failure(_):
-                guard let placeholderImage = UIImage(named: "image_placeholder") else { return }
-                view?.configureCellElements(cell: cell, image: placeholderImage, date: "Error", isLiked: false, imageURL: url)
-            }
-            /// эффект нажатия на ячейку без серого выделения
-            let selectedView = UIView()
-            /// Устанавливаем цвет фона
-            selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
-            cell.selectedBackgroundView = selectedView
-        }
-    }
     
     func updateTableView() {
         let oldCount = photos.count

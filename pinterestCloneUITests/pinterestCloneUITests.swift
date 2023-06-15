@@ -59,7 +59,7 @@ final class pinterestCloneUITests: XCTestCase {
         sleep(3)
         // Сделать жест «смахивания» вверх по экрану для его скролла
         tablesQuery.element.swipeUp()
-        //        tablesQuery.element.swipeDown()
+                tablesQuery.element.swipeDown()
         // Поставить лайк в ячейке верхней картинки
         let firstCell = tablesQuery.cells.element(boundBy: 0)
         let likeButton = firstCell.buttons["LikeButton"]

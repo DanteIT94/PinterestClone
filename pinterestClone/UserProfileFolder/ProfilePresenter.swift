@@ -46,9 +46,8 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             let url = URL(string: profileImageURL)
         else {return}
         
-        let processor = RoundCornerImageProcessor(radius: .point(61))
-        
-        profileImageHelper.retrieveImage(url: url, options: [.processor(processor)]) { [weak self] result in
+//        let processor = RoundCornerImageProcessor(radius: .point(61))
+        profileImageHelper.retrieveImage(url: url, options: nil) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let avatar):

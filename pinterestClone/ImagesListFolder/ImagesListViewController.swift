@@ -18,7 +18,8 @@ final class ImagesListViewController: UIViewController {
     
     
     //MARK: -Private Properties
-    internal var presenter: ImagesListPresenterProtocol
+    private var imagesListHelper: ImagesListHelperProtocol
+    var presenter: ImagesListPresenterProtocol
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -27,8 +28,9 @@ final class ImagesListViewController: UIViewController {
     }()
     
     //MARK: -Initizilizer
-    init(presenter: ImagesListPresenterProtocol) {
+    init(presenter: ImagesListPresenterProtocol, imagesListHelper: ImagesListHelperProtocol) {
         self.presenter = presenter
+        self.imagesListHelper = imagesListHelper
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,6 +72,31 @@ final class ImagesListViewController: UIViewController {
         let singleImageVC = SingleImageViewController(fullImageUrl: url)
         singleImageVC.modalPresentationStyle = .fullScreen
         present(singleImageVC, animated: true, completion: nil)
+    }
+    
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        guard let date = presenter.photos[indexPath.row].createdAt else { return }
+        let dateString = date.dateTimeString
+        
+        guard let url = URL(string: presenter.photos[indexPath.row].thumbImageURL) else {return}
+        cell.setAnimatedGradient()
+        cell.cellImage.kf.indicatorType = .activity
+        
+        imagesListHelper.fetchImagesListImage(url: url, options: nil) { [weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let image):
+                configureCellElements(cell: cell, image: image, date: dateString, isLiked: presenter.photos[indexPath.row].likedByUser, imageURL: url)
+            case .failure(_):
+                guard let placeholderImage = UIImage(named: "image_placeholder") else { return }
+                configureCellElements(cell: cell, image: placeholderImage, date: "Error", isLiked: false, imageURL: url)
+            }
+            /// эффект нажатия на ячейку без серого выделения
+            let selectedView = UIView()
+            /// Устанавливаем цвет фона
+            selectedView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
+            cell.selectedBackgroundView = selectedView
+        }
     }
     
 }
@@ -121,7 +148,7 @@ extension ImagesListViewController: UITableViewDataSource {
         imageListCell.backgroundColor = .YPBlack
         imageListCell.delegate = self
         /// 3) Метод конфигурации ячейки (искать в классе ImageList)
-        presenter.configCell(for: imageListCell, with: indexPath)
+        configCell(for: imageListCell, with: indexPath)
         /// 4) Возвращаем ячейку
         return imageListCell
     }
