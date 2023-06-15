@@ -13,4 +13,11 @@ struct Profile: Codable {
     var name: String
     var loginName: String
     var bio: String?
+    
+    static func ==(lhs: Profile, rhs: Profile) -> Bool {
+            return lhs.username == rhs.username &&
+        lhs.name == rhs.name &&
+        lhs.loginName == rhs.loginName &&
+        lhs.bio == rhs.bio
+        }
 }

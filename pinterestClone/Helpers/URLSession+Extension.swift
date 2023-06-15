@@ -32,14 +32,12 @@ extension URLSession {
     func objectTask<T:Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
         let fulfilCompletion: (Result<T, Error>) -> Void = { result in
             DispatchQueue.main.async {
-                 completion(result)
+                completion(result)
             }
         }
         let task = dataTask(with: request) { data, response, error in
             if let data = data, let response = response as? HTTPURLResponse {
                 if 200..<300 ~= response.statusCode {
-//                    let jsonDecoder = JSONDecoder()
-//                    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
                     do {
                         let decodedModel = try JSONDecoder.shared.decode(T.self, from: data)
                         print(decodedModel)

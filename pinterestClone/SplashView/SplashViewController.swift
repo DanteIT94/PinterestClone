@@ -12,11 +12,25 @@ class SplashViewController: UIViewController {
     //MARK: - Private Properties
     private let oauth2Service = OAuth2Service()
     private let tokenStorage = OAuth2TokenStorage()
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
+    private let profileService: ProfileServiceProtocol
+    private let profileImageService: ProfileImageServiceProtocol
+    private let profileImageHelper: ProfileImageHelperProtocol
     private let ShowAuthSegueIdentifier = "ShowAuth"
     
     private var splashLogoImage: UIImageView!
+    
+    init(profileService: ProfileServiceProtocol,
+         profileImageService: ProfileImageServiceProtocol,
+         profileImageHelper: ProfileImageHelperProtocol) {
+        self.profileService = profileService
+        self.profileImageService = profileImageService
+        self.profileImageHelper = profileImageHelper
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Life Cycle
     override func viewDidAppear(_ animated: Bool) {
@@ -37,7 +51,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -47,11 +61,14 @@ class SplashViewController: UIViewController {
     // MARK: - Private Methods
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else {
-                    assertionFailure("Invalid config")
-                    showAlertViewController()
-                    return
-                }
-        let tabBarController = TabBarController()
+            assertionFailure("Invalid config")
+            showAlertViewController()
+            return
+        }
+        let tabBarController = TabBarController(
+            profileService: profileService,
+            profileImageService: profileImageService,
+            profileImageHelper: profileImageHelper)
         window.rootViewController = tabBarController
     }
     ///Переход на AuthViewController
@@ -123,7 +140,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             }
         }
     }
-
+    
     private func showAlertViewController() {
         let alertVC = UIAlertController(
             title: "Что-то пошло не так(",

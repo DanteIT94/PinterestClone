@@ -8,12 +8,17 @@
 import Foundation
 import Kingfisher
 
-class ImagesListService {
-    //MARK: - Public Propeties
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
-    
+protocol ImagesListServiceProtocol {
+    var photos: [Photo] {get}
+    var DidChangeNotification: Notification.Name {get}
+    func fetchPhotosNextPage ()
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     let tokenStorage = OAuth2TokenStorage()
     //MARK: - Private Properties
+    private (set) var DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
     private var task: URLSessionTask?
@@ -39,7 +44,6 @@ class ImagesListService {
         
         let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
             guard let self = self else { return }
-            print(result)
             switch result {
             case .success(let photoResults):
                 DispatchQueue.main.async {
@@ -48,7 +52,7 @@ class ImagesListService {
                     }
                     ///Оповещаем об изменении массива фотографий
                     NotificationCenter.default.post(
-                        name: ImagesListService.DidChangeNotification,
+                        name: self.DidChangeNotification,
                         object: nil)
                     self.lastLoadedPage = nextPage
                     self.task = nil

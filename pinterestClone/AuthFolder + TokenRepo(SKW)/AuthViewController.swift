@@ -31,6 +31,7 @@ final class AuthViewController: UIViewController {
     private let enterButton: UIButton = {
         let enterButton = UIButton()
         enterButton.translatesAutoresizingMaskIntoConstraints = false
+        enterButton.accessibilityIdentifier = "Authenticate"
         enterButton.backgroundColor = .YPWhite
         enterButton.setTitle("Войти", for: .normal)
         enterButton.setTitleColor(.YPBlack, for: .normal)
@@ -52,7 +53,14 @@ final class AuthViewController: UIViewController {
     
     @objc func enterButtonTapped() {
         let webVC = WebViewViewController()
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        
         webVC.delegate = self
+        
+        webVC.presenter = webViewPresenter
+        webViewPresenter.view = webVC
+        
         webVC.modalPresentationStyle = .fullScreen
         present(webVC, animated: true)
     }

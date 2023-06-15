@@ -10,6 +10,7 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func stopImageTask(for url: URL)
 }
 
 final class ImagesListCell: UITableViewCell {
@@ -17,7 +18,38 @@ final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     weak var delegate: ImagesListCellDelegate?
     
+    let cellImage: UIImageView = {
+        let cellImage = UIImageView()
+        cellImage.translatesAutoresizingMaskIntoConstraints = false
+        cellImage.contentMode = .scaleAspectFit
+        cellImage.layer.cornerRadius = 16
+        cellImage.layer.masksToBounds = true
+        return cellImage
+    }()
+    
     //MARK: - Private Computered Properties
+//    private var gradientLayer: CAGradientLayer!
+    private var animationLayers = Set<CALayer>()
+    private var imageURL: URL?
+    
+    private let likeButton: UIButton = {
+        let likeButton = UIButton()
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.accessibilityIdentifier = "LikeButton"
+        likeButton.setTitle("", for: .normal)
+        likeButton.addTarget(nil, action: #selector(likeButtonClicked), for: .touchUpInside)
+        return  likeButton
+    }()
+    
+    private let gradientView: UIView = {
+        let gradientView = UIView()
+        gradientView.translatesAutoresizingMaskIntoConstraints = false
+        gradientView.layer.cornerRadius = 16
+        gradientView.clipsToBounds = true
+        gradientView.layer.maskedCorners = CACornerMask([.layerMinXMaxYCorner, .layerMaxXMaxYCorner])
+        return gradientView
+    }()
+    
     private let dateLabel: UILabel = {
         let dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -25,19 +57,15 @@ final class ImagesListCell: UITableViewCell {
         dateLabel.textColor = .YPWhite
         return dateLabel
     }()
-    let cellImage: UIImageView = {
-        let cellImage = UIImageView()
-        cellImage.translatesAutoresizingMaskIntoConstraints = false
-        cellImage.layer.cornerRadius = 16
-        cellImage.layer.masksToBounds = true
-        return cellImage
-    }()
-    private let likeButton: UIButton = {
-        let likeButton = UIButton()
-        likeButton.translatesAutoresizingMaskIntoConstraints = false
-        likeButton.setTitle("", for: .normal)
-        likeButton.addTarget(nil, action: #selector(likeButtonClicked), for: .touchUpInside)
-        return  likeButton
+    
+    private let gradient: CAGradientLayer = {
+        let gradient = CAGradientLayer()
+        gradient.colors = [UIColor.YPBlack?.withAlphaComponent(0).cgColor as Any, UIColor.YPBlack?.cgColor as Any]
+        gradient.startPoint = CGPoint(x: 0.5, y: 0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 1)
+        gradient.locations = [0, 1]
+        gradient.opacity = 0.4
+        return gradient
     }()
     
     private let animatedGradient: CAGradientLayer = {
@@ -55,39 +83,39 @@ final class ImagesListCell: UITableViewCell {
         return animatedGradient
     }()
     
-    private var gradientLayer: CAGradientLayer!
-    private var animationLayers = Set<CALayer>()
-    
     //MARK: - Methods-initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         createCell()
-        createGradientLayer()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        assertionFailure("Error")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        gradientLayer.frame = CGRect(x: 0, y: cellImage.bounds.height - 35, width: cellImage.bounds.width, height: 35)
+        gradient.frame = gradientView.bounds
         animatedGradient.frame = cellImage.bounds
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         //отменяем загрузку во избежании багов
-        cellImage.kf.cancelDownloadTask()
+        if let imageURL {
+            delegate?.stopImageTask(for: imageURL)
+        }
+        removeAnimatedGradient()
     }
     
     //MARK: - Public Methods
     ///Метод для передачи данных об элементах отдельной ячейки
-    func configureCellElements(image: UIImage, date: String, isLiked: Bool) {
+    func configureCellElements(image: UIImage, date: String?, isLiked: Bool, imageURL: URL) {
         cellImage.image = image
         dateLabel.text = date
         setIsLiked(isLiked)
+        gradientView.layer.insertSublayer(gradient, at: 0)
+        self.imageURL = imageURL
         removeAnimatedGradient()
     }
     
@@ -104,40 +132,31 @@ final class ImagesListCell: UITableViewCell {
     
     
     //MARK: - Private Methods
-    ///Задаем градиентный  слой внизу ячейки
-    private func createGradientLayer() {
-        ///Задаем градиентный слой ячейкам
-        gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.YPGradient0?.cgColor as Any, UIColor.YPGradient20?.cgColor as Any]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.startPoint = CGPoint(x: 0.25, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 0.75, y: 0.5)
-        gradientLayer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 0.54, c: -0.54, d: 0, tx: 0.77, ty: 0))
-        //Добавляем градиентный слой
-        cellImage.layer.addSublayer(gradientLayer)
-    }
     
     private func createCell() {
-        contentView.addSubview(cellImage)
-        contentView.addSubview(dateLabel)
-        contentView.addSubview(likeButton)
-        
+        [cellImage, likeButton, gradientView, dateLabel].forEach { contentView.addSubview($0)}
         ///Задаем расположение элементов в ячейке
         NSLayoutConstraint.activate([
-            dateLabel.leadingAnchor.constraint(equalTo: cellImage.leadingAnchor, constant: 5),
-            dateLabel.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: -8),
-            dateLabel.bottomAnchor.constraint(equalTo: cellImage.bottomAnchor, constant: -8),
+            cellImage.topAnchor.constraint(equalTo: topAnchor, constant: 4),
+            cellImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
+            cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            cellImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             //--------------------------------------------------
             likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
             likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
             likeButton.heightAnchor.constraint(equalToConstant: 42),
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             //--------------------------------------------------
-            cellImage.topAnchor.constraint(equalTo: topAnchor, constant: 4),
-            cellImage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
-            cellImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            cellImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            gradientView.heightAnchor.constraint(equalToConstant: 35),
+            gradientView.leadingAnchor.constraint(equalTo: cellImage.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: cellImage.bottomAnchor),
+            //--------------------------------------------------
+            dateLabel.leadingAnchor.constraint(equalTo: gradientView.leadingAnchor, constant: 5),
+            dateLabel.trailingAnchor.constraint(equalTo: gradientView.trailingAnchor, constant: -8),
+            dateLabel.bottomAnchor.constraint(equalTo: gradientView.bottomAnchor, constant: -8)
         ])
+        contentView.layer.addSublayer(gradient)
     }
     
     func setIsLiked(_ isLiked: Bool) {
@@ -152,7 +171,7 @@ final class ImagesListCell: UITableViewCell {
         delegate?.imageListCellDidTapLike(self)
     }
     
-    func removeAnimatedGradient() {
+    private func removeAnimatedGradient() {
         animationLayers.forEach { layers in
             layers.removeFromSuperlayer()
         }
