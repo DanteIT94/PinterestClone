@@ -1,4 +1,4 @@
-# pinterestClone
+# PinterestClone
 Project # 2
 
 # Назначение и цели приложения
