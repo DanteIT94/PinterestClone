@@ -1,6 +1,6 @@
 # PinterestClone
-Project # 2
-
+![SCREENSHOT2](https://github.com/DanteIT94/PinterestClone/blob/main/TableView.png)
+![SCREENSHOT1](https://github.com/DanteIT94/PinterestClone/blob/main/Profile%20and%20SinglePictureView.png)
 # Назначение и цели приложения
 
 Многостраничное приложение предназначено для просмотра изображений через API Unsplash.
